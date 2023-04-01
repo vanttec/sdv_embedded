@@ -70,35 +70,6 @@ CAN_TxHeaderTypeDef TxHeader;
 uint8_t CarTxData[] = {0x04};
 uint8_t buf[8];
 
-void can_init(){
-
-	  CAN_FilterTypeDef canfilterconfig;
-	    canfilterconfig.FilterActivation = CAN_FILTER_ENABLE;
-	    canfilterconfig.FilterBank = 1;		// Specify filter bank to use
-	    canfilterconfig.FilterFIFOAssignment = CAN_FILTER_FIFO0; //Incoming data is saved here
-	    canfilterconfig.FilterIdHigh = 0x100<<5;//0x000<<5;
-	    canfilterconfig.FilterIdLow = 0x0000;
-	    canfilterconfig.FilterMaskIdHigh= 0xF00<<5;//0x600<<5;
-	    canfilterconfig.FilterMaskIdLow = 0x0000;
-	    canfilterconfig.FilterMode = CAN_FILTERMODE_IDMASK;
-	    canfilterconfig.FilterScale = CAN_FILTERSCALE_32BIT;
-	    canfilterconfig.SlaveStartFilterBank = 9;
-	  if (HAL_CAN_ConfigFilter(&hcan1, &canfilterconfig) != HAL_OK)
-	  {
-		Error_Handler();
-	  }
-	  if(HAL_CAN_Start(&hcan1)!= HAL_OK)
-	  {
-		  Error_Handler();
-	  }
-
-	  if (HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK)
-	  {
-		/* Notification Error */
-		Error_Handler();
-	  }
-
-}
 /* USER CODE END 0 */
 
 /**
@@ -131,7 +102,7 @@ int main(void)
   MX_GPIO_Init();
   MX_CAN1_Init();
   /* USER CODE BEGIN 2 */
-  can_init();
+  bool initializingBus = false;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -141,6 +112,23 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+    {
+      // Check for bus off bit
+      if(READ_BIT(hcan1.Instance->ESR, CAN_ESR_BOFF)){
+        // Bus is off!!!! Reset bus
+        SET_BIT(hcan1.Instance->MCR, CAN_MCR_INRQ);
+        initializingBus = true;
+        continue;
+      }
+      if(initializingBus && READ_BIT(hcan1.Instance->MSR,
+      CAN_MSR_INAK)){
+        // Bus is initialized, reset init bit
+        CLEAR_BIT(hcan1.Instance->MCR, CAN_MCR_INRQ);
+        initializingBus = false;
+      }
+    }
+
 	  uint32_t TxMailbox;
 	  TxHeader.StdId = 0x180;
 	  TxHeader.IDE = CAN_ID_STD;
@@ -148,64 +136,24 @@ int main(void)
 	  TxHeader.DLC = 1;
 	  TxHeader.TransmitGlobalTime = DISABLE;
 	  CarTxData[0] = SUCCESS_CAN_MSG;
-//		if(HAL_CAN_GetRxFifoFillLevel(&hcan1, CAN_RX_FIFO0) != 0){
-//			HAL_StatusTypeDef ret = HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &rxHeader, buf);
-//			if(ret != HAL_OK) {
-//				HAL_GPIO_WritePin(GPIOA, DEBUG_1_Pin, GPIO_PIN_SET);
-//				HAL_GPIO_WritePin(GPIOA, DEBUG_2_Pin, GPIO_PIN_RESET);
-//				continue;
-//			}
-//			//Parse can message
-//			else{
-				 if (HAL_CAN_GetTxMailboxesFreeLevel(&hcan1) != 0) {
-				    if(HAL_CAN_AddTxMessage(&hcan1, &TxHeader, CarTxData, &TxMailbox)== HAL_OK) {
-							//printf("Transmission requested 1\n");
-								HAL_GPIO_WritePin(GPIOA, DEBUG_1_Pin, GPIO_PIN_SET);
-								HAL_GPIO_WritePin(GPIOA, DEBUG_2_Pin, GPIO_PIN_SET);
-				    		  if(!HAL_CAN_IsTxMessagePending(&hcan1, TxMailbox)){
-				    			  printf("Message sent 1\n");
-				    		  }
-				    		  else{
-				    			  printf("Message pending 1\n");
-				    		  }
-				    	  } else{
-
-				    		  	 HAL_CAN_ResetError(&hcan1);
-				  				 //HAL_CAN_AbortTxRequest(&hcan1, TxMailbox);
-//				  			     HAL_GPIO_WritePin(GPIOC, Debug_5_Pin, GPIO_PIN_SET);
-//				  			     HAL_GPIO_WritePin(GPIOC, Debug_6_Pin, GPIO_PIN_RESET);
-				    	  }
-				  }
-				  else{
-					  bool initializingBus = false;
-
-					  // Check for bus off bit
-					  if(READ_BIT(hcan1.Instance->ESR, CAN_ESR_BOFF)){
-						  // Bus is off!!!! Reset bus
-						  SET_BIT(hcan1.Instance->MCR, CAN_MCR_INRQ);
-						  initializingBus = true;
-					  }
-					  if(initializingBus && READ_BIT(hcan1.Instance->MSR,
-					  CAN_MSR_INAK)){
-						  // Bus is initialized, reset init bit
-						  CLEAR_BIT(hcan1.Instance->MCR, CAN_MCR_INRQ);
-						  initializingBus = false;
-					  }
-
-						HAL_GPIO_WritePin(GPIOA, DEBUG_1_Pin, GPIO_PIN_RESET);
-						HAL_GPIO_WritePin(GPIOA, DEBUG_2_Pin, GPIO_PIN_RESET);
-				  }
-//				HAL_GPIO_WritePin(GPIOA, DEBUG_1_Pin, GPIO_PIN_SET);
-//				HAL_GPIO_WritePin(GPIOA, DEBUG_2_Pin, GPIO_PIN_RESET);
-//			}
-//			//can_parse_msg(&rxHeader, buf);
-//
-//		}
-//		else{
-//			HAL_GPIO_WritePin(GPIOA, DEBUG_1_Pin, GPIO_PIN_RESET);
-//			HAL_GPIO_WritePin(GPIOA, DEBUG_2_Pin, GPIO_PIN_RESET);
-//		}
-		 HAL_Delay(1000);
+    if (HAL_CAN_GetTxMailboxesFreeLevel(&hcan1) != 0) {
+      if(HAL_CAN_AddTxMessage(&hcan1, &TxHeader, CarTxData, &TxMailbox)== HAL_OK) {
+        HAL_GPIO_WritePin(GPIOA, DEBUG_1_Pin, GPIO_PIN_SET);
+        HAL_GPIO_WritePin(GPIOA, DEBUG_2_Pin, GPIO_PIN_SET);
+          if(!HAL_CAN_IsTxMessagePending(&hcan1, TxMailbox)){
+            printf("Message sent 1\n");
+          }
+          else{
+            printf("Message pending 1\n");
+          }
+        } else{
+              HAL_CAN_ResetError(&hcan1);
+        }
+    } else{
+      HAL_GPIO_WritePin(GPIOA, DEBUG_1_Pin, GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOA, DEBUG_2_Pin, GPIO_PIN_RESET);
+    }
+    HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }
@@ -290,7 +238,31 @@ static void MX_CAN1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN CAN1_Init 2 */
+  CAN_FilterTypeDef canfilterconfig;
+  canfilterconfig.FilterActivation = CAN_FILTER_ENABLE;
+  canfilterconfig.FilterBank = 1;		// Specify filter bank to use
+  canfilterconfig.FilterFIFOAssignment = CAN_FILTER_FIFO0; //Incoming data is saved here
+  canfilterconfig.FilterIdHigh = 0x100<<5;//0x000<<5;
+  canfilterconfig.FilterIdLow = 0x0000;
+  canfilterconfig.FilterMaskIdHigh= 0xF00<<5;//0x600<<5;
+  canfilterconfig.FilterMaskIdLow = 0x0000;
+  canfilterconfig.FilterMode = CAN_FILTERMODE_IDMASK;
+  canfilterconfig.FilterScale = CAN_FILTERSCALE_32BIT;
+  canfilterconfig.SlaveStartFilterBank = 9;
+  if (HAL_CAN_ConfigFilter(&hcan1, &canfilterconfig) != HAL_OK)
+  {
+  Error_Handler();
+  }
+  if(HAL_CAN_Start(&hcan1)!= HAL_OK)
+  {
+    Error_Handler();
+  }
 
+  if (HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK)
+  {
+  /* Notification Error */
+  Error_Handler();
+  }
   /* USER CODE END CAN1_Init 2 */
 
 }

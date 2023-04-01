@@ -113,8 +113,7 @@ uint8_t pot_position = 71;
 uint8_t max_velocity;
 uint8_t car_mode = 0;
 uint8_t curtis_mode = 0;
-bool enable_potentiometer = false;
-uint8_t buf_pot[12];
+bool enable_potentiometer = true;
 static const uint8_t DS3502_ADDR = 0x28<<1 ;
 static const uint8_t DS3502_MODE_WR = 0x80;
 static const uint8_t DS3502_MODE_WR_IVR = 0x00;
@@ -136,58 +135,19 @@ bool transmit_tx=0;
 #define CURTIS_MODE 0x101
 #define THROTTLE_SEND 0x182
 uint32_t TxMailbox;
+
+uint8_t buf_pot[12];
 bool getWiper(uint8_t reg,uint8_t *data){
 	 buf_pot[0] = reg;
 	 buf_pot[1] = data;
-	 HAL_StatusTypeDef  ret = HAL_I2C_Master_Transmit(&hi2c1, DS3502_ADDR, buf_pot, 2, HAL_MAX_DELAY);
-	 if (ret != HAL_OK){
-		 return false;
-	 }
-	 else{
-		 return true;
-
-	 }
+	 return HAL_I2C_Master_Transmit(&hi2c1, DS3502_ADDR, buf_pot, 2, 10) == HAL_OK;
 }
 bool setWiper(uint8_t reg,uint8_t data){
 	 buf_pot[0] = reg;
 	 buf_pot[1] = data;
-	 HAL_StatusTypeDef  ret = HAL_I2C_Master_Transmit(&hi2c1, DS3502_ADDR, buf_pot, 2, HAL_MAX_DELAY);
-	 if (ret != HAL_OK){
-		 return false;
-	 }
-	 else{
-		 return true;
-
-	 }
+	 return HAL_I2C_Master_Transmit(&hi2c1, DS3502_ADDR, buf_pot, 2, 10) == HAL_OK;
 }
-void can_init(){
 
-	  CAN_FilterTypeDef canfilterconfig;
-	    canfilterconfig.FilterActivation = CAN_FILTER_ENABLE;
-	    canfilterconfig.FilterBank = 3;		// Specify filter bank to use
-	    canfilterconfig.FilterFIFOAssignment = CAN_FILTER_FIFO0; //Incoming data is saved here
-	    canfilterconfig.FilterIdHigh = 0x100<<5;//0x000<<5;
-	    canfilterconfig.FilterIdLow = 0x0000;
-	    canfilterconfig.FilterMaskIdHigh= 0xF00<<5;//0x600<<5;
-	    canfilterconfig.FilterMaskIdLow = 0x0000;
-	    canfilterconfig.FilterMode = CAN_FILTERMODE_IDMASK;
-	    canfilterconfig.FilterScale = CAN_FILTERSCALE_32BIT;
-	    canfilterconfig.SlaveStartFilterBank = 15;
-	  if (HAL_CAN_ConfigFilter(&hcan1, &canfilterconfig) != HAL_OK)
-	  {
-		Error_Handler();
-	  }
-	  if(HAL_CAN_Start(&hcan1)!= HAL_OK)
-	  {
-		  Error_Handler();
-	  }
-
-	  if (HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK)
-	  {
-		/* Notification Error */
-		Error_Handler();
-	  }
-}
 void can_parse_msg(CAN_RxHeaderTypeDef *header, uint8_t *data){
 	if(data == NULL) return;
 
@@ -196,9 +156,8 @@ void can_parse_msg(CAN_RxHeaderTypeDef *header, uint8_t *data){
 		transmit_pot=1;
 		transmit_tx=1;
 		pot_position = data[0];
-
 	}
-	else if (id== THROTTLE_MAX){
+	else if (id == THROTTLE_MAX){
 		transmit_pot=1;
 		transmit_tx=1;
 		max_velocity = data[0] ;
@@ -210,6 +169,23 @@ void can_parse_msg(CAN_RxHeaderTypeDef *header, uint8_t *data){
 	else if (id == CURTIS_MODE){
 		curtis_mode = data[0];
 	}
+}
+
+void initialize_wiper(){
+  uint8_t buf[2];
+  // Set default initial value to factory power value
+  // TODO Edison test
+  uint8_t initialValue = 127;
+  if(HAL_I2C_Master_Transmit(&hi2c1, DS3502_ADDR, &initialValue, 1, HAL_MAX_DELAY) != HAL_OK){
+    Error_Handler();
+  }
+
+  // Write to control register 0x02, mode 0x80
+  // (Write to RAM the wiper value)
+  uint8_t mode_select = {0x02, 0x80};
+  if(HAL_I2C_Master_Transmit(&hi2c1, DS3502_ADDR, &mode_select, 2, HAL_MAX_DELAY) != HAL_OK){
+    Error_Handler();
+  }
 }
 /* USER CODE END 0 */
 
@@ -244,12 +220,11 @@ int main(void)
   MX_I2C1_Init();
   MX_CAN1_Init();
   /* USER CODE BEGIN 2 */
-  can_init();
-	HAL_GPIO_WritePin(GPIOC, Debug_6_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOC, Debug_5_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, Debug_4_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, Debug_3_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, Debug_2_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(Debug_6_GPIO_Port, Debug_6_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(Debug_5_GPIO_Port, Debug_5_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(Debug_4_GPIO_Port, Debug_4_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(Debug_3_GPIO_Port, Debug_3_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(Debug_2_GPIO_Port, Debug_2_Pin, GPIO_PIN_RESET);
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -273,7 +248,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  //defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* creation of TaskCanRx */
   TaskCanRxHandle = osThreadNew(can_rx, NULL, &TaskCanRx_attributes);
@@ -393,7 +368,31 @@ static void MX_CAN1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN CAN1_Init 2 */
+  CAN_FilterTypeDef canfilterconfig;
+  canfilterconfig.FilterActivation = CAN_FILTER_ENABLE;
+  canfilterconfig.FilterBank = 3;		// Specify filter bank to use
+  canfilterconfig.FilterFIFOAssignment = CAN_FILTER_FIFO0; //Incoming data is saved here
+  canfilterconfig.FilterIdHigh = 0x100<<5;//0x000<<5;
+  canfilterconfig.FilterIdLow = 0x0000;
+  canfilterconfig.FilterMaskIdHigh= 0xF00<<5;//0x600<<5;
+  canfilterconfig.FilterMaskIdLow = 0x0000;
+  canfilterconfig.FilterMode = CAN_FILTERMODE_IDMASK;
+  canfilterconfig.FilterScale = CAN_FILTERSCALE_32BIT;
+  canfilterconfig.SlaveStartFilterBank = 15;
+  if (HAL_CAN_ConfigFilter(&hcan1, &canfilterconfig) != HAL_OK)
+  {
+  Error_Handler();
+  }
+  if(HAL_CAN_Start(&hcan1)!= HAL_OK)
+  {
+    Error_Handler();
+  }
 
+  if (HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK)
+  {
+  /* Notification Error */
+  Error_Handler();
+  }
   /* USER CODE END CAN1_Init 2 */
 
 }
@@ -510,7 +509,7 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(10000);
   }
   /* USER CODE END 5 */
 }
@@ -526,16 +525,15 @@ void can_rx(void *argument)
 {
   /* USER CODE BEGIN can_rx */
   /* Infinite loop */
-  for(;;)
-  {
+  for(;;){
 		if(HAL_CAN_GetRxFifoFillLevel(&hcan1, CAN_RX_FIFO0) != 0){
 				HAL_StatusTypeDef ret = HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &rxHeader, buf);
 				if(ret == HAL_OK) {
 					can_parse_msg(&rxHeader, buf);
-					HAL_GPIO_WritePin(GPIOA, Debug_1_Pin, GPIO_PIN_SET);
+					HAL_GPIO_WritePin(DEBUG_1_GPIO_Port, Debug_1_Pin, GPIO_PIN_SET);
 				}
 				else{
-					HAL_GPIO_WritePin(GPIOA, Debug_1_Pin, GPIO_PIN_RESET);
+					HAL_GPIO_WritePin(DEBUG_1_GPIO_Port, Debug_1_Pin, GPIO_PIN_RESET);
 				}
 			}
     osDelay(20);
@@ -563,29 +561,13 @@ void can_tx(void *argument)
 			  TxHeader.RTR = CAN_RTR_DATA;
 			  TxHeader.DLC = 1;
 			  TxHeader.TransmitGlobalTime = DISABLE;
-			  CarTxData[0] = SUCCESS_CAN_MSG;
-			if(HAL_CAN_AddTxMessage(&hcan1, &TxHeader, CarTxData, &TxMailbox)== HAL_OK) {
-
-				HAL_GPIO_WritePin(GPIOB, Debug_2_Pin, GPIO_PIN_SET);
-					  if(!HAL_CAN_IsTxMessagePending(&hcan1, TxMailbox)){
-						  printf("Message sent 1\n");
-
-					  }
-					  else{
-						  printf("Message pending 1\n");
-					  }
-				  } else{
-
-						 HAL_CAN_ResetError(&hcan1);
-				  }
+			  uint8_t data = SUCCESS_CAN_MSG;
+			if(HAL_CAN_AddTxMessage(&hcan1, &TxHeader, &data, &TxMailbox) == HAL_OK) {
+        HAL_GPIO_WritePin(Debug_2_GPIO_Port, DEBUG_2_Pin, GPIO_PIN_SET);
 		  }else{
-			  HAL_GPIO_WritePin(GPIOB, Debug_2_Pin, GPIO_PIN_RESET);
+			  HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, Debug_2_Pin, GPIO_PIN_RESET);
 		  }
 			transmit_tx=0;
-	  }
-	  else{
-
-
 	  }
     osDelay(20);
   }
@@ -602,10 +584,9 @@ void can_tx(void *argument)
 void pot(void *argument)
 {
   /* USER CODE BEGIN pot */
+  initialize_wiper();
   /* Infinite loop */
-  for(;;)
-  {
-		if(enable_potentiometer){
+  for(;;){
 	//			 Hipotesis 2:
 	//			 Conectado desde RL, empieza desde el 0 al 127, funciona bien
 			if(car_mode==1){
@@ -626,14 +607,14 @@ void pot(void *argument)
 					HAL_GPIO_WritePin(GPIOC, Debug_6_Pin, GPIO_PIN_SET);
 					setWiper(DS3502_REG_WR_IVR,pot_position);
 				}
-				else if(pot_position < 56 ){
+				else if(pot_position < 56){
 					HAL_GPIO_WritePin(GPIOB, Debug_3_Pin, GPIO_PIN_SET);
 					HAL_GPIO_WritePin(GPIOB, Debug_4_Pin, GPIO_PIN_SET);
 					HAL_GPIO_WritePin(GPIOC, Debug_5_Pin, GPIO_PIN_SET);
 					HAL_GPIO_WritePin(GPIOC, Debug_6_Pin, GPIO_PIN_RESET);
 					setWiper(DS3502_REG_WR_IVR,pot_position);
 				}
-				else if(pot_position <70 ){
+				else if(pot_position < 70){
 
 					HAL_GPIO_WritePin(GPIOB, Debug_3_Pin, GPIO_PIN_SET);
 					HAL_GPIO_WritePin(GPIOB, Debug_4_Pin, GPIO_PIN_SET);
@@ -641,65 +622,22 @@ void pot(void *argument)
 					HAL_GPIO_WritePin(GPIOC, Debug_6_Pin, GPIO_PIN_RESET);
 					setWiper(DS3502_REG_WR_IVR,pot_position);
 				}
-				else if(pot_position <84 ){
+				else if(pot_position < 84){
 					HAL_GPIO_WritePin(GPIOB, Debug_3_Pin, GPIO_PIN_SET);
 					HAL_GPIO_WritePin(GPIOB, Debug_4_Pin, GPIO_PIN_RESET);
 					HAL_GPIO_WritePin(GPIOC, Debug_5_Pin, GPIO_PIN_RESET);
 					HAL_GPIO_WritePin(GPIOC, Debug_6_Pin, GPIO_PIN_RESET);
 					setWiper(DS3502_REG_WR_IVR,pot_position);
 				}
-				else if(pot_position < 126 ){
+				else if(pot_position < 126){
 					HAL_GPIO_WritePin(GPIOB, Debug_3_Pin, GPIO_PIN_RESET);
 					HAL_GPIO_WritePin(GPIOB, Debug_4_Pin, GPIO_PIN_RESET);
 					HAL_GPIO_WritePin(GPIOC, Debug_5_Pin, GPIO_PIN_RESET);
 					HAL_GPIO_WritePin(GPIOC, Debug_6_Pin, GPIO_PIN_RESET);
 					setWiper(DS3502_REG_WR_IVR,pot_position);
 				}
-
 			}
-					}
-		else{
-		    //@return True if initialization was successful, otherwise false.
-			uint8_t devices = 0u;
-
-			printf("Searching for I2C devices on the bus...\n");
-			HAL_StatusTypeDef  status ;
-			/* Values outside 0x03 and 0x77 are invalid. */
-			for (uint8_t i = 0x27u; i < 0x29u; i++)
-			{
-				uint8_t address = i << 1u ;
-				status = HAL_I2C_IsDeviceReady(&hi2c1, address, 3u, 10u);
-				/* In case there is a positive feedback, print it out. */
-				if (HAL_OK == status)
-				{
-				  printf("Device found: 0x%02X\n", address);
-				  devices++;
-
-				}
-			 }
-			  /* Feedback of the total number of devices. */
-			  if (0u == devices)
-			  {
-				printf("No device found.\n");
-			  }
-			  else
-			  {
-				  HAL_Delay(1000);
-				  HAL_GPIO_WritePin(GPIOB, Debug_4_Pin, GPIO_PIN_SET);
-				  HAL_Delay(1000);
-				  HAL_GPIO_WritePin(GPIOB, Debug_4_Pin, GPIO_PIN_RESET);
-				  printf("Total found devices: %d\n", devices);
-				   // Tell DS3502 that we want to read from the pot register
-					 buf_pot[0] = DS3502_REG_CR;
-				   //Write the MODE bit which determines how I2C data is written to the WR and IVR data register
-					 buf_pot[1] = DS3502_MODE_WR;
-					 HAL_StatusTypeDef  ret = HAL_I2C_Master_Transmit(&hi2c1, DS3502_ADDR, buf_pot, 2, HAL_MAX_DELAY);
-					 if (ret == HAL_OK){
-						 enable_potentiometer = true;
-					 }
-			  }
-
-		}
+    }
 		osDelay(20);
   }
   /* USER CODE END pot */
@@ -718,8 +656,7 @@ void carmode(void *argument)
   /* Infinite loop */
   for(;;)
   {
-
-    osDelay(1);
+    osDelay(1000);
   }
   /* USER CODE END carmode */
 }
