@@ -1,0 +1,4 @@
+../Core/Src/STEPPER/stepper_tasks.c:8:6:configure_steppers	8	static
+../Core/Src/STEPPER/stepper_tasks.c:22:6:set_setpoint	16	static
+../Core/Src/STEPPER/stepper_tasks.c:31:6:stepping_by_pwm	24	static
+../Core/Src/STEPPER/stepper_tasks.c:60:6:stepping_by_steps	24	static
