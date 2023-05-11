@@ -1,0 +1,33 @@
+!SESSION 2023-05-11 03:58:21.822 -----------------------------------------------
+eclipse.buildId=Version 1.11.2
+java.version=11.0.16
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2023-05-11 03:58:38.689
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2023-05-11 03:58:38.839
+!MESSAGE Log4j initialized with config file C:\Users\riky_\STM32CubeIDE\workspace_1.11.2\sdv_embedded\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-05-11 03:58:44.588
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2023-05-11 03:59:25.720
+!MESSAGE Indexed 'PanelVanttec' (49 sources, 230 headers) in 14.9 sec: 20,702 declarations; 81,425 references; 3 unresolved inclusions; 296 syntax errors; 1,165 unresolved names (1.1%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2023-05-11 03:59:33.175
+!MESSAGE Indexed 'SteeringVanttec' (40 sources, 154 headers) in 7.09 sec: 18,372 declarations; 107,098 references; 3 unresolved inclusions; 156 syntax errors; 172 unresolved names (0.14%)
+
+!ENTRY com.st.stm32cube.ide.mcu.build 1 1 2023-05-11 03:59:33.767
+!MESSAGE Converted project SteeringVanttec to C++ in 721 (ms)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.launch 2 0 2023-05-11 04:00:52.892
+!MESSAGE Won't launch debug session since we failed to locate the binary.
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.launch 2 0 2023-05-11 04:00:56.148
+!MESSAGE Won't launch debug session since we failed to locate the binary.
+
+!ENTRY org.eclipse.cdt.core 1 0 2023-05-11 04:03:27.249
+!MESSAGE Indexed 'SteeringVanttec' (40 sources, 198 headers) in 6.28 sec: 22,173 declarations; 115,563 references; 3 unresolved inclusions; 295 syntax errors; 1,069 unresolved names (0.77%)

@@ -284,8 +284,8 @@ void safetyModeAlert_task(void *args)
 void init_panel_task()
 {
     panelMovTaskHandle = osThreadNew(panelMov_task, NULL, &panelMovTaskAttributes);
-    panelDetTaskHandle = osThreadNew(panelDet_task, NULL, &panelDetTaskAttributes);
-    driveModeStatusTaskHandle = osThreadNew(driveModeStatus_task, NULL, &driveModeStatusTaskAttributes);
-    reverseSwitchStatusTaskHandle = osThreadNew(reverseSwitchStatus_task, NULL, &reverseSwitchStatusTaskAttributes);
-    safetyModeAlertTaskHandle = osThreadNew(safetyModeAlert_task, NULL, &safetyModeAlertTaskAttributes);
+//    panelDetTaskHandle = osThreadNew(panelDet_task, NULL, &panelDetTaskAttributes);
+//    driveModeStatusTaskHandle = osThreadNew(driveModeStatus_task, NULL, &driveModeStatusTaskAttributes);
+//    reverseSwitchStatusTaskHandle = osThreadNew(reverseSwitchStatus_task, NULL, &reverseSwitchStatusTaskAttributes);
+//    safetyModeAlertTaskHandle = osThreadNew(safetyModeAlert_task, NULL, &safetyModeAlertTaskAttributes);
 }
