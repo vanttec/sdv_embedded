@@ -12,18 +12,33 @@ osThreadId_t panelMovTaskHandle;
 const osThreadAttr_t panelMovTaskAttributes = {
     .name = "panelMov",
     .stack_size = 128 * 4};
-osThreadId_t panelTaskHandle;
+osThreadId_t panelDetTaskHandle;
 const osThreadAttr_t panelDetTaskAttributes = {
     .name = "panelDet",
     .stack_size = 128 * 4};
-const osThreadAttr_t driveModeStatusTaskAttributes = {
-    .name = "driveModeStatus",
+osThreadId_t driveModeStatusFlagTaskHandle;
+const osThreadAttr_t driveModeStatusFlagTaskAttributes = {
+    .name = "driveModeStatusFlag",
     .stack_size = 128 * 4};
-const osThreadAttr_t reverseSwitchStatusTaskAttributes = {
-    .name = "reverseSwitchStatus",
+osThreadId_t reverseSwitchStatusFlagTaskHandle;
+const osThreadAttr_t reverseSwitchStatusFlagTaskAttributes = {
+    .name = "reverseSwitchStatusFlag",
     .stack_size = 128 * 4};
-const osThreadAttr_t safetyModeAlertTaskAttributes = {
-    .name = "safetyModeAlert",
+osThreadId_t safetyModeAlertFlagTaskHandle;
+const osThreadAttr_t safetyModeAlertFlagTaskAttributes = {
+    .name = "safetyModeAlertFlag",
+    .stack_size = 128 * 4};
+osThreadId_t objectNotificationFlagTaskHandle;
+const osThreadAttr_t objectNotificationFlagTaskAttributes = {
+    .name = "objectNotificationFlag",
+    .stack_size = 128 * 4};
+osThreadId_t recognizeTrafficSignFlagTaskHandle;
+const osThreadAttr_t recognizeTrafficSignFlagTaskAttributes = {
+    .name = "recognizeTrafficSignFlag",
+    .stack_size = 128 * 4};
+osThreadId_t detectLaneFlagTaskHandle;
+const osThreadAttr_t detectLaneFlagTaskAttributes = {
+    .name = "detectLaneFlag",
     .stack_size = 128 * 4};
 void panelMov_task(void *args)
 {
@@ -46,24 +61,24 @@ void panelMov_task(void *args)
             HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, RESET);
             HAL_Delay(largo);
             break;
-        case 0x11:
-            // Reversa
-            HAL_GPIO_WritePin(L3D_Port, L3D_Pin, SET);
-            HAL_GPIO_WritePin(L2D_Port, L2D_Pin, SET);
-            HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, SET);
-            HAL_Delay(corto);
-            HAL_GPIO_WritePin(L3D_Port, L3D_Pin, RESET);
-            HAL_GPIO_WritePin(L2D_Port, L2D_Pin, RESET);
-            HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, RESET);
-            HAL_Delay(largo);
-            break;
+        // case 0x11:
+        //     // Reversa
+        //     HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
+        //     HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
+        //     HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
+        //     HAL_Delay(corto);
+        //     HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
+        //     HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
+        //     HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
+        //     HAL_Delay(largo);
+        //     break;
         case 0x13:
             // Carro encendido          
             for (int i = 0; i < 3; i++)
             {
-                HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, SET);
+                HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
                 HAL_Delay(corto);
-                HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, RESET);
+                HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
                 HAL_Delay(corto);
             }
                 HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, SET);  
@@ -72,15 +87,15 @@ void panelMov_task(void *args)
             // Carro apagado
             for (int i = 0; i < 2; i++)
             {
-                HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, SET);
+                HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
                 HAL_Delay(corto);
-                HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, RESET);
+                HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
                 HAL_Delay(largo);
             }
             // Apaga todo
             HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, RESET);
             HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, RESET);
-            HAL_GPIO_WritePin(PA5_Pin_GPIO_Port, PA5_Pin, RESET);
+            HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
             HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
             HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
             break;
@@ -94,7 +109,6 @@ void panelMov_task(void *args)
                 HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
                 HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
                 HAL_Delay(largo);
-            break;
             }
             break;
         case 0x17:
@@ -112,18 +126,18 @@ void panelMov_task(void *args)
             for (int i = 0; i < 2; i++)
             {
                 HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, SET);
-                HAL_GPIO_WritePin(L3D_Port, L3D_Pin, SET);
-                HAL_GPIO_WritePin(L2D_Port, L2D_Pin, SET);
+                HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
+                HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
                 HAL_Delay(corto);
                 HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, RESET);
-                HAL_GPIO_WritePin(L3D_Port, L3D_Pin, RESET);
-                HAL_GPIO_WritePin(L2D_Port, L2D_Pin, RESET);
+                HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
+                HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
                 HAL_Delay(largo);
             }
             // Apaga todo
             HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, RESET);
             HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, RESET);
-            HAL_GPIO_WritePin(PA5_Pin_GPIO_Port, PA5_Pin, RESET);
+            HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
             HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
             HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
             break;
@@ -149,19 +163,20 @@ void panelDet_task(void *args)
                     //Derecha
                      for (int i = 0; i < 2; i++)
                     {
-                        HAL_GPIO_WritePin(L3D_Port, L3D_Pin, SET);
+                        HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
                         HAL_Delay(corto);
-                        HAL_GPIO_WritePin(L3D_Port, L2D_Pin, RESET);
+                        HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
                         HAL_Delay(largo);
                     }
                 }
                 else if (panelDet_data[1] == 0x1)
                 {
+                	//Izquierda
                     for (int i = 0; i < 3; i++)
                     {
-                        HAL_GPIO_WritePin(L3D_Port, L3D_Pin, SET);
+                        HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
                         HAL_Delay(corto);
-                        HAL_GPIO_WritePin(L3D_Port, L2D_Pin, RESET);
+                        HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
                         HAL_Delay(largo);
                     }
                 }
@@ -170,13 +185,13 @@ void panelDet_task(void *args)
             // Gran tráfico humano
                 for (int i = 0; i < 3; i++)
                 {
-                    HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, SET);
+                    HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
                     HAL_Delay(largo);
-                    HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, RESET);
+                    HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
                     HAL_Delay(largo);
-                    HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, SET);
+                    HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
                     HAL_Delay(corto);
-                    HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, RESET);
+                    HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
                     HAL_Delay(largo);
                 }
             break;
@@ -184,17 +199,17 @@ void panelDet_task(void *args)
             // Giro repentino
                 for (int i = 0; i < 2; i++)
                 {
-                    HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, SET);
+                    HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
                     HAL_Delay(corto);
-                    HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, RESET);
+                    HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
                     HAL_Delay(largo);
-                    HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, SET);
+                    HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
                     HAL_Delay(corto);
-                    HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, RESET);
+                    HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
                     HAL_Delay(largo);
-                    HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, SET);
+                    HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
                     HAL_Delay(largo);
-                    HAL_GPIO_WritePin(PA5_GPIO_Port, PA5_Pin, RESET);
+                    HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
                     HAL_Delay(largo);
                 }
             break;
@@ -203,89 +218,209 @@ void panelDet_task(void *args)
         }
     }
 }
-void driveModeStatus_task(void *args)
+int statusDriveMode_task()
+{
+    //Obtener el valor del status
+    uint8_t statusDriveMode_data=0x05;
+    register_canlib_rx(0x51, 0x07, VANTTEC_CANLIB_BYTE, &statusDriveMode_data, 1);
+    for (;;)
+    {
+        return statusDriveMode_data;
+    }
+}
+void driveModeStatusFlag_task(void *args)
 {
     //Si está en modo autónomo(10) se prenderá el led indicador 1, si está en manual se apagará este led.
-    uint8_t driveModeStatus_data=0;
-    uint8_t driveModeStatusNew_data=0;
-    uint32_t corto=20;
-    uint32_t largo=200;
-    register_canlib_rx(0x51, 0x07, VANTTEC_CANLIB_BYTE, &driveModeStatus_data, 1);
+    uint8_t driveModeStatusFlag_data;
     for (;;)
     {
-        if (driveModeStatus == 0x10)
+        driveModeStatusFlag_data = statusDriveMode_task();
+        while (driveModeStatusFlag_data==0x10)
         {
-            HAL_GPIO_WritePin(Led1_GPIO_Port, Led1_Pin, SET);
+        	//Autonomo
+            HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, SET);
         }
-        else if (driveModeStatus == 0x11)
-        {
-            HAL_GPIO_WritePin(Led1_GPIO_Port, Led1_Pin, RESET);
-        }
+        //Manual
+        HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, RESET);
+
     }
 }
-void reverseSwitchStatus_task(void *args)
+int statusReverse_task()
+{
+    //Obtener el valor del status
+    uint8_t statusReverse_data=0x05;
+    register_canlib_rx(0x51, 0x08, VANTTEC_CANLIB_BYTE, &statusReverse_data, 1);
+    for (;;)
+    {
+        return statusReverse_data;
+    }
+}
+void reverseSwitchStatusFlag_task(void *args)
 {
     //Si el carro va de reversa(10) se prendera el led indicador 2, si va de frente, se apagara
-    uint8_t reverseSwitchStatus_data=0;
-    uint8_t reverseSwitchStatusNew_data=0;
+    uint8_t reverseSwitchStatusFlag_data=statusReverse_task();
     uint32_t corto=20;
-    uint32_t largo=200;
-    register_canlib_rx(0x51, 0x07, VANTTEC_CANLIB_BYTE, &reverseSwitchStatus_data, 1);
+        uint32_t largo=200;
     for (;;)
     {
-        if (reverseSwitchStatus == 0x10)
+    	while (reverseSwitchStatusFlag_data==0x10)
+    	{
+    		//Reversa
+    		HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, SET);
+            HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
+            HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
+            HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
+            HAL_Delay(corto);
+            HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
+            HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
+            HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
+            HAL_Delay(largo);
+    	}
+    	//De frente
+    	HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, RESET);
+    }
+}
+int statusSafetyMode_task()
+{
+    //Obtener el valor del status
+    uint8_t statusSafetyMode_data=0x05;
+    register_canlib_rx(0x51, 0x09, VANTTEC_CANLIB_BYTE, &statusSafetyMode_data, 1);
+    for (;;)
+    {
+        return statusSafetyMode_data;
+    }
+}
+void safetyModeAlertFlag_task(void *args)
+{
+    uint8_t safetyModeAlertFlag_data=statusSafetyMode_task();
+    uint32_t corto=20;
+    uint32_t largo=200;
+    for (;;)
+    {
+        while (safetyModeAlertFlag_data == 0x10)
         {
-            HAL_GPIO_WritePin(Led2_GPIO_Port, Led2_Pin, SET);
+            //Mientras este en safety mode, parpadeara uno si, uno no
+            HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, SET);
+            HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, RESET);
+            HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, SET);
+            HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, RESET);
+            HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, SET);
+            HAL_Delay(largo);
+            HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, RESET);
+            HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, SET);
+            HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
+            HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, SET);
+            HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
+            HAL_Delay(largo);
         }
-        else if (reverseSwitchStatus == 0x11)
+            HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, RESET);
+            HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, RESET);
+            HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
+            HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, RESET);
+            HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
+    }
+}
+void objectNotificationFlag_task(void *args)
+{
+    uint8_t objectNotificationFlag_data=0;
+    uint32_t corto=20;
+    uint32_t largo=200;
+    register_canlib_rx(0x51, 0x10, VANTTEC_CANLIB_BYTE, &objectNotificationFlag_data, 1);
+    for (;;)
+    {
+        if (objectNotificationFlag_data == 0x10)
         {
-            HAL_GPIO_WritePin(Led2_GPIO_Port, Led2_Pin, RESET);
+            //Si hay un objeto en frente cerca se prende por unos segundos
+            HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, SET);
+            HAL_Delay(largo*3);
+            HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, RESET);
+            HAL_Delay(largo);
+        }
+        else if (objectNotificationFlag_data == 0x11)
+        {
+            //Si hay un objeto lejos parpadea
+            for (int i = 0; i < 4; i++)
+            {
+            HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, SET);
+            HAL_Delay(corto);
+            HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, RESET);
+            HAL_Delay(largo);
+            }
         }
     }
 }
-void safetyModeAlert_task(void *args)
+void recognizeTrafficSignFlag_task(void *args)
 {
-    uint8_t safetyModeAlert_data=0;
-    uint8_t safetyModeAlertNew_data=0;
+    uint8_t recognizeTrafficSignFlag_data=0;
     uint32_t corto=20;
     uint32_t largo=200;
-    register_canlib_rx(0x51, 0x07, VANTTEC_CANLIB_BYTE, &safetyModeAlertNew_data, 1);
+    register_canlib_rx(0x51, 0x11, VANTTEC_CANLIB_BYTE, &recognizeTrafficSignFlag_data, 1);
     for (;;)
     {
-
-        if (safetyModeAlert == 0x10)
+        if (recognizeTrafficSignFlag_data == 0x10)
         {
-            while(){
-                //Mientras este en safety mode, parpadeara uno si, uno no
-            HAL_GPIO_WritePin(Led1_GPIO_Port, Led1_Pin, SET);
-            HAL_GPIO_WritePin(Led2_GPIO_Port, Led2_Pin, RESET);
-            HAL_GPIO_WritePin(Led3_GPIO_Port, Led3_Pin, SET);
-            HAL_GPIO_WritePin(Led4_GPIO_Port, Led4_Pin, RESET);
-            HAL_GPIO_WritePin(Led5_GPIO_Port, Led5_Pin, SET);
-            HAL_delay(largo);
-            HAL_GPIO_WritePin(Led1_GPIO_Port, Led1_Pin, RESET);
-            HAL_GPIO_WritePin(Led2_GPIO_Port, Led2_Pin, SET);
-            HAL_GPIO_WritePin(Led3_GPIO_Port, Led3_Pin, RESET);
-            HAL_GPIO_WritePin(Led4_GPIO_Port, Led4_Pin, SET);
-            HAL_GPIO_WritePin(Led5_GPIO_Port, Led5_Pin, RESET);
-            HAL_delay(largo);
+            //Si es un STOP Sign se prende
+            HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, SET);
+            HAL_Delay(largo*3);
+            HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
+            HAL_Delay(largo);
+        }
+        else if (recognizeTrafficSignFlag_data == 0x11)
+        {
+            //Si es un Pedestrian Crossing Sign, parpadea
+            for (int i = 0; i < 4; i++)
+            {
+            HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, SET);
+            HAL_Delay(corto);
+            HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
+            HAL_Delay(largo);
             }
         }
-        else if (safetyModeAlert == 0x11)
+    }
+}
+int statusDetectLane_task()
+{
+    //Obtener el valor del status de la linea
+    uint8_t statusDetectLane_data=0x05;
+    register_canlib_rx(0x51, 0x12, VANTTEC_CANLIB_BYTE, &statusDetectLane_data, 1);
+    for (;;)
+    {
+        return statusDetectLane_data;
+    }
+}
+void detectLaneFlag_task(void *args)
+{
+    uint8_t detectLaneFlag_data=statusDetectLane_task();
+    uint32_t corto=20;
+    uint32_t largo=200;
+    for (;;)
+    {
+        while (detectLaneFlag_data == 0x10)
         {
-            HAL_GPIO_WritePin(Led1_GPIO_Port, Led1_Pin, RESET);
-            HAL_GPIO_WritePin(Led2_GPIO_Port, Led2_Pin, RESET);
-            HAL_GPIO_WritePin(Led3_GPIO_Port, Led3_Pin, RESET);
-            HAL_GPIO_WritePin(Led4_GPIO_Port, Led4_Pin, RESET);
-            HAL_GPIO_WritePin(Led5_GPIO_Port, Led5_Pin, RESET);
+            //Mientras haya linea presente
+            HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, SET);
         }
+        while (detectLaneFlag_data == 0x11)
+        {
+            //Cuando este fuera de la linea
+            HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, SET);
+            HAL_Delay(largo);
+            HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
+            HAL_Delay(largo);
+        }
+        //Cuando no haya linea
+        HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
     }
 }
 void init_panel_task()
 {
     panelMovTaskHandle = osThreadNew(panelMov_task, NULL, &panelMovTaskAttributes);
-//    panelDetTaskHandle = osThreadNew(panelDet_task, NULL, &panelDetTaskAttributes);
-//    driveModeStatusTaskHandle = osThreadNew(driveModeStatus_task, NULL, &driveModeStatusTaskAttributes);
-//    reverseSwitchStatusTaskHandle = osThreadNew(reverseSwitchStatus_task, NULL, &reverseSwitchStatusTaskAttributes);
-//    safetyModeAlertTaskHandle = osThreadNew(safetyModeAlert_task, NULL, &safetyModeAlertTaskAttributes);
+    panelDetTaskHandle = osThreadNew(panelDet_task, NULL, &panelDetTaskAttributes);
+    driveModeStatusFlagTaskHandle = osThreadNew(driveModeStatusFlag_task, NULL, &driveModeStatusFlagTaskAttributes);
+    reverseSwitchStatusFlagTaskHandle = osThreadNew(reverseSwitchStatusFlag_task, NULL, &reverseSwitchStatusFlagTaskAttributes);
+    safetyModeAlertFlagTaskHandle = osThreadNew(safetyModeAlertFlag_task, NULL, &safetyModeAlertFlagTaskAttributes);
+    recognizeTrafficSignFlagTaskHandle = osThreadNew(recognizeTrafficSignFlag_task, NULL, &recognizeTrafficSignFlagTaskAttributes);
+    objectNotificationFlagTaskHandle = osThreadNew(objectNotificationFlag_task, NULL, &objectNotificationFlagTaskAttributes);
+    detectLaneFlagTaskHandle = osThreadNew(detectLaneFlag_task, NULL, &detectLaneFlagTaskAttributes);
+
 }

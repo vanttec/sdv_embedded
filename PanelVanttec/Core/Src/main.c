@@ -107,7 +107,7 @@ int main(void)
   init_canlib_rx();
   canlib_init_generic_tasks();
 
-  init_panel_tasks();
+  init_panel_task();
   /* USER CODE END 2 */
 
   /* Init scheduler */
