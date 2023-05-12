@@ -1,4 +1,4 @@
-04:08:39 **** Incremental Build of configuration Debug for project PanelVanttec ****
+03:54:07 **** Incremental Build of configuration Debug for project PanelVanttec ****
 make -j8 all 
 arm-none-eabi-gcc "../Core/Src/panel_tasks.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L431xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../libs/vanttec_CANLib/src/Vanttec_CANLib -I../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/panel_tasks.d" -MT"Core/Src/panel_tasks.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/panel_tasks.o"
 ../Core/Src/panel_tasks.c: In function 'panelMov_task':
@@ -129,5 +129,5 @@ arm-none-eabi-gcc "../Core/Src/panel_tasks.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DD
 make: *** [Core/Src/subdir.mk:40: Core/Src/panel_tasks.o] Error 1
 "make -j8 all" terminated with exit code 2. Build might be incomplete.
 
-04:08:40 Build Failed. 27 errors, 9 warnings. (took 1s.53ms)
+03:54:09 Build Failed. 27 errors, 9 warnings. (took 2s.810ms)
 

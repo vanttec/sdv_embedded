@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.ejs": "html",
+        "can_bus_parser.h": "c"
+    }
+}
