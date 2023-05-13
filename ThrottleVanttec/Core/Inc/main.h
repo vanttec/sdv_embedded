@@ -71,12 +71,12 @@ void Error_Handler(void);
 #define DEBUG_3_GPIO_Port GPIOB
 #define DEBUG_2_Pin GPIO_PIN_2
 #define DEBUG_2_GPIO_Port GPIOB
-#define RelayMotor_Pin GPIO_PIN_8
-#define RelayMotor_GPIO_Port GPIOC
-#define Pot_Pin GPIO_PIN_9
-#define Pot_GPIO_Port GPIOC
 #define DEBUG_1_Pin GPIO_PIN_8
 #define DEBUG_1_GPIO_Port GPIOA
+#define Pot_Pin GPIO_PIN_9
+#define Pot_GPIO_Port GPIOA
+#define RelayMotor_Pin GPIO_PIN_10
+#define RelayMotor_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 

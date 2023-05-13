@@ -42,13 +42,13 @@ const osThreadAttr_t detectLaneFlagTaskAttributes = {
     .stack_size = 128 * 4};
 void panelMov_task(void *args)
 {
-    uint8_t panelMov_data[2];
+    uint8_t panelMov_data;
     uint32_t corto=20;
     uint32_t largo=200;
     register_canlib_rx(0x51, 0x05, VANTTEC_CANLIB_BYTE, &panelMov_data, 1);
     for (;;)
     {
-        switch (panelMov_data[0])
+        switch (panelMov_data)
         {
         case 0x10:
             // Frenado
@@ -151,7 +151,8 @@ void panelDet_task(void *args)
     uint8_t panelDet_data[2];
     uint32_t corto=20;
     uint32_t largo=200;
-    register_canlib_rx(0x51, 0x06, VANTTEC_CANLIB_BYTE, &panelDet_data, 1);
+    register_canlib_rx(0x51, 0x06, VANTTEC_CANLIB_BYTE, &(panelDet_data[0]), 1);
+    register_canlib_rx(0x51, 0x06, VANTTEC_CANLIB_BYTE, &(panelDet_data[1]), 1);
     for (;;)
     {
         switch (panelDet_data[0])
@@ -415,12 +416,12 @@ void detectLaneFlag_task(void *args)
 void init_panel_task()
 {
     panelMovTaskHandle = osThreadNew(panelMov_task, NULL, &panelMovTaskAttributes);
-    panelDetTaskHandle = osThreadNew(panelDet_task, NULL, &panelDetTaskAttributes);
-    driveModeStatusFlagTaskHandle = osThreadNew(driveModeStatusFlag_task, NULL, &driveModeStatusFlagTaskAttributes);
-    reverseSwitchStatusFlagTaskHandle = osThreadNew(reverseSwitchStatusFlag_task, NULL, &reverseSwitchStatusFlagTaskAttributes);
-    safetyModeAlertFlagTaskHandle = osThreadNew(safetyModeAlertFlag_task, NULL, &safetyModeAlertFlagTaskAttributes);
-    recognizeTrafficSignFlagTaskHandle = osThreadNew(recognizeTrafficSignFlag_task, NULL, &recognizeTrafficSignFlagTaskAttributes);
-    objectNotificationFlagTaskHandle = osThreadNew(objectNotificationFlag_task, NULL, &objectNotificationFlagTaskAttributes);
-    detectLaneFlagTaskHandle = osThreadNew(detectLaneFlag_task, NULL, &detectLaneFlagTaskAttributes);
+//    panelDetTaskHandle = osThreadNew(panelDet_task, NULL, &panelDetTaskAttributes);
+//    driveModeStatusFlagTaskHandle = osThreadNew(driveModeStatusFlag_task, NULL, &driveModeStatusFlagTaskAttributes);
+//    reverseSwitchStatusFlagTaskHandle = osThreadNew(reverseSwitchStatusFlag_task, NULL, &reverseSwitchStatusFlagTaskAttributes);
+//    safetyModeAlertFlagTaskHandle = osThreadNew(safetyModeAlertFlag_task, NULL, &safetyModeAlertFlagTaskAttributes);
+//    recognizeTrafficSignFlagTaskHandle = osThreadNew(recognizeTrafficSignFlag_task, NULL, &recognizeTrafficSignFlagTaskAttributes);
+//    objectNotificationFlagTaskHandle = osThreadNew(objectNotificationFlag_task, NULL, &objectNotificationFlagTaskAttributes);
+//    detectLaneFlagTaskHandle = osThreadNew(detectLaneFlag_task, NULL, &detectLaneFlagTaskAttributes);
 
 }

@@ -309,23 +309,26 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, WLAT_Pin|SHDN_Pin|DEBUG_1_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, WLAT_Pin|SHDN_Pin|DEBUG_1_Pin|Pot_Pin
+                          |RelayMotor_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, DEBUG_5_Pin|DEBUG_6_Pin|RelayMotor_Pin|Pot_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, DEBUG_5_Pin|DEBUG_6_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, DEBUG_4_Pin|DEBUG_3_Pin|DEBUG_2_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : WLAT_Pin SHDN_Pin DEBUG_1_Pin */
-  GPIO_InitStruct.Pin = WLAT_Pin|SHDN_Pin|DEBUG_1_Pin;
+  /*Configure GPIO pins : WLAT_Pin SHDN_Pin DEBUG_1_Pin Pot_Pin
+                           RelayMotor_Pin */
+  GPIO_InitStruct.Pin = WLAT_Pin|SHDN_Pin|DEBUG_1_Pin|Pot_Pin
+                          |RelayMotor_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : DEBUG_5_Pin DEBUG_6_Pin RelayMotor_Pin Pot_Pin */
-  GPIO_InitStruct.Pin = DEBUG_5_Pin|DEBUG_6_Pin|RelayMotor_Pin|Pot_Pin;
+  /*Configure GPIO pins : DEBUG_5_Pin DEBUG_6_Pin */
+  GPIO_InitStruct.Pin = DEBUG_5_Pin|DEBUG_6_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
