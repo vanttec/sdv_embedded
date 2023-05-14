@@ -377,83 +377,80 @@ void objectNotificationFlag_task(void *args)
 		}
 		osDelay(10);
 	}
-}
-void recognizeTrafficSignFlag_task(void *args)
-{
-	uint8_t recognizeTrafficSignFlag_data = 0;
-	uint8_t last_recognizeTrafficSignFlag_data = 0;
-	uint32_t corto = 20;
-	uint32_t largo = 200;
-	register_canlib_rx(0x11, 0x11, VANTTEC_CANLIB_BYTE, &recognizeTrafficSignFlag_data, 1);
-	for (;;)
+	void recognizeTrafficSignFlag_task(void *args)
 	{
-		if (last_recognizeTrafficSignFlag_data != recognizeTrafficSignFlag_data)
+		uint8_t recognizeTrafficSignFlag_data = 0;
+		uint8_t last_recognizeTrafficSignFlag_data = 0;
+		register_canlib_rx(0x11, 0x11, VANTTEC_CANLIB_BYTE, &recognizeTrafficSignFlag_data, 1);
+		for (;;)
 		{
-			if (recognizeTrafficSignFlag_data == 0x10)
+			if (last_recognizeTrafficSignFlag_data != recognizeTrafficSignFlag_data)
 			{
-				// Si es un STOP Sign se prende
-				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, SET);
-				osDelay(largo * 3);
-				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
-				osDelay(largo);
-			}
-			else if (recognizeTrafficSignFlag_data == 0x11)
-			{
-				// Si es un Pedestrian Crossing Sign, parpadea
-				for (int i = 0; i < 4; i++)
+				if (recognizeTrafficSignFlag_data == 0x10)
 				{
+					// Si es un STOP Sign se prende
 					HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, SET);
-					osDelay(corto);
+					osDelay(largo * 3);
 					HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
 					osDelay(largo);
 				}
-				osDelay(10);
+				else if (recognizeTrafficSignFlag_data == 0x11)
+				{
+					// Si es un Pedestrian Crossing Sign, parpadea
+					for (int i = 0; i < 4; i++)
+					{
+						HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, SET);
+						osDelay(corto);
+						HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
+						osDelay(largo);
+					}
+					osDelay(10);
+				}
+				last_recognizeTrafficSignFlag_data = recognizeTrafficSignFlag_data;
 			}
-			last_recognizeTrafficSignFlag_data = recognizeTrafficSignFlag_data;
+			osDelay(10);
 		}
-		osDelay(10);
 	}
-}
-void detectLaneFlag_task(void *args)
-{
-	uint8_t detectLaneFlag_data = 0;
-	uint8_t last_detectLaneFlag_data = 0;
-	register_canlib_rx(0x11, 0x12, VANTTEC_CANLIB_BYTE, &detectLaneFlag_data, 1);
-	uint32_t corto = 20;
-	uint32_t largo = 200;
-	for (;;)
+	void detectLaneFlag_task(void *args)
 	{
-		if (last_detectLaneFlag_data != detectLaneFlag_data)
+		uint8_t detectLaneFlag_data = 0;
+		uint8_t last_detectLaneFlag_data = 0;
+		register_canlib_rx(0x11, 0x12, VANTTEC_CANLIB_BYTE, &detectLaneFlag_data, 1);
+		uint32_t corto = 20;
+		uint32_t largo = 200;
+		for (;;)
 		{
-			if (detectLaneFlag_data == 0x10)
+			if (last_detectLaneFlag_data != detectLaneFlag_data)
 			{
-				// Mientras haya linea presente
-				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, SET);
-			}
-			else if (detectLaneFlag_data == 0x11)
-			{
-				// Cuando este fuera de la linea
-				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, SET);
-				osDelay(largo);
+				if (detectLaneFlag_data == 0x10)
+				{
+					// Mientras haya linea presente
+					HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, SET);
+				}
+				else if (detectLaneFlag_data == 0x11)
+				{
+					// Cuando este fuera de la linea
+					HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, SET);
+					osDelay(largo);
+					HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
+					osDelay(largo);
+				}
+				// Cuando no haya linea
 				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
-				osDelay(largo);
+				last_detectLaneFlag_data = detectLaneFlag_data;
 			}
-			// Cuando no haya linea
-			HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
-			last_detectLaneFlag_data = detectLaneFlag_data;
+			osDelay(10);
 		}
-		osDelay(10);
 	}
-}
-void init_panel_task()
-{
-	panelMovTaskHandle = osThreadNew(panelMov_task, NULL, &panelMovTaskAttributes);
-	debugTaskHandle = osThreadNew(debug_task, NULL, &debugTaskAttributes);
-//	panelDetTaskHandle = osThreadNew(panelDet_task, NULL, &panelDetTaskAttributes);
-//	driveModeStatusFlagTaskHandle = osThreadNew(driveModeStatusFlag_task, NULL, &driveModeStatusFlagTaskAttributes);
-//	reverseSwitchStatusFlagTaskHandle = osThreadNew(reverseSwitchStatusFlag_task, NULL, &reverseSwitchStatusFlagTaskAttributes);
-//	safetyModeAlertFlagTaskHandle = osThreadNew(safetyModeAlertFlag_task, NULL, &safetyModeAlertFlagTaskAttributes);
-//	recognizeTrafficSignFlagTaskHandle = osThreadNew(recognizeTrafficSignFlag_task, NULL, &recognizeTrafficSignFlagTaskAttributes);
-//	objectNotificationFlagTaskHandle = osThreadNew(objectNotificationFlag_task, NULL, &objectNotificationFlagTaskAttributes);
-//	detectLaneFlagTaskHandle = osThreadNew(detectLaneFlag_task, NULL, &detectLaneFlagTaskAttributes);
-}
+	void init_panel_task()
+	{
+		panelMovTaskHandle = osThreadNew(panelMov_task, NULL, &panelMovTaskAttributes);
+		debugTaskHandle = osThreadNew(debug_task, NULL, &debugTaskAttributes);
+		panelDetTaskHandle = osThreadNew(panelDet_task, NULL, &panelDetTaskAttributes);
+		driveModeStatusFlagTaskHandle = osThreadNew(driveModeStatusFlag_task, NULL, &driveModeStatusFlagTaskAttributes);
+		reverseSwitchStatusFlagTaskHandle = osThreadNew(reverseSwitchStatusFlag_task, NULL, &reverseSwitchStatusFlagTaskAttributes);
+		safetyModeAlertFlagTaskHandle = osThreadNew(safetyModeAlertFlag_task, NULL, &safetyModeAlertFlagTaskAttributes);
+		recognizeTrafficSignFlagTaskHandle = osThreadNew(recognizeTrafficSignFlag_task, NULL, &recognizeTrafficSignFlagTaskAttributes);
+		objectNotificationFlagTaskHandle = osThreadNew(objectNotificationFlag_task, NULL, &objectNotificationFlagTaskAttributes);
+		detectLaneFlagTaskHandle = osThreadNew(detectLaneFlag_task, NULL, &detectLaneFlagTaskAttributes);
+	}

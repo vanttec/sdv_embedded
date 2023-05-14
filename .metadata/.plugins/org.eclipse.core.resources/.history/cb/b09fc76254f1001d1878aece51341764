@@ -382,8 +382,6 @@ void recognizeTrafficSignFlag_task(void *args)
 {
 	uint8_t recognizeTrafficSignFlag_data = 0;
 	uint8_t last_recognizeTrafficSignFlag_data = 0;
-	uint32_t corto = 20;
-	uint32_t largo = 200;
 	register_canlib_rx(0x11, 0x11, VANTTEC_CANLIB_BYTE, &recognizeTrafficSignFlag_data, 1);
 	for (;;)
 	{
@@ -449,11 +447,11 @@ void init_panel_task()
 {
 	panelMovTaskHandle = osThreadNew(panelMov_task, NULL, &panelMovTaskAttributes);
 	debugTaskHandle = osThreadNew(debug_task, NULL, &debugTaskAttributes);
-//	panelDetTaskHandle = osThreadNew(panelDet_task, NULL, &panelDetTaskAttributes);
-//	driveModeStatusFlagTaskHandle = osThreadNew(driveModeStatusFlag_task, NULL, &driveModeStatusFlagTaskAttributes);
-//	reverseSwitchStatusFlagTaskHandle = osThreadNew(reverseSwitchStatusFlag_task, NULL, &reverseSwitchStatusFlagTaskAttributes);
-//	safetyModeAlertFlagTaskHandle = osThreadNew(safetyModeAlertFlag_task, NULL, &safetyModeAlertFlagTaskAttributes);
-//	recognizeTrafficSignFlagTaskHandle = osThreadNew(recognizeTrafficSignFlag_task, NULL, &recognizeTrafficSignFlagTaskAttributes);
-//	objectNotificationFlagTaskHandle = osThreadNew(objectNotificationFlag_task, NULL, &objectNotificationFlagTaskAttributes);
-//	detectLaneFlagTaskHandle = osThreadNew(detectLaneFlag_task, NULL, &detectLaneFlagTaskAttributes);
+	panelDetTaskHandle = osThreadNew(panelDet_task, NULL, &panelDetTaskAttributes);
+	driveModeStatusFlagTaskHandle = osThreadNew(driveModeStatusFlag_task, NULL, &driveModeStatusFlagTaskAttributes);
+	reverseSwitchStatusFlagTaskHandle = osThreadNew(reverseSwitchStatusFlag_task, NULL, &reverseSwitchStatusFlagTaskAttributes);
+	safetyModeAlertFlagTaskHandle = osThreadNew(safetyModeAlertFlag_task, NULL, &safetyModeAlertFlagTaskAttributes);
+	recognizeTrafficSignFlagTaskHandle = osThreadNew(recognizeTrafficSignFlag_task, NULL, &recognizeTrafficSignFlagTaskAttributes);
+	objectNotificationFlagTaskHandle = osThreadNew(objectNotificationFlag_task, NULL, &objectNotificationFlagTaskAttributes);
+	detectLaneFlagTaskHandle = osThreadNew(detectLaneFlag_task, NULL, &detectLaneFlagTaskAttributes);
 }

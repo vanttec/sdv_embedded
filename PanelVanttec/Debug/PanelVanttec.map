@@ -389,6 +389,48 @@ Discarded input sections
  .text          0x0000000000000000        0x0 ./Core/Src/panel_tasks.o
  .data          0x0000000000000000        0x0 ./Core/Src/panel_tasks.o
  .bss           0x0000000000000000        0x0 ./Core/Src/panel_tasks.o
+ .bss.panelDetTaskHandle
+                0x0000000000000000        0x4 ./Core/Src/panel_tasks.o
+ .rodata.panelDetTaskAttributes
+                0x0000000000000000       0x24 ./Core/Src/panel_tasks.o
+ .bss.driveModeStatusFlagTaskHandle
+                0x0000000000000000        0x4 ./Core/Src/panel_tasks.o
+ .rodata.driveModeStatusFlagTaskAttributes
+                0x0000000000000000       0x24 ./Core/Src/panel_tasks.o
+ .bss.reverseSwitchStatusFlagTaskHandle
+                0x0000000000000000        0x4 ./Core/Src/panel_tasks.o
+ .rodata.reverseSwitchStatusFlagTaskAttributes
+                0x0000000000000000       0x24 ./Core/Src/panel_tasks.o
+ .bss.safetyModeAlertFlagTaskHandle
+                0x0000000000000000        0x4 ./Core/Src/panel_tasks.o
+ .rodata.safetyModeAlertFlagTaskAttributes
+                0x0000000000000000       0x24 ./Core/Src/panel_tasks.o
+ .bss.objectNotificationFlagTaskHandle
+                0x0000000000000000        0x4 ./Core/Src/panel_tasks.o
+ .rodata.objectNotificationFlagTaskAttributes
+                0x0000000000000000       0x24 ./Core/Src/panel_tasks.o
+ .bss.recognizeTrafficSignFlagTaskHandle
+                0x0000000000000000        0x4 ./Core/Src/panel_tasks.o
+ .rodata.recognizeTrafficSignFlagTaskAttributes
+                0x0000000000000000       0x24 ./Core/Src/panel_tasks.o
+ .bss.detectLaneFlagTaskHandle
+                0x0000000000000000        0x4 ./Core/Src/panel_tasks.o
+ .rodata.detectLaneFlagTaskAttributes
+                0x0000000000000000       0x24 ./Core/Src/panel_tasks.o
+ .text.panelDet_task
+                0x0000000000000000      0x1cc ./Core/Src/panel_tasks.o
+ .text.driveModeStatusFlag_task
+                0x0000000000000000       0x58 ./Core/Src/panel_tasks.o
+ .text.reverseSwitchStatusFlag_task
+                0x0000000000000000       0xb0 ./Core/Src/panel_tasks.o
+ .text.safetyModeAlertFlag_task
+                0x0000000000000000      0x100 ./Core/Src/panel_tasks.o
+ .text.objectNotificationFlag_task
+                0x0000000000000000       0xb8 ./Core/Src/panel_tasks.o
+ .text.recognizeTrafficSignFlag_task
+                0x0000000000000000       0xb0 ./Core/Src/panel_tasks.o
+ .text.detectLaneFlag_task
+                0x0000000000000000       0x8c ./Core/Src/panel_tasks.o
  .debug_macro   0x0000000000000000      0xa78 ./Core/Src/panel_tasks.o
  .debug_macro   0x0000000000000000      0x1a7 ./Core/Src/panel_tasks.o
  .debug_macro   0x0000000000000000       0x2e ./Core/Src/panel_tasks.o
@@ -6009,106 +6051,106 @@ LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
 .iplt           0x00000000080073f4        0x0
  .iplt          0x00000000080073f4        0x0 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.rodata         0x00000000080073f4      0x24c
+.rodata         0x00000000080073f4      0x2dc
                 0x00000000080073f4                . = ALIGN (0x4)
  *(.rodata)
  .rodata        0x00000000080073f4        0xc ./Core/Src/main.o
- .rodata        0x0000000008007400       0x11 ./Core/Src/panel_tasks.o
- *fill*         0x0000000008007411        0x3 
- .rodata        0x0000000008007414        0x5 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
- *fill*         0x0000000008007419        0x3 
- .rodata        0x000000000800741c        0xd ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
- *fill*         0x0000000008007429        0x3 
- .rodata        0x000000000800742c       0x18 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
- .rodata        0x0000000008007444       0x12 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
- *fill*         0x0000000008007456        0x2 
- .rodata        0x0000000008007458       0x1c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
- .rodata        0x0000000008007474        0xa ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+ .rodata        0x0000000008007400       0xa3 ./Core/Src/panel_tasks.o
+ *fill*         0x00000000080074a3        0x1 
+ .rodata        0x00000000080074a4        0x5 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ *fill*         0x00000000080074a9        0x3 
+ .rodata        0x00000000080074ac        0xd ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ *fill*         0x00000000080074b9        0x3 
+ .rodata        0x00000000080074bc       0x18 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
+ .rodata        0x00000000080074d4       0x12 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
+ *fill*         0x00000000080074e6        0x2 
+ .rodata        0x00000000080074e8       0x1c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+ .rodata        0x0000000008007504        0xa ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
  *(.rodata*)
- *fill*         0x000000000800747e        0x2 
+ *fill*         0x000000000800750e        0x2 
  .rodata.defaultTask_attributes
-                0x0000000008007480       0x24 ./Core/Src/main.o
-                0x0000000008007480                defaultTask_attributes
+                0x0000000008007510       0x24 ./Core/Src/main.o
+                0x0000000008007510                defaultTask_attributes
  .rodata.debugTaskAttributes
-                0x00000000080074a4       0x24 ./Core/Src/panel_tasks.o
-                0x00000000080074a4                debugTaskAttributes
+                0x0000000008007534       0x24 ./Core/Src/panel_tasks.o
+                0x0000000008007534                debugTaskAttributes
  .rodata.panelMovTaskAttributes
-                0x00000000080074c8       0x24 ./Core/Src/panel_tasks.o
-                0x00000000080074c8                panelMovTaskAttributes
+                0x0000000008007558       0x24 ./Core/Src/panel_tasks.o
+                0x0000000008007558                panelMovTaskAttributes
  .rodata.AHBPrescTable
-                0x00000000080074ec       0x10 ./Core/Src/system_stm32l4xx.o
-                0x00000000080074ec                AHBPrescTable
+                0x000000000800757c       0x10 ./Core/Src/system_stm32l4xx.o
+                0x000000000800757c                AHBPrescTable
  .rodata.MSIRangeTable
-                0x00000000080074fc       0x30 ./Core/Src/system_stm32l4xx.o
-                0x00000000080074fc                MSIRangeTable
+                0x000000000800758c       0x30 ./Core/Src/system_stm32l4xx.o
+                0x000000000800758c                MSIRangeTable
  .rodata.canResetAttributes
-                0x000000000800752c       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
-                0x000000000800752c                canResetAttributes
+                0x00000000080075bc       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
+                0x00000000080075bc                canResetAttributes
  .rodata.hbTaskAttributes
-                0x0000000008007550       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
-                0x0000000008007550                hbTaskAttributes
+                0x00000000080075e0       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
+                0x00000000080075e0                hbTaskAttributes
  .rodata.canRxTask_attributes
-                0x0000000008007574       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
-                0x0000000008007574                canRxTask_attributes
+                0x0000000008007604       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+                0x0000000008007604                canRxTask_attributes
  .rodata.canRxQueueTask_attributes
-                0x0000000008007598       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
-                0x0000000008007598                canRxQueueTask_attributes
+                0x0000000008007628       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+                0x0000000008007628                canRxQueueTask_attributes
  .rodata.canTxTask_attributes
-                0x00000000080075bc       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
-                0x00000000080075bc                canTxTask_attributes
+                0x000000000800764c       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+                0x000000000800764c                canTxTask_attributes
  .rodata.__sf_fake_stderr
-                0x00000000080075e0       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
-                0x00000000080075e0                __sf_fake_stderr
+                0x0000000008007670       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
+                0x0000000008007670                __sf_fake_stderr
  .rodata.__sf_fake_stdin
-                0x0000000008007600       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
-                0x0000000008007600                __sf_fake_stdin
+                0x0000000008007690       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
+                0x0000000008007690                __sf_fake_stdin
  .rodata.__sf_fake_stdout
-                0x0000000008007620       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
-                0x0000000008007620                __sf_fake_stdout
-                0x0000000008007640                . = ALIGN (0x4)
+                0x00000000080076b0       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
+                0x00000000080076b0                __sf_fake_stdout
+                0x00000000080076d0                . = ALIGN (0x4)
 
-.rel.dyn        0x0000000008007640        0x0
- .rel.iplt      0x0000000008007640        0x0 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+.rel.dyn        0x00000000080076d0        0x0
+ .rel.iplt      0x00000000080076d0        0x0 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.ARM.extab      0x0000000008007640        0x0
-                0x0000000008007640                . = ALIGN (0x4)
+.ARM.extab      0x00000000080076d0        0x0
+                0x00000000080076d0                . = ALIGN (0x4)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x0000000008007640                . = ALIGN (0x4)
+                0x00000000080076d0                . = ALIGN (0x4)
 
-.ARM            0x0000000008007640        0x0
-                0x0000000008007640                . = ALIGN (0x4)
-                0x0000000008007640                __exidx_start = .
+.ARM            0x00000000080076d0        0x0
+                0x00000000080076d0                . = ALIGN (0x4)
+                0x00000000080076d0                __exidx_start = .
  *(.ARM.exidx*)
-                0x0000000008007640                __exidx_end = .
-                0x0000000008007640                . = ALIGN (0x4)
+                0x00000000080076d0                __exidx_end = .
+                0x00000000080076d0                . = ALIGN (0x4)
 
-.preinit_array  0x0000000008007640        0x0
-                0x0000000008007640                . = ALIGN (0x4)
-                0x0000000008007640                PROVIDE (__preinit_array_start = .)
+.preinit_array  0x00000000080076d0        0x0
+                0x00000000080076d0                . = ALIGN (0x4)
+                0x00000000080076d0                PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x0000000008007640                PROVIDE (__preinit_array_end = .)
-                0x0000000008007640                . = ALIGN (0x4)
+                0x00000000080076d0                PROVIDE (__preinit_array_end = .)
+                0x00000000080076d0                . = ALIGN (0x4)
 
-.init_array     0x0000000008007640        0x4
-                0x0000000008007640                . = ALIGN (0x4)
-                0x0000000008007640                PROVIDE (__init_array_start = .)
+.init_array     0x00000000080076d0        0x4
+                0x00000000080076d0                . = ALIGN (0x4)
+                0x00000000080076d0                PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x0000000008007640        0x4 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
-                0x0000000008007644                PROVIDE (__init_array_end = .)
-                0x0000000008007644                . = ALIGN (0x4)
+ .init_array    0x00000000080076d0        0x4 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+                0x00000000080076d4                PROVIDE (__init_array_end = .)
+                0x00000000080076d4                . = ALIGN (0x4)
 
-.fini_array     0x0000000008007644        0x4
-                0x0000000008007644                . = ALIGN (0x4)
+.fini_array     0x00000000080076d4        0x4
+                0x00000000080076d4                . = ALIGN (0x4)
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x0000000008007644        0x4 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .fini_array    0x00000000080076d4        0x4 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
                 [!provide]                        PROVIDE (__fini_array_end = .)
-                0x0000000008007648                . = ALIGN (0x4)
-                0x0000000008007648                _sidata = LOADADDR (.data)
+                0x00000000080076d8                . = ALIGN (0x4)
+                0x00000000080076d8                _sidata = LOADADDR (.data)
 
-.data           0x0000000020000000       0x74 load address 0x0000000008007648
+.data           0x0000000020000000       0x74 load address 0x00000000080076d8
                 0x0000000020000000                . = ALIGN (0x4)
                 0x0000000020000000                _sdata = .
  *(.data)
@@ -6135,11 +6177,11 @@ LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
                 0x0000000020000074                . = ALIGN (0x4)
                 0x0000000020000074                _edata = .
 
-.igot.plt       0x0000000020000074        0x0 load address 0x00000000080076bc
+.igot.plt       0x0000000020000074        0x0 load address 0x000000000800774c
  .igot.plt      0x0000000020000074        0x0 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
                 0x0000000020000074                . = ALIGN (0x4)
 
-.bss            0x0000000020000074     0x85c4 load address 0x00000000080076bc
+.bss            0x0000000020000074     0x85c4 load address 0x000000000800774c
                 0x0000000020000074                _sbss = .
                 0x0000000020000074                __bss_start__ = _sbss
  *(.bss)
@@ -6304,7 +6346,7 @@ LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
                 0x0000000020008638                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x0000000020008638      0x600 load address 0x00000000080076bc
+                0x0000000020008638      0x600 load address 0x000000000800774c
                 0x0000000020008638                . = ALIGN (0x8)
                 [!provide]                        PROVIDE (end = .)
                 0x0000000020008638                PROVIDE (_end = .)
@@ -6430,173 +6472,173 @@ LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
 LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a
 LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard\libgcc.a
 
-.debug_info     0x0000000000000000    0x1d983
+.debug_info     0x0000000000000000    0x1ddd7
  .debug_info    0x0000000000000000     0x1524 ./Core/Src/main.o
- .debug_info    0x0000000000001524      0x68b ./Core/Src/panel_tasks.o
- .debug_info    0x0000000000001baf     0x1294 ./Core/Src/stm32l4xx_hal_msp.o
- .debug_info    0x0000000000002e43      0x126 ./Core/Src/stm32l4xx_it.o
- .debug_info    0x0000000000002f69      0x5d4 ./Core/Src/system_stm32l4xx.o
- .debug_info    0x000000000000353d       0x22 ./Core/Startup/startup_stm32l431rctx.o
- .debug_info    0x000000000000355f      0xadd ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
- .debug_info    0x000000000000403c     0x1022 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
- .debug_info    0x000000000000505e      0xdbb ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
- .debug_info    0x0000000000005e19      0x821 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
- .debug_info    0x000000000000663a     0x2232 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
- .debug_info    0x000000000000886c      0xa53 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
- .debug_info    0x00000000000092bf      0x90c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
- .debug_info    0x0000000000009bcb      0xc97 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
- .debug_info    0x000000000000a862      0xf75 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
- .debug_info    0x000000000000b7d7     0x42c9 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_info    0x000000000000faa0      0x2d1 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
- .debug_info    0x000000000000fd71     0x1cbf ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
- .debug_info    0x0000000000011a30     0x2b40 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
- .debug_info    0x0000000000014570     0x1c89 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
- .debug_info    0x00000000000161f9      0x507 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
- .debug_info    0x0000000000016700      0x50b ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
- .debug_info    0x0000000000016c0b      0x7a0 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
- .debug_info    0x00000000000173ab       0x58 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
- .debug_info    0x0000000000017403      0x414 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
- .debug_info    0x0000000000017817       0x3c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
- .debug_info    0x0000000000017853      0x6eb ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
- .debug_info    0x0000000000017f3e      0xebc ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
- .debug_info    0x0000000000018dfa      0xe48 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
- .debug_info    0x0000000000019c42      0x472 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
- .debug_info    0x000000000001a0b4     0x1d54 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_info    0x000000000001be08     0x1b7b ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
+ .debug_info    0x0000000000001524      0xadf ./Core/Src/panel_tasks.o
+ .debug_info    0x0000000000002003     0x1294 ./Core/Src/stm32l4xx_hal_msp.o
+ .debug_info    0x0000000000003297      0x126 ./Core/Src/stm32l4xx_it.o
+ .debug_info    0x00000000000033bd      0x5d4 ./Core/Src/system_stm32l4xx.o
+ .debug_info    0x0000000000003991       0x22 ./Core/Startup/startup_stm32l431rctx.o
+ .debug_info    0x00000000000039b3      0xadd ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
+ .debug_info    0x0000000000004490     0x1022 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
+ .debug_info    0x00000000000054b2      0xdbb ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
+ .debug_info    0x000000000000626d      0x821 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
+ .debug_info    0x0000000000006a8e     0x2232 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
+ .debug_info    0x0000000000008cc0      0xa53 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
+ .debug_info    0x0000000000009713      0x90c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
+ .debug_info    0x000000000000a01f      0xc97 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
+ .debug_info    0x000000000000acb6      0xf75 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
+ .debug_info    0x000000000000bc2b     0x42c9 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_info    0x000000000000fef4      0x2d1 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
+ .debug_info    0x00000000000101c5     0x1cbf ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
+ .debug_info    0x0000000000011e84     0x2b40 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ .debug_info    0x00000000000149c4     0x1c89 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ .debug_info    0x000000000001664d      0x507 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
+ .debug_info    0x0000000000016b54      0x50b ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
+ .debug_info    0x000000000001705f      0x7a0 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
+ .debug_info    0x00000000000177ff       0x58 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
+ .debug_info    0x0000000000017857      0x414 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
+ .debug_info    0x0000000000017c6b       0x3c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
+ .debug_info    0x0000000000017ca7      0x6eb ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
+ .debug_info    0x0000000000018392      0xebc ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+ .debug_info    0x000000000001924e      0xe48 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+ .debug_info    0x000000000001a096      0x472 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+ .debug_info    0x000000000001a508     0x1d54 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_info    0x000000000001c25c     0x1b7b ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
 
-.debug_abbrev   0x0000000000000000     0x4279
+.debug_abbrev   0x0000000000000000     0x42c8
  .debug_abbrev  0x0000000000000000      0x320 ./Core/Src/main.o
- .debug_abbrev  0x0000000000000320      0x1fc ./Core/Src/panel_tasks.o
- .debug_abbrev  0x000000000000051c      0x203 ./Core/Src/stm32l4xx_hal_msp.o
- .debug_abbrev  0x000000000000071f       0xab ./Core/Src/stm32l4xx_it.o
- .debug_abbrev  0x00000000000007ca      0x116 ./Core/Src/system_stm32l4xx.o
- .debug_abbrev  0x00000000000008e0       0x12 ./Core/Startup/startup_stm32l431rctx.o
- .debug_abbrev  0x00000000000008f2      0x23a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
- .debug_abbrev  0x0000000000000b2c      0x25d ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
- .debug_abbrev  0x0000000000000d89      0x316 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
- .debug_abbrev  0x000000000000109f      0x1bb ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
- .debug_abbrev  0x000000000000125a      0x243 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
- .debug_abbrev  0x000000000000149d      0x1b0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
- .debug_abbrev  0x000000000000164d      0x1f3 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
- .debug_abbrev  0x0000000000001840      0x2bd ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
- .debug_abbrev  0x0000000000001afd      0x299 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
- .debug_abbrev  0x0000000000001d96      0x50f ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_abbrev  0x00000000000022a5       0xf2 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
- .debug_abbrev  0x0000000000002397      0x3a1 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
- .debug_abbrev  0x0000000000002738      0x3f3 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
- .debug_abbrev  0x0000000000002b2b      0x360 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
- .debug_abbrev  0x0000000000002e8b      0x259 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
- .debug_abbrev  0x00000000000030e4      0x212 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
- .debug_abbrev  0x00000000000032f6      0x1ce ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
- .debug_abbrev  0x00000000000034c4       0x47 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
- .debug_abbrev  0x000000000000350b      0x15b ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
- .debug_abbrev  0x0000000000003666       0x2f ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
- .debug_abbrev  0x0000000000003695      0x1c2 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
- .debug_abbrev  0x0000000000003857      0x296 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
- .debug_abbrev  0x0000000000003aed      0x29c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
- .debug_abbrev  0x0000000000003d89       0xc9 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
- .debug_abbrev  0x0000000000003e52      0x260 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_abbrev  0x00000000000040b2      0x1c7 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
+ .debug_abbrev  0x0000000000000320      0x24b ./Core/Src/panel_tasks.o
+ .debug_abbrev  0x000000000000056b      0x203 ./Core/Src/stm32l4xx_hal_msp.o
+ .debug_abbrev  0x000000000000076e       0xab ./Core/Src/stm32l4xx_it.o
+ .debug_abbrev  0x0000000000000819      0x116 ./Core/Src/system_stm32l4xx.o
+ .debug_abbrev  0x000000000000092f       0x12 ./Core/Startup/startup_stm32l431rctx.o
+ .debug_abbrev  0x0000000000000941      0x23a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
+ .debug_abbrev  0x0000000000000b7b      0x25d ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
+ .debug_abbrev  0x0000000000000dd8      0x316 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
+ .debug_abbrev  0x00000000000010ee      0x1bb ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
+ .debug_abbrev  0x00000000000012a9      0x243 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
+ .debug_abbrev  0x00000000000014ec      0x1b0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
+ .debug_abbrev  0x000000000000169c      0x1f3 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
+ .debug_abbrev  0x000000000000188f      0x2bd ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
+ .debug_abbrev  0x0000000000001b4c      0x299 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
+ .debug_abbrev  0x0000000000001de5      0x50f ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_abbrev  0x00000000000022f4       0xf2 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
+ .debug_abbrev  0x00000000000023e6      0x3a1 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
+ .debug_abbrev  0x0000000000002787      0x3f3 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ .debug_abbrev  0x0000000000002b7a      0x360 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ .debug_abbrev  0x0000000000002eda      0x259 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
+ .debug_abbrev  0x0000000000003133      0x212 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
+ .debug_abbrev  0x0000000000003345      0x1ce ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
+ .debug_abbrev  0x0000000000003513       0x47 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
+ .debug_abbrev  0x000000000000355a      0x15b ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
+ .debug_abbrev  0x00000000000036b5       0x2f ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
+ .debug_abbrev  0x00000000000036e4      0x1c2 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
+ .debug_abbrev  0x00000000000038a6      0x296 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+ .debug_abbrev  0x0000000000003b3c      0x29c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+ .debug_abbrev  0x0000000000003dd8       0xc9 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+ .debug_abbrev  0x0000000000003ea1      0x260 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_abbrev  0x0000000000004101      0x1c7 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
 
-.debug_aranges  0x0000000000000000     0x1528
+.debug_aranges  0x0000000000000000     0x1560
  .debug_aranges
                 0x0000000000000000       0x50 ./Core/Src/main.o
  .debug_aranges
-                0x0000000000000050       0x30 ./Core/Src/panel_tasks.o
+                0x0000000000000050       0x68 ./Core/Src/panel_tasks.o
  .debug_aranges
-                0x0000000000000080       0x40 ./Core/Src/stm32l4xx_hal_msp.o
+                0x00000000000000b8       0x40 ./Core/Src/stm32l4xx_hal_msp.o
  .debug_aranges
-                0x00000000000000c0       0x50 ./Core/Src/stm32l4xx_it.o
+                0x00000000000000f8       0x50 ./Core/Src/stm32l4xx_it.o
  .debug_aranges
-                0x0000000000000110       0x28 ./Core/Src/system_stm32l4xx.o
+                0x0000000000000148       0x28 ./Core/Src/system_stm32l4xx.o
  .debug_aranges
-                0x0000000000000138       0x28 ./Core/Startup/startup_stm32l431rctx.o
+                0x0000000000000170       0x28 ./Core/Startup/startup_stm32l431rctx.o
  .debug_aranges
-                0x0000000000000160      0x130 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
+                0x0000000000000198      0x130 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
  .debug_aranges
-                0x0000000000000290      0x138 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
+                0x00000000000002c8      0x138 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
  .debug_aranges
-                0x00000000000003c8      0x118 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
+                0x0000000000000400      0x118 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
  .debug_aranges
-                0x00000000000004e0       0x58 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
+                0x0000000000000518       0x58 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
  .debug_aranges
-                0x0000000000000538      0x2a0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
+                0x0000000000000570      0x2a0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
  .debug_aranges
-                0x00000000000007d8       0x48 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
+                0x0000000000000810       0x48 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
  .debug_aranges
-                0x0000000000000820      0x100 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
+                0x0000000000000858      0x100 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
  .debug_aranges
-                0x0000000000000920       0x90 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
+                0x0000000000000958       0x90 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
  .debug_aranges
-                0x00000000000009b0       0xf0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
+                0x00000000000009e8       0xf0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
  .debug_aranges
-                0x0000000000000aa0      0x2a8 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+                0x0000000000000ad8      0x2a8 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
  .debug_aranges
-                0x0000000000000d48       0x40 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
+                0x0000000000000d80       0x40 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
  .debug_aranges
-                0x0000000000000d88      0x158 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
+                0x0000000000000dc0      0x158 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
  .debug_aranges
-                0x0000000000000ee0      0x208 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+                0x0000000000000f18      0x208 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
  .debug_aranges
-                0x00000000000010e8       0xf0 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+                0x0000000000001120       0xf0 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
  .debug_aranges
-                0x00000000000011d8       0x80 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
+                0x0000000000001210       0x80 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
  .debug_aranges
-                0x0000000000001258       0x58 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
+                0x0000000000001290       0x58 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
  .debug_aranges
-                0x00000000000012b0       0x28 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
+                0x00000000000012e8       0x28 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
  .debug_aranges
-                0x00000000000012d8       0x20 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
+                0x0000000000001310       0x20 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
  .debug_aranges
-                0x00000000000012f8       0x28 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
+                0x0000000000001330       0x28 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
  .debug_aranges
-                0x0000000000001320       0x20 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
+                0x0000000000001358       0x20 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
  .debug_aranges
-                0x0000000000001340       0x20 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
+                0x0000000000001378       0x20 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
  .debug_aranges
-                0x0000000000001360       0x58 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+                0x0000000000001398       0x58 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
  .debug_aranges
-                0x00000000000013b8       0x60 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+                0x00000000000013f0       0x60 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
  .debug_aranges
-                0x0000000000001418       0x38 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+                0x0000000000001450       0x38 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
  .debug_aranges
-                0x0000000000001450       0xa0 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+                0x0000000000001488       0xa0 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
  .debug_aranges
-                0x00000000000014f0       0x38 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
+                0x0000000000001528       0x38 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
 
-.debug_ranges   0x0000000000000000     0x1330
+.debug_ranges   0x0000000000000000     0x1368
  .debug_ranges  0x0000000000000000       0x40 ./Core/Src/main.o
- .debug_ranges  0x0000000000000040       0x20 ./Core/Src/panel_tasks.o
- .debug_ranges  0x0000000000000060       0x30 ./Core/Src/stm32l4xx_hal_msp.o
- .debug_ranges  0x0000000000000090       0x40 ./Core/Src/stm32l4xx_it.o
- .debug_ranges  0x00000000000000d0       0x18 ./Core/Src/system_stm32l4xx.o
- .debug_ranges  0x00000000000000e8       0x20 ./Core/Startup/startup_stm32l431rctx.o
- .debug_ranges  0x0000000000000108      0x120 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
- .debug_ranges  0x0000000000000228      0x128 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
- .debug_ranges  0x0000000000000350      0x108 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
- .debug_ranges  0x0000000000000458       0x48 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
- .debug_ranges  0x00000000000004a0      0x290 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
- .debug_ranges  0x0000000000000730       0x38 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
- .debug_ranges  0x0000000000000768       0xf0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
- .debug_ranges  0x0000000000000858       0x80 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
- .debug_ranges  0x00000000000008d8       0xe0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
- .debug_ranges  0x00000000000009b8      0x298 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_ranges  0x0000000000000c50       0x30 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
- .debug_ranges  0x0000000000000c80      0x148 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
- .debug_ranges  0x0000000000000dc8      0x1f8 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
- .debug_ranges  0x0000000000000fc0       0xe0 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
- .debug_ranges  0x00000000000010a0       0x70 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
- .debug_ranges  0x0000000000001110       0x48 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
- .debug_ranges  0x0000000000001158       0x18 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
- .debug_ranges  0x0000000000001170       0x10 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
- .debug_ranges  0x0000000000001180       0x18 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
- .debug_ranges  0x0000000000001198       0x10 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
- .debug_ranges  0x00000000000011a8       0x10 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
- .debug_ranges  0x00000000000011b8       0x48 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
- .debug_ranges  0x0000000000001200       0x50 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
- .debug_ranges  0x0000000000001250       0x28 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
- .debug_ranges  0x0000000000001278       0x90 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_ranges  0x0000000000001308       0x28 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
+ .debug_ranges  0x0000000000000040       0x58 ./Core/Src/panel_tasks.o
+ .debug_ranges  0x0000000000000098       0x30 ./Core/Src/stm32l4xx_hal_msp.o
+ .debug_ranges  0x00000000000000c8       0x40 ./Core/Src/stm32l4xx_it.o
+ .debug_ranges  0x0000000000000108       0x18 ./Core/Src/system_stm32l4xx.o
+ .debug_ranges  0x0000000000000120       0x20 ./Core/Startup/startup_stm32l431rctx.o
+ .debug_ranges  0x0000000000000140      0x120 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
+ .debug_ranges  0x0000000000000260      0x128 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
+ .debug_ranges  0x0000000000000388      0x108 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
+ .debug_ranges  0x0000000000000490       0x48 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
+ .debug_ranges  0x00000000000004d8      0x290 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
+ .debug_ranges  0x0000000000000768       0x38 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
+ .debug_ranges  0x00000000000007a0       0xf0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
+ .debug_ranges  0x0000000000000890       0x80 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
+ .debug_ranges  0x0000000000000910       0xe0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
+ .debug_ranges  0x00000000000009f0      0x298 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_ranges  0x0000000000000c88       0x30 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
+ .debug_ranges  0x0000000000000cb8      0x148 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
+ .debug_ranges  0x0000000000000e00      0x1f8 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ .debug_ranges  0x0000000000000ff8       0xe0 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ .debug_ranges  0x00000000000010d8       0x70 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
+ .debug_ranges  0x0000000000001148       0x48 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
+ .debug_ranges  0x0000000000001190       0x18 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
+ .debug_ranges  0x00000000000011a8       0x10 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
+ .debug_ranges  0x00000000000011b8       0x18 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
+ .debug_ranges  0x00000000000011d0       0x10 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
+ .debug_ranges  0x00000000000011e0       0x10 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
+ .debug_ranges  0x00000000000011f0       0x48 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+ .debug_ranges  0x0000000000001238       0x50 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+ .debug_ranges  0x0000000000001288       0x28 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+ .debug_ranges  0x00000000000012b0       0x90 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_ranges  0x0000000000001340       0x28 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
 
 .debug_macro    0x0000000000000000     0x6488
  .debug_macro   0x0000000000000000      0x301 ./Core/Src/main.o
@@ -6668,104 +6710,104 @@ LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_macro   0x0000000000005f00      0x3c7 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
  .debug_macro   0x00000000000062c7      0x1c1 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
 
-.debug_line     0x0000000000000000    0x19bb2
+.debug_line     0x0000000000000000    0x19ecd
  .debug_line    0x0000000000000000      0xad6 ./Core/Src/main.o
- .debug_line    0x0000000000000ad6      0xb47 ./Core/Src/panel_tasks.o
- .debug_line    0x000000000000161d      0x758 ./Core/Src/stm32l4xx_hal_msp.o
- .debug_line    0x0000000000001d75      0x97e ./Core/Src/stm32l4xx_it.o
- .debug_line    0x00000000000026f3      0x740 ./Core/Src/system_stm32l4xx.o
- .debug_line    0x0000000000002e33       0x88 ./Core/Startup/startup_stm32l431rctx.o
- .debug_line    0x0000000000002ebb      0xa98 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
- .debug_line    0x0000000000003953     0x10f4 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
- .debug_line    0x0000000000004a47      0xc3f ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
- .debug_line    0x0000000000005686      0xab8 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
- .debug_line    0x000000000000613e     0x362a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
- .debug_line    0x0000000000009768      0x8c6 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
- .debug_line    0x000000000000a02e      0xafd ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
- .debug_line    0x000000000000ab2b      0xf50 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
- .debug_line    0x000000000000ba7b     0x12f0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
- .debug_line    0x000000000000cd6b     0x238c ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_line    0x000000000000f0f7      0x712 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
- .debug_line    0x000000000000f809     0x16dc ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
- .debug_line    0x0000000000010ee5     0x1dba ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
- .debug_line    0x0000000000012c9f      0xd72 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
- .debug_line    0x0000000000013a11      0x8d9 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
- .debug_line    0x00000000000142ea      0x93c ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
- .debug_line    0x0000000000014c26      0xa03 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
- .debug_line    0x0000000000015629       0xc4 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
- .debug_line    0x00000000000156ed      0x71e ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
- .debug_line    0x0000000000015e0b       0x85 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
- .debug_line    0x0000000000015e90      0x9bc ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
- .debug_line    0x000000000001684c      0xc68 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
- .debug_line    0x00000000000174b4      0xb71 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
- .debug_line    0x0000000000018025      0x611 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
- .debug_line    0x0000000000018636      0xb7d ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_line    0x00000000000191b3      0x9ff ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
+ .debug_line    0x0000000000000ad6      0xe62 ./Core/Src/panel_tasks.o
+ .debug_line    0x0000000000001938      0x758 ./Core/Src/stm32l4xx_hal_msp.o
+ .debug_line    0x0000000000002090      0x97e ./Core/Src/stm32l4xx_it.o
+ .debug_line    0x0000000000002a0e      0x740 ./Core/Src/system_stm32l4xx.o
+ .debug_line    0x000000000000314e       0x88 ./Core/Startup/startup_stm32l431rctx.o
+ .debug_line    0x00000000000031d6      0xa98 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
+ .debug_line    0x0000000000003c6e     0x10f4 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
+ .debug_line    0x0000000000004d62      0xc3f ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
+ .debug_line    0x00000000000059a1      0xab8 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
+ .debug_line    0x0000000000006459     0x362a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
+ .debug_line    0x0000000000009a83      0x8c6 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
+ .debug_line    0x000000000000a349      0xafd ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
+ .debug_line    0x000000000000ae46      0xf50 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
+ .debug_line    0x000000000000bd96     0x12f0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
+ .debug_line    0x000000000000d086     0x238c ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_line    0x000000000000f412      0x712 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
+ .debug_line    0x000000000000fb24     0x16dc ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
+ .debug_line    0x0000000000011200     0x1dba ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ .debug_line    0x0000000000012fba      0xd72 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ .debug_line    0x0000000000013d2c      0x8d9 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
+ .debug_line    0x0000000000014605      0x93c ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
+ .debug_line    0x0000000000014f41      0xa03 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
+ .debug_line    0x0000000000015944       0xc4 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
+ .debug_line    0x0000000000015a08      0x71e ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
+ .debug_line    0x0000000000016126       0x85 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
+ .debug_line    0x00000000000161ab      0x9bc ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
+ .debug_line    0x0000000000016b67      0xc68 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+ .debug_line    0x00000000000177cf      0xb71 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+ .debug_line    0x0000000000018340      0x611 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+ .debug_line    0x0000000000018951      0xb7d ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_line    0x00000000000194ce      0x9ff ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
 
-.debug_str      0x0000000000000000    0xd1ff1
- .debug_str     0x0000000000000000    0xc3a7f ./Core/Src/main.o
-                                      0xc3e89 (size before relaxing)
- .debug_str     0x00000000000c3a7f      0x158 ./Core/Src/panel_tasks.o
-                                      0xc343d (size before relaxing)
- .debug_str     0x00000000000c3bd7      0x61e ./Core/Src/stm32l4xx_hal_msp.o
+.debug_str      0x0000000000000000    0xd236f
+ .debug_str     0x0000000000000000    0xc3a3c ./Core/Src/main.o
+                                      0xc3e46 (size before relaxing)
+ .debug_str     0x00000000000c3a3c      0x489 ./Core/Src/panel_tasks.o
+                                      0xc37d6 (size before relaxing)
+ .debug_str     0x00000000000c3ec5      0x6ae ./Core/Src/stm32l4xx_hal_msp.o
                                       0xbd9a6 (size before relaxing)
- .debug_str     0x00000000000c41f5       0xd9 ./Core/Src/stm32l4xx_it.o
+ .debug_str     0x00000000000c4573       0xd9 ./Core/Src/stm32l4xx_it.o
                                       0xc226c (size before relaxing)
- .debug_str     0x00000000000c42ce       0xf2 ./Core/Src/system_stm32l4xx.o
+ .debug_str     0x00000000000c464c       0xf2 ./Core/Src/system_stm32l4xx.o
                                       0xbc852 (size before relaxing)
- .debug_str     0x00000000000c43c0       0x36 ./Core/Startup/startup_stm32l431rctx.o
+ .debug_str     0x00000000000c473e       0x36 ./Core/Startup/startup_stm32l431rctx.o
                                          0xc6 (size before relaxing)
- .debug_str     0x00000000000c43f6      0x64a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
+ .debug_str     0x00000000000c4774      0x64a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
                                       0xbd302 (size before relaxing)
- .debug_str     0x00000000000c4a40      0x567 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
+ .debug_str     0x00000000000c4dbe      0x567 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
                                       0xbcedd (size before relaxing)
- .debug_str     0x00000000000c4fa7      0x336 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
+ .debug_str     0x00000000000c5325      0x336 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
                                       0xbcfb3 (size before relaxing)
- .debug_str     0x00000000000c52dd      0x128 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
+ .debug_str     0x00000000000c565b      0x128 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
                                       0xbc9c6 (size before relaxing)
- .debug_str     0x00000000000c5405      0xde4 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
+ .debug_str     0x00000000000c5783      0xde4 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
                                       0xbda53 (size before relaxing)
- .debug_str     0x00000000000c61e9       0xb8 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
+ .debug_str     0x00000000000c6567       0xb8 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
                                       0xbcd89 (size before relaxing)
- .debug_str     0x00000000000c62a1      0x40c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
+ .debug_str     0x00000000000c661f      0x40c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
                                       0xbcc89 (size before relaxing)
- .debug_str     0x00000000000c66ad      0x381 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
+ .debug_str     0x00000000000c6a2b      0x381 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
                                       0xbce52 (size before relaxing)
- .debug_str     0x00000000000c6a2e      0x537 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
+ .debug_str     0x00000000000c6dac      0x537 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
                                       0xbd0dd (size before relaxing)
- .debug_str     0x00000000000c6f65     0x4730 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_str     0x00000000000c72e3     0x4730 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
                                       0xc7356 (size before relaxing)
- .debug_str     0x00000000000cb695      0x20f ./Middlewares/Third_Party/FreeRTOS/Source/list.o
+ .debug_str     0x00000000000cba13      0x20f ./Middlewares/Third_Party/FreeRTOS/Source/list.o
                                        0xa6d7 (size before relaxing)
- .debug_str     0x00000000000cb8a4      0x892 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
+ .debug_str     0x00000000000cbc22      0x892 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
                                        0xc217 (size before relaxing)
- .debug_str     0x00000000000cc136     0x10c6 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ .debug_str     0x00000000000cc4b4     0x10c6 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
                                        0xd09a (size before relaxing)
- .debug_str     0x00000000000cd1fc      0x5a6 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ .debug_str     0x00000000000cd57a      0x5a6 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
                                        0xcaa7 (size before relaxing)
- .debug_str     0x00000000000cd7a2      0x783 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
+ .debug_str     0x00000000000cdb20      0x783 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
                                        0x9ff5 (size before relaxing)
- .debug_str     0x00000000000cdf25      0x324 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
+ .debug_str     0x00000000000ce2a3      0x324 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
                                        0xb019 (size before relaxing)
- .debug_str     0x00000000000ce249       0xfa ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
+ .debug_str     0x00000000000ce5c7       0xfa ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
                                       0xc31b0 (size before relaxing)
- .debug_str     0x00000000000ce343       0x67 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
+ .debug_str     0x00000000000ce6c1       0x67 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
                                        0x2dad (size before relaxing)
- .debug_str     0x00000000000ce3aa       0xcd ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
+ .debug_str     0x00000000000ce728       0xcd ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
                                        0xa899 (size before relaxing)
- .debug_str     0x00000000000ce477       0x61 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
+ .debug_str     0x00000000000ce7f5       0x61 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
                                        0x2d79 (size before relaxing)
- .debug_str     0x00000000000ce4d8       0x72 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
+ .debug_str     0x00000000000ce856       0x72 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
                                       0xc2df4 (size before relaxing)
- .debug_str     0x00000000000ce54a      0x1e8 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+ .debug_str     0x00000000000ce8c8      0x1e8 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
                                       0xc4ab5 (size before relaxing)
- .debug_str     0x00000000000ce732      0x193 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+ .debug_str     0x00000000000ceab0      0x193 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
                                       0xc490b (size before relaxing)
- .debug_str     0x00000000000ce8c5     0x1eda ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+ .debug_str     0x00000000000cec43     0x1eda ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
                                        0x5a92 (size before relaxing)
- .debug_str     0x00000000000d079f     0x1800 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_str     0x00000000000d0b1d     0x1800 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
                                        0xa27a (size before relaxing)
- .debug_str     0x00000000000d1f9f       0x52 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
+ .debug_str     0x00000000000d231d       0x52 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
                                        0xa248 (size before relaxing)
 
 .comment        0x0000000000000000       0x50
@@ -6802,49 +6844,49 @@ LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
  .comment       0x0000000000000050       0x51 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
  .comment       0x0000000000000050       0x51 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
 
-.debug_frame    0x0000000000000000     0x588c
+.debug_frame    0x0000000000000000     0x596c
  .debug_frame   0x0000000000000000       0xec ./Core/Src/main.o
- .debug_frame   0x00000000000000ec       0x6c ./Core/Src/panel_tasks.o
- .debug_frame   0x0000000000000158       0xc8 ./Core/Src/stm32l4xx_hal_msp.o
- .debug_frame   0x0000000000000220       0xc4 ./Core/Src/stm32l4xx_it.o
- .debug_frame   0x00000000000002e4       0x58 ./Core/Src/system_stm32l4xx.o
- .debug_frame   0x000000000000033c      0x498 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
- .debug_frame   0x00000000000007d4      0x5a0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
- .debug_frame   0x0000000000000d74      0x498 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
- .debug_frame   0x000000000000120c      0x14c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
- .debug_frame   0x0000000000001358      0xc38 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
- .debug_frame   0x0000000000001f90      0x100 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
- .debug_frame   0x0000000000002090      0x404 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
- .debug_frame   0x0000000000002494      0x21c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
- .debug_frame   0x00000000000026b0      0x3d0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
- .debug_frame   0x0000000000002a80      0xbc8 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_frame   0x0000000000003648       0xd8 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
- .debug_frame   0x0000000000003720      0x5ec ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
- .debug_frame   0x0000000000003d0c      0x8f0 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
- .debug_frame   0x00000000000045fc      0x400 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
- .debug_frame   0x00000000000049fc      0x1a8 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
- .debug_frame   0x0000000000004ba4      0x12c ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
- .debug_frame   0x0000000000004cd0       0x4c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
- .debug_frame   0x0000000000004d1c       0x2c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
- .debug_frame   0x0000000000004d48       0x4c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
- .debug_frame   0x0000000000004d94       0x28 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
- .debug_frame   0x0000000000004dbc       0x48 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
- .debug_frame   0x0000000000004e04      0x128 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
- .debug_frame   0x0000000000004f2c      0x148 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
- .debug_frame   0x0000000000005074       0xb0 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
- .debug_frame   0x0000000000005124      0x280 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_frame   0x00000000000053a4       0xa0 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
- .debug_frame   0x0000000000005444       0x38 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_ldexp.o)
- .debug_frame   0x000000000000547c       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_scalbn.o)
- .debug_frame   0x000000000000549c       0x28 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_finite.o)
- .debug_frame   0x00000000000054c4       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-errno.o)
- .debug_frame   0x00000000000054e4      0x14c c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
- .debug_frame   0x0000000000005630       0x2c c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-init.o)
- .debug_frame   0x000000000000565c       0xb0 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lock.o)
- .debug_frame   0x000000000000570c       0x28 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memcpy-stub.o)
- .debug_frame   0x0000000000005734       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memset.o)
- .debug_frame   0x0000000000005754       0x38 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-freer.o)
- .debug_frame   0x000000000000578c       0x4c c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallocr.o)
- .debug_frame   0x00000000000057d8       0x5c c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-reent.o)
- .debug_frame   0x0000000000005834       0x28 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strncpy.o)
- .debug_frame   0x000000000000585c       0x30 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mlock.o)
+ .debug_frame   0x00000000000000ec      0x14c ./Core/Src/panel_tasks.o
+ .debug_frame   0x0000000000000238       0xc8 ./Core/Src/stm32l4xx_hal_msp.o
+ .debug_frame   0x0000000000000300       0xc4 ./Core/Src/stm32l4xx_it.o
+ .debug_frame   0x00000000000003c4       0x58 ./Core/Src/system_stm32l4xx.o
+ .debug_frame   0x000000000000041c      0x498 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
+ .debug_frame   0x00000000000008b4      0x5a0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
+ .debug_frame   0x0000000000000e54      0x498 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
+ .debug_frame   0x00000000000012ec      0x14c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
+ .debug_frame   0x0000000000001438      0xc38 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
+ .debug_frame   0x0000000000002070      0x100 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
+ .debug_frame   0x0000000000002170      0x404 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
+ .debug_frame   0x0000000000002574      0x21c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
+ .debug_frame   0x0000000000002790      0x3d0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
+ .debug_frame   0x0000000000002b60      0xbc8 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_frame   0x0000000000003728       0xd8 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
+ .debug_frame   0x0000000000003800      0x5ec ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
+ .debug_frame   0x0000000000003dec      0x8f0 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ .debug_frame   0x00000000000046dc      0x400 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ .debug_frame   0x0000000000004adc      0x1a8 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
+ .debug_frame   0x0000000000004c84      0x12c ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
+ .debug_frame   0x0000000000004db0       0x4c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
+ .debug_frame   0x0000000000004dfc       0x2c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
+ .debug_frame   0x0000000000004e28       0x4c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
+ .debug_frame   0x0000000000004e74       0x28 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
+ .debug_frame   0x0000000000004e9c       0x48 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
+ .debug_frame   0x0000000000004ee4      0x128 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+ .debug_frame   0x000000000000500c      0x148 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+ .debug_frame   0x0000000000005154       0xb0 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+ .debug_frame   0x0000000000005204      0x280 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_frame   0x0000000000005484       0xa0 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
+ .debug_frame   0x0000000000005524       0x38 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_ldexp.o)
+ .debug_frame   0x000000000000555c       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_scalbn.o)
+ .debug_frame   0x000000000000557c       0x28 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_finite.o)
+ .debug_frame   0x00000000000055a4       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-errno.o)
+ .debug_frame   0x00000000000055c4      0x14c c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
+ .debug_frame   0x0000000000005710       0x2c c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-init.o)
+ .debug_frame   0x000000000000573c       0xb0 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lock.o)
+ .debug_frame   0x00000000000057ec       0x28 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memcpy-stub.o)
+ .debug_frame   0x0000000000005814       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memset.o)
+ .debug_frame   0x0000000000005834       0x38 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-freer.o)
+ .debug_frame   0x000000000000586c       0x4c c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallocr.o)
+ .debug_frame   0x00000000000058b8       0x5c c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-reent.o)
+ .debug_frame   0x0000000000005914       0x28 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strncpy.o)
+ .debug_frame   0x000000000000593c       0x30 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mlock.o)
