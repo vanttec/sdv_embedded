@@ -175,23 +175,20 @@ void panelMov_task(void *args)
 }
 void panelDet_task(void *args)
 {
-	uint8_t panelDet_data[2];
+	uint8_t panelDet_data;
 	uint8_t last_panelDet_data = 0;
 	uint32_t corto = 20;
 	uint32_t largo = 200;
-	register_canlib_rx(0x11, 0x06, VANTTEC_CANLIB_BYTE, &(panelDet_data[0]), 1);
-	register_canlib_rx(0x11, 0x06, VANTTEC_CANLIB_BYTE, &(panelDet_data[1]), 1);
+	register_canlib_rx(0x11, 0x06, VANTTEC_CANLIB_BYTE, &panelDet_data, 1);
 	for (;;)
 	{
-		if (panelDet_data[0] != last_panelDet_data)
+		if (panelDet_data != last_panelDet_data)
 		{
-			switch (panelDet_data[0])
+			// Giro Prominente  Derecha
+			if(panelDet_data==0x10)
 			{
-			case 0x10:
-				// Giro Prominente
-				if (panelDet_data[1] == 0x0)
-				{
-					// Derecha
+
+
 					for (int i = 0; i < 2; i++)
 					{
 						HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
@@ -199,20 +196,22 @@ void panelDet_task(void *args)
 						HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
 						osDelay(largo);
 					}
-				}
-				else if (panelDet_data[1] == 0x1)
+
+
+			}
+			// Giro Prominente Izquierda
+			else if (panelDet_data == 0x11)
+			{
+				for (int i = 0; i < 3; i++)
 				{
-					// Izquierda
-					for (int i = 0; i < 3; i++)
-					{
-						HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
-						osDelay(corto);
-						HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
-						osDelay(largo);
-					}
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
+					osDelay(corto);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
+					osDelay(largo);
 				}
-				break;
-			case 0x11:
+			}
+
+			else if( panelDet_data==0x12){
 				// Gran tráfico humano
 				for (int i = 0; i < 3; i++)
 				{
@@ -225,8 +224,8 @@ void panelDet_task(void *args)
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
 					osDelay(largo);
 				}
-				break;
-			case 0x12:
+			}
+			else if(  panelDet_data==0x13){
 				// Giro repentino
 				for (int i = 0; i < 2; i++)
 				{
@@ -243,11 +242,8 @@ void panelDet_task(void *args)
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
 					osDelay(largo);
 				}
-				break;
-			default:
-				continue;
 			}
-			last_panelDet_data = panelDet_data[0];
+			last_panelDet_data = panelDet_data;
 		}
 		osDelay(10);
 	}
@@ -257,7 +253,7 @@ void driveModeStatusFlag_task(void *args)
 	// Si está en modo autónomo(10) se prenderá el led indicador 1, si está en manual se apagará este led.
 	uint8_t driveModeStatusFlag_data = 0;
 	uint8_t last_driveModeStatusFlag_data = 0;
-	register_canlib_rx(0x11, 0x05, VANTTEC_CANLIB_BYTE, &driveModeStatusFlag_data, 1);
+	register_canlib_rx(0x11, 0x07, VANTTEC_CANLIB_BYTE, &driveModeStatusFlag_data, 1);
 	for (;;)
 	{
 		if (driveModeStatusFlag_data != last_driveModeStatusFlag_data)
@@ -267,8 +263,12 @@ void driveModeStatusFlag_task(void *args)
 				// Autonomo
 				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, SET);
 			}
-			// Manual
-			HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, RESET);
+
+			else{
+				// Manual
+				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, RESET);
+			}
+
 			last_driveModeStatusFlag_data = driveModeStatusFlag_data;
 		}
 		osDelay(10);
@@ -449,11 +449,11 @@ void init_panel_task()
 {
 	panelMovTaskHandle = osThreadNew(panelMov_task, NULL, &panelMovTaskAttributes);
 	debugTaskHandle = osThreadNew(debug_task, NULL, &debugTaskAttributes);
-//	panelDetTaskHandle = osThreadNew(panelDet_task, NULL, &panelDetTaskAttributes);
-//	driveModeStatusFlagTaskHandle = osThreadNew(driveModeStatusFlag_task, NULL, &driveModeStatusFlagTaskAttributes);
-//	reverseSwitchStatusFlagTaskHandle = osThreadNew(reverseSwitchStatusFlag_task, NULL, &reverseSwitchStatusFlagTaskAttributes);
-//	safetyModeAlertFlagTaskHandle = osThreadNew(safetyModeAlertFlag_task, NULL, &safetyModeAlertFlagTaskAttributes);
-//	recognizeTrafficSignFlagTaskHandle = osThreadNew(recognizeTrafficSignFlag_task, NULL, &recognizeTrafficSignFlagTaskAttributes);
-//	objectNotificationFlagTaskHandle = osThreadNew(objectNotificationFlag_task, NULL, &objectNotificationFlagTaskAttributes);
-//	detectLaneFlagTaskHandle = osThreadNew(detectLaneFlag_task, NULL, &detectLaneFlagTaskAttributes);
+	panelDetTaskHandle = osThreadNew(panelDet_task, NULL, &panelDetTaskAttributes);
+	driveModeStatusFlagTaskHandle = osThreadNew(driveModeStatusFlag_task, NULL, &driveModeStatusFlagTaskAttributes);
+	reverseSwitchStatusFlagTaskHandle = osThreadNew(reverseSwitchStatusFlag_task, NULL, &reverseSwitchStatusFlagTaskAttributes);
+	safetyModeAlertFlagTaskHandle = osThreadNew(safetyModeAlertFlag_task, NULL, &safetyModeAlertFlagTaskAttributes);
+	recognizeTrafficSignFlagTaskHandle = osThreadNew(recognizeTrafficSignFlag_task, NULL, &recognizeTrafficSignFlagTaskAttributes);
+	objectNotificationFlagTaskHandle = osThreadNew(objectNotificationFlag_task, NULL, &objectNotificationFlagTaskAttributes);
+	detectLaneFlagTaskHandle = osThreadNew(detectLaneFlag_task, NULL, &detectLaneFlagTaskAttributes);
 }

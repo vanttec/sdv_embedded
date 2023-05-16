@@ -1,7 +1,7 @@
 ../Core/Src/panel_tasks.c:47:6:debug_task	32	static
 ../Core/Src/panel_tasks.c:59:6:panelMov_task	64	static
 ../Core/Src/panel_tasks.c:176:6:panelDet_task	56	static
-../Core/Src/panel_tasks.c:255:6:driveModeStatusFlag_task	32	static
+../Core/Src/panel_tasks.c:251:6:driveModeStatusFlag_task	32	static
 ../Core/Src/panel_tasks.c:277:6:reverseSwitchStatusFlag_task	40	static
 ../Core/Src/panel_tasks.c:309:6:safetyModeAlertFlag_task	40	static
 ../Core/Src/panel_tasks.c:346:6:objectNotificationFlag_task	48	static
