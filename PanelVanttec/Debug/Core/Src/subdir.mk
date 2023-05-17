@@ -6,6 +6,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Core/Src/freertos.c \
+../Core/Src/ltc4151cms.c \
 ../Core/Src/main.c \
 ../Core/Src/panel_tasks.c \
 ../Core/Src/stm32l4xx_hal_msp.c \
@@ -16,6 +17,7 @@ C_SRCS += \
 
 C_DEPS += \
 ./Core/Src/freertos.d \
+./Core/Src/ltc4151cms.d \
 ./Core/Src/main.d \
 ./Core/Src/panel_tasks.d \
 ./Core/Src/stm32l4xx_hal_msp.d \
@@ -26,6 +28,7 @@ C_DEPS += \
 
 OBJS += \
 ./Core/Src/freertos.o \
+./Core/Src/ltc4151cms.o \
 ./Core/Src/main.o \
 ./Core/Src/panel_tasks.o \
 ./Core/Src/stm32l4xx_hal_msp.o \
@@ -42,7 +45,7 @@ Core/Src/%.o Core/Src/%.su: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/freertos.d ./Core/Src/freertos.o ./Core/Src/freertos.su ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/panel_tasks.d ./Core/Src/panel_tasks.o ./Core/Src/panel_tasks.su ./Core/Src/stm32l4xx_hal_msp.d ./Core/Src/stm32l4xx_hal_msp.o ./Core/Src/stm32l4xx_hal_msp.su ./Core/Src/stm32l4xx_it.d ./Core/Src/stm32l4xx_it.o ./Core/Src/stm32l4xx_it.su ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32l4xx.d ./Core/Src/system_stm32l4xx.o ./Core/Src/system_stm32l4xx.su
+	-$(RM) ./Core/Src/freertos.d ./Core/Src/freertos.o ./Core/Src/freertos.su ./Core/Src/ltc4151cms.d ./Core/Src/ltc4151cms.o ./Core/Src/ltc4151cms.su ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/panel_tasks.d ./Core/Src/panel_tasks.o ./Core/Src/panel_tasks.su ./Core/Src/stm32l4xx_hal_msp.d ./Core/Src/stm32l4xx_hal_msp.o ./Core/Src/stm32l4xx_hal_msp.su ./Core/Src/stm32l4xx_it.d ./Core/Src/stm32l4xx_it.o ./Core/Src/stm32l4xx_it.su ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32l4xx.d ./Core/Src/system_stm32l4xx.o ./Core/Src/system_stm32l4xx.su
 
 .PHONY: clean-Core-2f-Src
 

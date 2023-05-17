@@ -53,6 +53,7 @@ void debug_task(void *args)
 	for (;;)
 	{
 		HAL_GPIO_WritePin(DEBUG_1_GPIO_Port, DEBUG_1_Pin, GPIO_PIN_SET);
+
 		osDelay(10);
 	}
 }
@@ -60,9 +61,10 @@ void panelMov_task(void *args)
 {
 	uint8_t panelMov_data = 0;
 	uint8_t last_panelMov_data = 0;
-	uint32_t corto = 20;
+	uint32_t corto = 20	;
 	uint32_t largo = 200;
 	register_canlib_rx(0x11, 0x05, VANTTEC_CANLIB_BYTE, &panelMov_data, 1);
+
 	for (;;)
 	{
 		if (panelMov_data != last_panelMov_data)
@@ -284,8 +286,8 @@ void reverseSwitchStatusFlag_task(void *args)
 	register_canlib_rx(0x11, 0x08, VANTTEC_CANLIB_BYTE, &reverseSwitchStatusFlag_data, 1);
 	for (;;)
 	{
-		if (last_reverseSwitchStatusFlag_data != reverseSwitchStatusFlag_data)
-		{
+//		if (last_reverseSwitchStatusFlag_data != reverseSwitchStatusFlag_data)
+//		{
 			if (reverseSwitchStatusFlag_data == 0x10)
 			{
 				// Reversa
@@ -300,9 +302,11 @@ void reverseSwitchStatusFlag_task(void *args)
 				osDelay(largo);
 			}
 			// De frente
-			HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, RESET);
+			else{
+				HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, RESET);
+			}
 			last_reverseSwitchStatusFlag_data = reverseSwitchStatusFlag_data;
-		}
+		//}
 		osDelay(10);
 	}
 }
@@ -317,6 +321,7 @@ void safetyModeAlertFlag_task(void *args)
 	{
 		if (last_safetyModeAlertFlag_data != safetyModeAlertFlag_data)
 		{
+
 			if (safetyModeAlertFlag_data == 0x10)
 			{
 				// Mientras este en safety mode, parpadeara uno si, uno no
@@ -333,11 +338,13 @@ void safetyModeAlertFlag_task(void *args)
 				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
 				osDelay(largo);
 			}
+			else{
 			HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, RESET);
 			HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, RESET);
 			HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
 			HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, RESET);
 			HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
+			}
 			last_safetyModeAlertFlag_data = safetyModeAlertFlag_data;
 		}
 		osDelay(10);
@@ -439,7 +446,9 @@ void detectLaneFlag_task(void *args)
 				osDelay(largo);
 			}
 			// Cuando no haya linea
+			else{
 			HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
+			}
 			last_detectLaneFlag_data = detectLaneFlag_data;
 		}
 		osDelay(10);
