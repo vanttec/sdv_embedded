@@ -10,6 +10,7 @@
 #include "vanttec_canlib_rx_task.h"
 #include "stepper_tasks.h"
 #include "stepper.h"
+#include "encoder.h"
 
 osThreadId_t steerTaskHandle;
 const osThreadAttr_t steeringTaskAttributes = {
@@ -22,16 +23,20 @@ const osThreadAttr_t brakingTaskAttributes = {
 
 void steering_task()
 {
-	uint16_t frame = 0U;
+	//uint16_t frame = 0U;
 	uint8_t dir = 0U;
-	register_canlib_rx(0x51, 0x10, VANTTEC_CANLIB_SHORT, &frame, 2);
+	uint32_t pos = 0U;
+	register_canlib_rx(0x51, 0x10, VANTTEC_CANLIB_BYTE, &dir, 1);		// For direction
+	register_canlib_rx(0x52, 0x11, VANTTEC_CANLIB_LONG, &pos, 2);		// To check IFM encoder angle
+
 	configure_steppers();
 	start();
+
 	for(;;)
 	{
-		//	Msg byte structure: ID DIR
-		dir = frame & 0x00FF;
+		//dir = frame & 0x00FF;
 		set_direction(STEERING, dir);
+		parse_ifm_encoder(pos);
 		steer();
 	}
 }

@@ -12,20 +12,12 @@
 #include "cmsis_os.h"
 #include "stdlib.h"
 #include <math.h>
+#include "encoder.h"
 
 extern TIM_HandleTypeDef htim2;
 
-// Motor IDs
-#define STEPPERS_STATE 0x15
-#define CONTROLLER_STEERING 0x16
-#define AUTONOMOUS_STEERING 0x17
-
-#define CONTROLLER_BRAKING 0x15
-#define AUTONOMOUS_BRAKING 0x17
-
-//2 encoders
-#define ENCODER_ID_IFM 0x18
-#define ENCODER_ID_BRITTER 0x19
+extern volatile encoder ifm_encoder;
+extern volatile encoder britter_encoder;
 
 typedef enum {
 	STEERING,
@@ -44,34 +36,30 @@ typedef enum {
 } stepper_direction;
 
 typedef struct {
+	uint8_t is_active;			//0: inactive, 1: active
+	uint8_t is_exec_started;
 	stepper_mode mode;
-	uint8_t active;
-	uint8_t exec_started;
+	stepper_direction direction;
+
+	float MAX_ANGLE;			// Degrees
+	float current_angle; 		// Degrees
 
 	/*
-	float MAX_ANGLE;			// Degrees
-	float STEP_ANGLE;			// Degrees
-	uint16_t STEPS_REV;			// Steps per revolution
+	float STEP_ANGLE;				// Degrees
+	uint16_t STEPS_REV;				// Steps per revolution
 	uint16_t MAX_STEPS;
 
 	float desired_angle;		// Degrees
-	float current_angle; 		// Degrees
-	*/
-
-	stepper_direction direction;
-
 	uint16_t req_steps;			// Required steps to reach desired angle
 	uint16_t current_step;
+	*/
 } stepper;
-
-extern volatile stepper brake_stepper;
-extern volatile stepper steering_stepper;
 
 void configure_steppers();
 void start();
 void stop();
 void set_direction(const stepper_type stepper, uint8_t direction);
-void set_setpoint(const stepper_type stepper, uint16_t setpoint, int8_t direction);
+//void set_setpoint(const stepper_type stepper, uint16_t setpoint, int8_t direction);
 
 void steer();
 void brake();

@@ -5,14 +5,17 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../libs/STEPPER/encoder.c \
 ../libs/STEPPER/stepper.c \
 ../libs/STEPPER/stepper_tasks.c 
 
 C_DEPS += \
+./libs/STEPPER/encoder.d \
 ./libs/STEPPER/stepper.d \
 ./libs/STEPPER/stepper_tasks.d 
 
 OBJS += \
+./libs/STEPPER/encoder.o \
 ./libs/STEPPER/stepper.o \
 ./libs/STEPPER/stepper_tasks.o 
 
@@ -24,7 +27,7 @@ libs/STEPPER/%.o libs/STEPPER/%.su: ../libs/STEPPER/%.c libs/STEPPER/subdir.mk
 clean: clean-libs-2f-STEPPER
 
 clean-libs-2f-STEPPER:
-	-$(RM) ./libs/STEPPER/stepper.d ./libs/STEPPER/stepper.o ./libs/STEPPER/stepper.su ./libs/STEPPER/stepper_tasks.d ./libs/STEPPER/stepper_tasks.o ./libs/STEPPER/stepper_tasks.su
+	-$(RM) ./libs/STEPPER/encoder.d ./libs/STEPPER/encoder.o ./libs/STEPPER/encoder.su ./libs/STEPPER/stepper.d ./libs/STEPPER/stepper.o ./libs/STEPPER/stepper.su ./libs/STEPPER/stepper_tasks.d ./libs/STEPPER/stepper_tasks.o ./libs/STEPPER/stepper_tasks.su
 
 .PHONY: clean-libs-2f-STEPPER
 
