@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include "stm32g4xx_hal.h"
+#include "stm32l4xx_hal.h"
 
 
 
@@ -69,6 +69,6 @@ double getSnapshotLoadCurrent(I2C_HandleTypeDef* hi2c, struct LTC4151 *ltc4151, 
 double getSnapshotInputVoltage(I2C_HandleTypeDef* hi2c, struct LTC4151 *ltc4151);
 double getSnapshotADCInVoltage(I2C_HandleTypeDef* hi2c, struct LTC4151 *ltc4151);
 
-#endif /* LTC4151_H_ */
+
 
 #endif /* INC_LTC4151CMS_H_ */

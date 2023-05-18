@@ -7,6 +7,7 @@
 #include "main.h"
 #include "vanttec_canlib_tx_task.h"
 #include "vanttec_canlib_rx_task.h"
+#include "ltc4151cms.h"
 
 osThreadId_t debugTaskHandle;
 const osThreadAttr_t debugTaskAttributes = {
@@ -44,6 +45,12 @@ osThreadId_t detectLaneFlagTaskHandle;
 const osThreadAttr_t detectLaneFlagTaskAttributes = {
 	.name = "detectLaneFlag",
 	.stack_size = 128 * 4};
+osThreadId_t multimeterTaskHandle;
+const osThreadAttr_t multimeterAttributes = {
+	.name = "multimeter",
+	.stack_size = 128 * 4};
+extern I2C_HandleTypeDef hi2c1;
+extern struct LTC4151 multimeter;
 void debug_task(void *args)
 {
 	uint8_t debug_data = 0;
@@ -61,7 +68,7 @@ void panelMov_task(void *args)
 {
 	uint8_t panelMov_data = 0;
 	uint8_t last_panelMov_data = 0;
-	uint32_t corto = 20	;
+	uint32_t corto = 20;
 	uint32_t largo = 200;
 	register_canlib_rx(0x11, 0x05, VANTTEC_CANLIB_BYTE, &panelMov_data, 1);
 
@@ -187,19 +194,16 @@ void panelDet_task(void *args)
 		if (panelDet_data != last_panelDet_data)
 		{
 			// Giro Prominente  Derecha
-			if(panelDet_data==0x10)
+			if (panelDet_data == 0x10)
 			{
 
-
-					for (int i = 0; i < 2; i++)
-					{
-						HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
-						osDelay(corto);
-						HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
-						osDelay(largo);
-					}
-
-
+				for (int i = 0; i < 2; i++)
+				{
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
+					osDelay(corto);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
+					osDelay(largo);
+				}
 			}
 			// Giro Prominente Izquierda
 			else if (panelDet_data == 0x11)
@@ -213,7 +217,8 @@ void panelDet_task(void *args)
 				}
 			}
 
-			else if( panelDet_data==0x12){
+			else if (panelDet_data == 0x12)
+			{
 				// Gran tráfico humano
 				for (int i = 0; i < 3; i++)
 				{
@@ -227,7 +232,8 @@ void panelDet_task(void *args)
 					osDelay(largo);
 				}
 			}
-			else if(  panelDet_data==0x13){
+			else if (panelDet_data == 0x13)
+			{
 				// Giro repentino
 				for (int i = 0; i < 2; i++)
 				{
@@ -266,7 +272,8 @@ void driveModeStatusFlag_task(void *args)
 				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, SET);
 			}
 
-			else{
+			else
+			{
 				// Manual
 				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, RESET);
 			}
@@ -286,26 +293,27 @@ void reverseSwitchStatusFlag_task(void *args)
 	register_canlib_rx(0x11, 0x08, VANTTEC_CANLIB_BYTE, &reverseSwitchStatusFlag_data, 1);
 	for (;;)
 	{
-//		if (last_reverseSwitchStatusFlag_data != reverseSwitchStatusFlag_data)
-//		{
-			if (reverseSwitchStatusFlag_data == 0x10)
-			{
-				// Reversa
-				HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, SET);
-				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
-				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
-				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
-				osDelay(corto);
-				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
-				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
-				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
-				osDelay(largo);
-			}
-			// De frente
-			else{
-				HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, RESET);
-			}
-			last_reverseSwitchStatusFlag_data = reverseSwitchStatusFlag_data;
+		//		if (last_reverseSwitchStatusFlag_data != reverseSwitchStatusFlag_data)
+		//		{
+		if (reverseSwitchStatusFlag_data == 0x10)
+		{
+			// Reversa
+			HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, SET);
+			HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
+			HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
+			HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
+			osDelay(corto);
+			HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
+			HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
+			HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
+			osDelay(largo);
+		}
+		// De frente
+		else
+		{
+			HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, RESET);
+		}
+		last_reverseSwitchStatusFlag_data = reverseSwitchStatusFlag_data;
 		//}
 		osDelay(10);
 	}
@@ -338,12 +346,13 @@ void safetyModeAlertFlag_task(void *args)
 				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
 				osDelay(largo);
 			}
-			else{
-			HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, RESET);
-			HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, RESET);
-			HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
-			HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, RESET);
-			HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
+			else
+			{
+				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, RESET);
+				HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, RESET);
+				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
+				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, RESET);
+				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
 			}
 			last_safetyModeAlertFlag_data = safetyModeAlertFlag_data;
 		}
@@ -446,10 +455,27 @@ void detectLaneFlag_task(void *args)
 				osDelay(largo);
 			}
 			// Cuando no haya linea
-			else{
-			HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
+			else
+			{
+				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
 			}
 			last_detectLaneFlag_data = detectLaneFlag_data;
+		}
+		osDelay(10);
+	}
+}
+void multimeter_task(void *args)
+{
+	uint8_t multimeter_data = 0;
+	uint8_t last_multimeter_data = 0;
+	uint8_t battery_value = 0;
+	register_canlib_rx(0x11, 0x13, VANTTEC_CANLIB_BYTE, &multimeter_data, 1);
+	for (;;)
+	{
+		if(multimeter_data != last_multimeter_data){
+			battery_value = (uint8_t) getSnapshotInputVoltage(&hi2c1,&multimeter);
+			canlib_send_byte(0x5, battery_value);
+			multimeter_data = last_multimeter_data;
 		}
 		osDelay(10);
 	}
@@ -465,4 +491,5 @@ void init_panel_task()
 	recognizeTrafficSignFlagTaskHandle = osThreadNew(recognizeTrafficSignFlag_task, NULL, &recognizeTrafficSignFlagTaskAttributes);
 	objectNotificationFlagTaskHandle = osThreadNew(objectNotificationFlag_task, NULL, &objectNotificationFlagTaskAttributes);
 	detectLaneFlagTaskHandle = osThreadNew(detectLaneFlag_task, NULL, &detectLaneFlagTaskAttributes);
+	multimeterTaskHandle = osThreadNew(multimeter_task, NULL, &multimeterAttributes);
 }

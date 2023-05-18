@@ -27,7 +27,7 @@ void send_command(uint8_t address, uint8_t command, const uint8_t *data, uint32_
     Error_Handler();
   }
 
-  i2cBuffer[0] = address << 4 | (command & 0b11) << 2;
+  i2cBuffer[0] = address << 4 | (command & 0b11);
   memcpy(i2cBuffer + 1, data, size);
   HAL_StatusTypeDef ret = HAL_I2C_Master_Transmit(
     &hi2c1, multi_address, i2cBuffer, size + 1, HAL_MAX_DELAY

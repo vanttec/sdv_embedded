@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "panel_tasks.h"
+#include "ltc4151cms.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -68,7 +69,7 @@ void StartDefaultTask(void *argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+struct LTC4151 multimeter;
 /* USER CODE END 0 */
 
 /**
@@ -102,12 +103,14 @@ int main(void)
   MX_CAN1_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-  init_canlib(hcan1, 0x50);
+  init_canlib(hcan1, 0x12);
   init_canlib_tx();
   init_canlib_rx();
   canlib_init_generic_tasks();
-
+  begin_multimeter(&multimeter,0,0);
+  getSnapshotInputVoltage(&hi2c1,&multimeter);
   init_panel_task();
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
