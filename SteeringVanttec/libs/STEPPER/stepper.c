@@ -1,7 +1,5 @@
 #include <stdint.h>
-#include <STEPPER/stepper.h>
-#include "CAN/can_bus.h"
-
+#include "STEPPER/stepper.h"
 
 volatile stepper braking_stepper;
 volatile stepper steering_stepper;
@@ -213,6 +211,7 @@ void stepping_by_pwm(stepper *stpr, stepper_id id)
 		HAL_TIM_PWM_Stop_IT(&htim1, TIM_CHANNEL_1);
 	}
 }
+
 void stepping_by_steps(stepper *stpr, stepper_id id)
 {
 	stpr->desired_angle = 45;	//can_rx_data.encoderAngle[0];

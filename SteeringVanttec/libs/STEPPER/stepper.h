@@ -1,12 +1,12 @@
 /*
- * stepper_tasks.h
+ * stepper.h
  *
  *  Created on: Mar 7, 2023
  *      Author: saveasmtz
  */
 
-#ifndef INC_STEPPER_STEPPER_H_
-#define INC_STEPPER_STEPPER_H_
+#ifndef INC_STEPPER_H
+#define INC_STEPPER_H
 
 #include "main.h"
 #include "cmsis_os.h"
@@ -14,6 +14,27 @@
 #include <math.h>
 
 extern TIM_HandleTypeDef htim2;
+
+// Motor IDs
+#define STEPPERS_STATE 0x15
+#define CONTROLLER_STEERING 0x16
+#define AUTONOMOUS_STEERING 0x17
+
+#define CONTROLLER_BRAKING 0x15
+#define AUTONOMOUS_BRAKING 0x17
+
+//2 encoders
+#define ENCODER_ID_IFM 0x18
+#define ENCODER_ID_BRITTER 0x19
+
+typedef struct {
+	uint16_t motor_1_steps;	// Steps
+	uint16_t motor_2_steps;	// Steps
+	int8_t motor_1_direction;
+	int8_t motor_2_direction;
+	float encoderAngle[2];		// Degrees
+	uint32_t jetsonHBTick;
+} can_rx;
 
 typedef enum {
 	STEERING,
@@ -61,33 +82,10 @@ void stop();
 void set_direction(const stepper_id stepper, uint8_t direction);
 void set_setpoint(const stepper_id stepper, uint16_t setpoint, int8_t direction);
 
-/*
-void steering_task();
-void braking_task();
-*/
-
 void steer();
 void brake();
 
 //void stepping_by_pwm(stepper *stpr, stepper_id id);
 //void stepping_by_steps(stepper *stpr, stepper_id id);
-// Motor IDs
-#define STEPPERS_STATE 0x15
-#define CONTROLLER_STEERING 0x16
-#define AUTONOMOUS_STEERING 0x17
 
-#define CONTROLLER_BRAKING 0x15
-#define AUTONOMOUS_BRAKING 0x17
-
-//2 encoders
-#define ENCODER_ID_IFM 0x18
-#define ENCODER_ID_BRITTER 0x19
-typedef struct {
-	uint16_t motor_1_steps;	// Steps
-	uint16_t motor_2_steps;	// Steps
-	int8_t motor_1_direction;
-	int8_t motor_2_direction;
-	float encoderAngle[2];		// Degrees
-	uint32_t jetsonHBTick;
-} can_rx;
-#endif /* INC_STEPPER_STEPPER_H_ */
+#endif /* INC_STEPPER_H */
