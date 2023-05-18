@@ -8,8 +8,8 @@
 #include "main.h"
 #include "vanttec_canlib_tx_task.h"
 #include "vanttec_canlib_rx_task.h"
-#include "STEPPER/stepper_tasks.h"
-#include "STEPPER/stepper.h"
+#include "stepper_tasks.h"
+#include "stepper.h"
 
 osThreadId_t steerTaskHandle;
 const osThreadAttr_t steeringTaskAttributes = {
@@ -51,7 +51,7 @@ void init_steer_task()
 
 void init_brake_task()
 {
-	brakingTaskHandle = osThreadNew(braking_task, NULL, &brakingTaskAttributes)
+	brakingTaskHandle = osThreadNew(braking_task, NULL, &brakingTaskAttributes);
 }
 
 void init_stepper_tasks()

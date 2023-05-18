@@ -27,19 +27,10 @@ extern TIM_HandleTypeDef htim2;
 #define ENCODER_ID_IFM 0x18
 #define ENCODER_ID_BRITTER 0x19
 
-typedef struct {
-	uint16_t motor_1_steps;	// Steps
-	uint16_t motor_2_steps;	// Steps
-	int8_t motor_1_direction;
-	int8_t motor_2_direction;
-	float encoderAngle[2];		// Degrees
-	uint32_t jetsonHBTick;
-} can_rx;
-
 typedef enum {
 	STEERING,
 	BRAKING
-} stepper_id;
+} stepper_type;
 
 typedef enum {
 	CONTROLLER,
@@ -79,13 +70,13 @@ extern volatile stepper steering_stepper;
 void configure_steppers();
 void start();
 void stop();
-void set_direction(const stepper_id stepper, uint8_t direction);
-void set_setpoint(const stepper_id stepper, uint16_t setpoint, int8_t direction);
+void set_direction(const stepper_type stepper, uint8_t direction);
+void set_setpoint(const stepper_type stepper, uint16_t setpoint, int8_t direction);
 
 void steer();
 void brake();
 
-//void stepping_by_pwm(stepper *stpr, stepper_id id);
-//void stepping_by_steps(stepper *stpr, stepper_id id);
+//void stepping_by_pwm(stepper *stpr, stepper_type id);
+//void stepping_by_steps(stepper *stpr, stepper_type id);
 
 #endif /* INC_STEPPER_H */

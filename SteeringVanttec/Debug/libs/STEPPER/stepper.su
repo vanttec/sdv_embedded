@@ -1,0 +1,8 @@
+../libs/STEPPER/stepper.c:7:6:configure_steppers	4	static
+../libs/STEPPER/stepper.c:37:6:start	8	static
+../libs/STEPPER/stepper.c:49:6:stop	8	static
+../libs/STEPPER/stepper.c:61:6:set_direction	16	static
+../libs/STEPPER/stepper.c:85:6:set_setpoint	16	static
+../libs/STEPPER/stepper.c:142:6:steer	8	static
+../libs/STEPPER/stepper.c:168:6:brake	8	static
+../libs/STEPPER/stepper.c:179:6:HAL_TIM_PWM_PulseFinishedCallback	16	static

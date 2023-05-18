@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "STEPPER/stepper.h"
+#include "stepper.h"
 
 volatile stepper braking_stepper;
 volatile stepper steering_stepper;
@@ -30,6 +30,8 @@ void configure_steppers()
 	htim2.Instance->CCR1 = 500;	// For duty cycle of 50%
 	//HAL_GPIO_WritePin(GPIOA, DEBUG_2_Pin|DEBUG_1_Pin|STPR_PWM_1_Pin, GPIO_PIN_SET);
 
+	steering_stepper.direction = IDLE;
+	braking_stepper.direction = IDLE;
 }
 
 void start()
@@ -56,19 +58,23 @@ void stop()
 	braking_stepper.direction = IDLE;
 }
 
-void set_direction(const stepper_id stepper, uint8_t direction){
+void set_direction(const stepper_type stepper, uint8_t direction){
 	switch(stepper)
 	{
 		case STEERING:
-			steering_stepper.direction = direction;
 			if(direction != steering_stepper.direction)
+			{
+				steering_stepper.direction = direction;
 				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
+			}
 			steering_stepper.mode = CONTROLLER;
 			break;
 		case BRAKING:
-			braking_stepper.direction = direction;
 			if(direction != braking_stepper.direction)
+			{
+				braking_stepper.direction = direction;
 				HAL_GPIO_WritePin(GPIOC, STPR_DIR_2_Pin, direction);
+			}
 			braking_stepper.mode = CONTROLLER;
 			break;
 		default:
@@ -76,7 +82,7 @@ void set_direction(const stepper_id stepper, uint8_t direction){
 	}
 }
 
-void set_setpoint(const stepper_id stepper, uint16_t setpoint, int8_t direction){
+void set_setpoint(const stepper_type stepper, uint16_t setpoint, int8_t direction){
 	switch(stepper)
 	{
 		case STEERING:
@@ -111,7 +117,7 @@ void set_setpoint(const stepper_id stepper, uint16_t setpoint, int8_t direction)
 }
 
 /*
-void set_setpoint(const stepper_id stepper){
+void set_setpoint(const stepper_type stepper){
 	if(stepper == STEERING)
 		{
 			//steering_stepper.desired_angle = setpoint;
@@ -162,7 +168,7 @@ void steer()
 void brake()
 {
 	//if(braking_stepper.desired_angle < can_rx_data.encoderAngle[1])
-	set_setpoint(BRAKING, can_rx_data.motor_2_steps, can_rx_data.motor_2_direction);
+	//set_setpoint(BRAKING, can_rx_data.motor_2_steps, can_rx_data.motor_2_direction);
 	if(braking_stepper.current_step == 0)
 		HAL_TIM_PWM_Start_IT(&htim2, TIM_CHANNEL_4);
 	if(braking_stepper.req_steps <= braking_stepper.current_step)
@@ -180,7 +186,7 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 }
 
 /*
-void stepping_by_pwm(stepper *stpr, stepper_id id)
+void stepping_by_pwm(stepper *stpr, stepper_type id)
 {
 	//stpr->desired_angle = 45;	//can_rx_data.encoderAngle[0];
 
@@ -212,7 +218,7 @@ void stepping_by_pwm(stepper *stpr, stepper_id id)
 	}
 }
 
-void stepping_by_steps(stepper *stpr, stepper_id id)
+void stepping_by_steps(stepper *stpr, stepper_type id)
 {
 	stpr->desired_angle = 45;	//can_rx_data.encoderAngle[0];
 	int angle_d = (int) stpr->desired_angle;

@@ -11,6 +11,6 @@
 void steering_task();
 void braking_task();
 void init_stepper_tasks();
-void init_stepper_tasks()
+void init_stepper_tasks();
 
 #endif /* INC_STEPPER_TASKS_H_ */
