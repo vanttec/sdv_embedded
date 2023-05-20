@@ -51,6 +51,7 @@ const osThreadAttr_t multimeterAttributes = {
 	.stack_size = 128 * 4};
 extern I2C_HandleTypeDef hi2c1;
 extern struct LTC4151 multimeter;
+extern bool enable_multimeter;
 void debug_task(void *args)
 {
 	uint8_t debug_data = 0;
@@ -468,15 +469,21 @@ void multimeter_task(void *args)
 {
 	uint8_t multimeter_data = 0;
 	uint8_t last_multimeter_data = 0;
-	uint8_t battery_value = 0;
+	float battery_value = 0;
+	uint8_t buf[8];
 	register_canlib_rx(0x11, 0x13, VANTTEC_CANLIB_BYTE, &multimeter_data, 1);
 	for (;;)
 	{
-		if(multimeter_data != last_multimeter_data){
-			battery_value = (uint8_t) getSnapshotInputVoltage(&hi2c1,&multimeter);
-			canlib_send_byte(0x5, battery_value);
-			multimeter_data = last_multimeter_data;
-		}
+		//if(enable_multimeter){
+			if (multimeter_data==0x1)
+			{
+				battery_value = 50.5;//(uint8_t) getSnapshotInputVoltage(&hi2c1,&multimeter);
+				canlib_send_float(0x5, battery_value);
+				buf[0]=0x13;
+				buf[1]=0;
+				update_table(0x11, 0x13, buf, 2);
+			}
+		//}
 		osDelay(10);
 	}
 }
