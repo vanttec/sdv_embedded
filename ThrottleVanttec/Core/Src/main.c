@@ -103,7 +103,7 @@ int main(void)
   MX_CAN1_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-  init_canlib(hcan1, 0x30);
+  init_canlib(hcan1, 0x5);
   init_canlib_tx();
   init_canlib_rx();
   canlib_init_generic_tasks();
