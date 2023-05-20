@@ -474,16 +474,16 @@ void multimeter_task(void *args)
 	register_canlib_rx(0x11, 0x13, VANTTEC_CANLIB_BYTE, &multimeter_data, 1);
 	for (;;)
 	{
-		//if(enable_multimeter){
+		if(enable_multimeter){
 			if (multimeter_data==0x1)
 			{
-				battery_value = 50.5;//(uint8_t) getSnapshotInputVoltage(&hi2c1,&multimeter);
+				battery_value = (uint8_t) getSnapshotInputVoltage(&hi2c1,&multimeter);
 				canlib_send_float(0x5, battery_value);
 				buf[0]=0x13;
 				buf[1]=0;
 				update_table(0x11, 0x13, buf, 2);
 			}
-		//}
+		}
 		osDelay(10);
 	}
 }
