@@ -498,5 +498,5 @@ void init_panel_task()
 	recognizeTrafficSignFlagTaskHandle = osThreadNew(recognizeTrafficSignFlag_task, NULL, &recognizeTrafficSignFlagTaskAttributes);
 	objectNotificationFlagTaskHandle = osThreadNew(objectNotificationFlag_task, NULL, &objectNotificationFlagTaskAttributes);
 	detectLaneFlagTaskHandle = osThreadNew(detectLaneFlag_task, NULL, &detectLaneFlagTaskAttributes);
-	multimeterTaskHandle = osThreadNew(multimeter_task, NULL, &multimeterAttributes);
+	//multimeterTaskHandle = osThreadNew(multimeter_task, NULL, &multimeterAttributes);
 }
