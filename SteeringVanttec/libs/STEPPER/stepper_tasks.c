@@ -26,8 +26,8 @@ void steering_task()
 	//uint16_t frame = 0U;
 	uint8_t dir = 0U;
 	uint32_t pos = 0U;
-	register_canlib_rx(0x51, 0x10, VANTTEC_CANLIB_BYTE, &dir, 1);		// For direction
-	register_canlib_rx(0x52, 0x11, VANTTEC_CANLIB_LONG, &pos, 2);		// To check IFM encoder angle
+	register_canlib_rx(0x8, 0x10, VANTTEC_CANLIB_BYTE, &dir, 1);		// For direction
+	register_canlib_rx(0x8, 0x11, VANTTEC_CANLIB_LONG, &pos, 2);		// To check IFM encoder angle
 
 	configure_steppers();
 	start();
