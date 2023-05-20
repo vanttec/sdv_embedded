@@ -49,3 +49,5 @@
 150	781	7063107479978249	CMakeFiles/ThrottleVanttec.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.c.obj	9a9421bfee34afba
 420	830	7063107480488242	CMakeFiles/ThrottleVanttec.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c.obj	d827e768e79067a6
 830	1269	7063107483639059	ThrottleVanttec.elf	52d9b002ee2d6c0b
+5	1090	7063114202951973	CMakeFiles/ThrottleVanttec.dir/Core/Src/mcp45hvx1.c.obj	76c7e041fd88d398
+1090	1796	7063114208787111	ThrottleVanttec.elf	52d9b002ee2d6c0b
