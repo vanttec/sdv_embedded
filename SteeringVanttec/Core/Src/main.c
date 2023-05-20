@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stepper_tasks.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -113,7 +113,11 @@ int main(void)
   MX_ADC1_Init();
   MX_CAN1_Init();
   /* USER CODE BEGIN 2 */
-
+  init_canlib(hcan1, 0x40);
+  init_canlib_tx();
+  init_canlib_rx();
+  canlib_init_generic_tasks();
+  init_steer_task();
   /* USER CODE END 2 */
 
   /* Init scheduler */

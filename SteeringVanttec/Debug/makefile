@@ -14,13 +14,13 @@ RM := rm -rf
 -include libs/vanttec_CANLib/src/Vanttec_CANLib/subdir.mk
 -include libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/subdir.mk
 -include libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/subdir.mk
+-include libs/STEPPER/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/subdir.mk
 -include Drivers/STM32L4xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
--include Core/Src/STEPPER/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
 
@@ -85,8 +85,8 @@ all: main-build
 main-build: SteeringVanttec.elf secondary-outputs
 
 # Tool invocations
-SteeringVanttec.elf SteeringVanttec.map: $(OBJS) $(USER_OBJS) C:\Users\books\OneDrive\ -\ Instituto\ Tecnologico\ y\ de\ Estudios\ Superiores\ de\ Monterrey\Documents\Github\ embedded\sdv_embedded\SteeringVanttec\STM32L431RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "SteeringVanttec.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\books\OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey\Documents\Github embedded\sdv_embedded\SteeringVanttec\STM32L431RCTX_FLASH.ld" -Wl,-Map="SteeringVanttec.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+SteeringVanttec.elf SteeringVanttec.map: $(OBJS) $(USER_OBJS) /home/saveasmtz/Documents/embedded/sdv_embedded/SteeringVanttec/STM32L431RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "SteeringVanttec.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/saveasmtz/Documents/embedded/sdv_embedded/SteeringVanttec/STM32L431RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SteeringVanttec.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
