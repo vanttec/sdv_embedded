@@ -48,7 +48,7 @@ const osThreadAttr_t detectLaneFlagTaskAttributes = {
 osThreadId_t multimeterTaskHandle;
 const osThreadAttr_t multimeterAttributes = {
 	.name = "multimeter",
-	.stack_size = 128 * 4};
+	.stack_size = 128 * 8};
 extern I2C_HandleTypeDef hi2c1;
 extern struct LTC4151 multimeter;
 extern bool enable_multimeter;
@@ -468,23 +468,23 @@ void detectLaneFlag_task(void *args)
 void multimeter_task(void *args)
 {
 	uint8_t multimeter_data = 0;
-	uint8_t last_multimeter_data = 0;
 	float battery_value = 0;
 	uint8_t buf[8];
 	register_canlib_rx(0x11, 0x13, VANTTEC_CANLIB_BYTE, &multimeter_data, 1);
 	for (;;)
 	{
-		if(enable_multimeter){
-			if (multimeter_data==0x1)
-			{
-				battery_value = (uint8_t) getSnapshotInputVoltage(&hi2c1,&multimeter);
+		//if(enable_multimeter){
+			//if (multimeter_data == 0x1)
+			//{
+				battery_value = 50.5;//(float) getSnapshotInputVoltage(&hi2c1,&multimeter);
 				canlib_send_float(0x5, battery_value);
 				buf[0]=0x13;
-				buf[1]=0;
-				update_table(0x11, 0x13, buf, 2);
-			}
-		}
-		osDelay(10);
+			    buf[1]=0x0;
+			 	update_table(0x11, 0x13, buf, 2);
+				//last_multimeter_data = multimeter_data;
+			//}
+		//}
+		osDelay(1000);
 	}
 }
 void init_panel_task()
