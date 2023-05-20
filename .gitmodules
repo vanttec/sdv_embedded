@@ -1,3 +1,6 @@
+[submodule "PanelVanttec/libs/vanttec_CANLib"]
+	path = PanelVanttec/libs/vanttec_CANLib
+	url = https://github.com/vanttec/vanttec_CANLib.git
 [submodule "SteeringVanttec/libs/vanttec_CANLib"]
 	path = SteeringVanttec/libs/vanttec_CANLib
 	url = https://github.com/vanttec/vanttec_CANLib.git
