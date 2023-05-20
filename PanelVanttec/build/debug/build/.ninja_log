@@ -136,3 +136,7 @@
 281	596	7063253058846396	PanelVanttec.elf	d555e0dc6858b43d
 3	80	7063253540771949	CMakeFiles/PanelVanttec.dir/libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.c.obj	23d0372a5f941896
 80	411	7063253543201965	PanelVanttec.elf	d555e0dc6858b43d
+41	137	7063282150255055	CMakeFiles/PanelVanttec.dir/libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.c.obj	23d0372a5f941896
+24	359	7063282152445060	CMakeFiles/PanelVanttec.dir/Core/Src/panel_tasks.c.obj	542540fe27bd5f81
+4	369	7063282152555068	CMakeFiles/PanelVanttec.dir/Core/Src/main.c.obj	fa1866721545a1bd
+370	705	7063282155205137	PanelVanttec.elf	d555e0dc6858b43d
