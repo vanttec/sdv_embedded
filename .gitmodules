@@ -4,6 +4,3 @@
 [submodule "SteeringVanttec/libs/vanttec_CANLib"]
 	path = SteeringVanttec/libs/vanttec_CANLib
 	url = https://github.com/vanttec/vanttec_CANLib.git
-[submodule "ThrottleVanttec/libs/vanttec_CANLib"]
-	path = ThrottleVanttec/libs/vanttec_CANLib
-	url = https://github.com/vanttec/vanttec_CANLib.git
