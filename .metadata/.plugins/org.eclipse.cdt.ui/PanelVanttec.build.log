@@ -1,0 +1,39 @@
+01:11:55 **** Incremental Build of configuration Debug for project PanelVanttec ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/panel_tasks.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L431xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../libs/vanttec_CANLib/src/Vanttec_CANLib -I../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/panel_tasks.d" -MT"Core/Src/panel_tasks.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/panel_tasks.o"
+../Core/Src/panel_tasks.c: In function 'debug_task':
+../Core/Src/panel_tasks.c:51:11: warning: unused variable 'largo' [-Wunused-variable]
+   51 |  uint32_t largo = 200;
+      |           ^~~~~
+../Core/Src/panel_tasks.c:50:11: warning: unused variable 'corto' [-Wunused-variable]
+   50 |  uint32_t corto = 20;
+      |           ^~~~~
+../Core/Src/panel_tasks.c:49:10: warning: unused variable 'debug_data' [-Wunused-variable]
+   49 |  uint8_t debug_data = 0;
+      |          ^~~~~~~~~~
+../Core/Src/panel_tasks.c: In function 'safetyModeAlertFlag_task':
+../Core/Src/panel_tasks.c:313:11: warning: unused variable 'corto' [-Wunused-variable]
+  313 |  uint32_t corto = 20;
+      |           ^~~~~
+../Core/Src/panel_tasks.c: In function 'objectNotificationFlag_task':
+../Core/Src/panel_tasks.c:376:37: warning: assignment to 'uint8_t' {aka 'unsigned char'} from 'void (*)(void *)' makes integer from pointer without a cast [-Wint-conversion]
+  376 |    last_objectNotificationFlag_data = objectNotificationFlag_task;
+      |                                     ^
+../Core/Src/panel_tasks.c: In function 'detectLaneFlag_task':
+../Core/Src/panel_tasks.c:422:11: warning: unused variable 'corto' [-Wunused-variable]
+  422 |  uint32_t corto = 20;
+      |           ^~~~~
+arm-none-eabi-g++ -o "PanelVanttec.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\riky_\STM32CubeIDE\workspace_1.11.2\sdv_embedded\PanelVanttec\STM32L431RCTX_FLASH.ld" -Wl,-Map="PanelVanttec.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: PanelVanttec.elf
+ 
+arm-none-eabi-size   PanelVanttec.elf 
+arm-none-eabi-objdump -h -S  PanelVanttec.elf  > "PanelVanttec.list"
+   text	   data	    bss	    dec	    hex	filename
+  30412	    124	  35780	  66316	  1030c	PanelVanttec.elf
+Finished building: default.size.stdout
+ 
+Finished building: PanelVanttec.list
+ 
+
+01:11:58 Build Finished. 0 errors, 6 warnings. (took 2s.318ms)
+

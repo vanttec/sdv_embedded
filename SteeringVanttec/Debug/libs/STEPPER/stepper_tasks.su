@@ -1,0 +1,5 @@
+../libs/STEPPER/stepper_tasks.c:25:6:steering_task	24	static
+../libs/STEPPER/stepper_tasks.c:45:6:braking_task	8	static
+../libs/STEPPER/stepper_tasks.c:53:6:init_steer_task	8	static
+../libs/STEPPER/stepper_tasks.c:58:6:init_brake_task	8	static
+../libs/STEPPER/stepper_tasks.c:63:6:init_stepper_tasks	8	static

@@ -1,0 +1,11 @@
+../Core/Src/panel_tasks.c:56:6:debug_task	32	static
+../Core/Src/panel_tasks.c:69:6:panelMov_task	64	static
+../Core/Src/panel_tasks.c:187:6:panelDet_task	56	static
+../Core/Src/panel_tasks.c:261:6:driveModeStatusFlag_task	32	static
+../Core/Src/panel_tasks.c:288:6:reverseSwitchStatusFlag_task	40	static
+../Core/Src/panel_tasks.c:323:6:safetyModeAlertFlag_task	40	static
+../Core/Src/panel_tasks.c:364:6:objectNotificationFlag_task	48	static
+../Core/Src/panel_tasks.c:399:6:recognizeTrafficSignFlag_task	48	static
+../Core/Src/panel_tasks.c:435:6:detectLaneFlag_task	40	static
+../Core/Src/panel_tasks.c:469:6:multimeter_task	40	static
+../Core/Src/panel_tasks.c:491:6:init_panel_task	8	static

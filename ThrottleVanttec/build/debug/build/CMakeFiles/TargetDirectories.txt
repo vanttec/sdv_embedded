@@ -1,0 +1,3 @@
+C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/ThrottleVanttec/build/debug/build/CMakeFiles/ThrottleVanttec.dir
+C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/ThrottleVanttec/build/debug/build/CMakeFiles/edit_cache.dir
+C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/ThrottleVanttec/build/debug/build/CMakeFiles/rebuild_cache.dir

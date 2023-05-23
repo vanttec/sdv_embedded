@@ -1,0 +1,43 @@
+/*
+ * steering_tasks.c
+ *
+ *  Created on: May 11, 2023
+ *      Author: riky_
+ */
+#include "main.h"
+#include "vanttec_canlib_tx_task.h"
+#include "vanttec_canlib_rx_task.h"
+
+
+osThreadId_t steeringTaskHandle;
+const osThreadAttr_t steeringTaskAttributes = {
+    .name = "steering",
+    .stack_size = 128 * 4};
+osThreadId_t brakingTaskHandle;
+const osThreadAttr_t brakingTaskAttributes = {
+    .name = "steering",
+    .stack_size = 128 * 4};
+void steering_task(void *argument)
+{
+  configure_steppers();
+  start();
+  for(;;)
+  {
+	  steer();
+	  osDelay(1);
+  }
+}
+void braking_task(void *argument)
+{
+  for(;;)
+  {
+    osDelay(1);
+  }
+}
+
+void init_panel_task()
+{
+	steeringTaskHandle = osThreadNew(steering_task, NULL, &steeringTaskAttributes);
+	brakingTaskHandle = osThreadNew(braking_task, NULL, &brakingTaskAttributes);
+
+}
