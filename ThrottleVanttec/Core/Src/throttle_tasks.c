@@ -8,6 +8,8 @@
 #include "vanttec_canlib_tx_task.h"
 #include "vanttec_canlib_rx_task.h"
 #include "stm32l4xx_hal.h"
+#include "vanttec_canlib_generic_ids.h"
+
 osThreadId_t potTaskHandle;
 const osThreadAttr_t potTaskAttributes = {
     .name = "pot",
@@ -22,12 +24,11 @@ const osThreadAttr_t modeTaskAttributes = {
     .stack_size = 128 * 4};
     
 #define MAX_VELOCITY 72 //10km/h (255-35km/h)
-uint8_t device_id_rx = 0x6;
 void pot_task(void *args)
 {
     uint8_t pot_data = 0;
     uint8_t last_pot_data = 0;
-    register_canlib_rx(device_id_rx, 0x05, VANTTEC_CANLIB_BYTE, &pot_data, 1);
+    register_canlib_rx(VANTTEC_CAN_ID_THROTTLERX, 0x05, VANTTEC_CANLIB_BYTE, &pot_data, 1);
 
     for (;;)
     {
@@ -48,7 +49,7 @@ void motor_task(void *args)
 {
     uint8_t motor_data = 0;
     uint8_t last_motor_data = 0;
-    register_canlib_rx(device_id_rx, 0x06, VANTTEC_CANLIB_BYTE, &motor_data, 1);
+    register_canlib_rx(VANTTEC_CAN_ID_THROTTLERX, 0x06, VANTTEC_CANLIB_BYTE, &motor_data, 1);
 
     for (;;)
     {
@@ -72,7 +73,7 @@ void mode_task(void *args)
 {
     uint8_t mode_data = 0;
     uint8_t last_mode_data = 0;
-    register_canlib_rx(device_id_rx, 0x07, VANTTEC_CANLIB_BYTE, &mode_data, 1);
+    register_canlib_rx(VANTTEC_CAN_ID_THROTTLERX, 0x07, VANTTEC_CANLIB_BYTE, &mode_data, 1);
 
     for (;;)
     {
