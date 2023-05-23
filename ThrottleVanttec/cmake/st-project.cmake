@@ -117,7 +117,7 @@ target_sources(
     "${RELEASE_SOURCES}"
     "libs\\vanttec_CANLib\\platform_specific\\vanttec_canlib_stm\\generic_tasks\\can_reset_task.c"
     "libs\\vanttec_CANLib\\platform_specific\\vanttec_canlib_stm\\generic_tasks\\generic_tasks.c"
-    "libs\\vanttec_CANLib\\platform_specific\\vanttec_canlib_stm\\generic_tasks\\hb_task.c"
+    "libs\\vanttec_CANLib\\platform_specific\\vanttec_canlib_stm\\generic_tasks\\requirements.c"
     "libs\\vanttec_CANLib\\platform_specific\\vanttec_canlib_stm\\ping_task.c"
     "libs\\vanttec_CANLib\\platform_specific\\vanttec_canlib_stm\\utils.c"
     "libs\\vanttec_CANLib\\platform_specific\\vanttec_canlib_stm\\vanttec_canlib_rx_task.c"

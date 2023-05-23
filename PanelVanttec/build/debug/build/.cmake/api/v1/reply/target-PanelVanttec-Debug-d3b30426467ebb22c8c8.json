@@ -674,7 +674,7 @@
 		{
 			"backtrace" : 7,
 			"compileGroupIndex" : 0,
-			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.c",
+			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.c",
 			"sourceGroupIndex" : 0
 		},
 		{

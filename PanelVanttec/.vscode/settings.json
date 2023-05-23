@@ -1,20 +1,4 @@
 {
   "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
-  "cmake.configureOnOpen": true,
-  "files.associations": {
-    "stddef.h": "c",
-    "hb_task.h": "c",
-    "can_reset_task.h": "c",
-    "optional": "cpp",
-    "ostream": "cpp",
-    "system_error": "cpp",
-    "array": "cpp",
-    "functional": "cpp",
-    "tuple": "cpp",
-    "type_traits": "cpp",
-    "utility": "cpp",
-    "string": "cpp",
-    "string_view": "cpp",
-    "ranges": "cpp"
-  }
+  "cmake.configureOnOpen": true
 }

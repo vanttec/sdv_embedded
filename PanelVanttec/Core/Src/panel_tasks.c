@@ -8,6 +8,7 @@
 #include "vanttec_canlib_tx_task.h"
 #include "vanttec_canlib_rx_task.h"
 #include "ltc4151cms.h"
+#include "vanttec_canlib_generic_ids.h"
 
 osThreadId_t debugTaskHandle;
 const osThreadAttr_t debugTaskAttributes = {
@@ -52,13 +53,12 @@ const osThreadAttr_t multimeterAttributes = {
 extern I2C_HandleTypeDef hi2c1;
 extern struct LTC4151 multimeter;
 extern bool enable_multimeter;
-uint8_t device_id_rx = 0x10;
 void debug_task(void *args)
 {
 	uint8_t debug_data = 0;
 	uint32_t corto = 20;
 	uint32_t largo = 200;
-	// register_canlib_rx(device_id_rx, 0x04, VANTTEC_CANLIB_BYTE, &debug_data, 1);
+	// register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x04, VANTTEC_CANLIB_BYTE, &debug_data, 1);
 	for (;;)
 	{
 		HAL_GPIO_WritePin(DEBUG_1_GPIO_Port, DEBUG_1_Pin, GPIO_PIN_SET);
@@ -72,7 +72,7 @@ void panelMov_task(void *args)
 	uint8_t last_panelMov_data = 0;
 	uint32_t corto = 20;
 	uint32_t largo = 200;
-	register_canlib_rx(device_id_rx, 0x05, VANTTEC_CANLIB_BYTE, &panelMov_data, 1);
+	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x05, VANTTEC_CANLIB_BYTE, &panelMov_data, 1);
 
 	for (;;)
 	{
@@ -190,7 +190,7 @@ void panelDet_task(void *args)
 	uint8_t last_panelDet_data = 0;
 	uint32_t corto = 20;
 	uint32_t largo = 200;
-	register_canlib_rx(device_id_rx, 0x06, VANTTEC_CANLIB_BYTE, &panelDet_data, 1);
+	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x06, VANTTEC_CANLIB_BYTE, &panelDet_data, 1);
 	for (;;)
 	{
 		if (panelDet_data != last_panelDet_data)
@@ -263,12 +263,12 @@ void driveModeStatusFlag_task(void *args)
 	// Si está en modo autónomo(10) se prenderá el led indicador 1, si está en manual se apagará este led.
 	uint8_t driveModeStatusFlag_data = 0;
 	uint8_t last_driveModeStatusFlag_data = 0;
-	register_canlib_rx(device_id_rx, 0x07, VANTTEC_CANLIB_BYTE, &driveModeStatusFlag_data, 1);
+	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x07, VANTTEC_CANLIB_BYTE, &driveModeStatusFlag_data, 1);
 	for (;;)
 	{
 		if (driveModeStatusFlag_data != last_driveModeStatusFlag_data)
 		{
-			if (driveModeStatusFlag_data == 0x10)
+			if (driveModeStatusFlag_data == 0x01)
 			{
 				// Autonomo
 				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, SET);
@@ -292,7 +292,7 @@ void reverseSwitchStatusFlag_task(void *args)
 	uint8_t last_reverseSwitchStatusFlag_data = 0;
 	uint32_t corto = 20;
 	uint32_t largo = 200;
-	register_canlib_rx(device_id_rx, 0x08, VANTTEC_CANLIB_BYTE, &reverseSwitchStatusFlag_data, 1);
+	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x08, VANTTEC_CANLIB_BYTE, &reverseSwitchStatusFlag_data, 1);
 	for (;;)
 	{
 		//		if (last_reverseSwitchStatusFlag_data != reverseSwitchStatusFlag_data)
@@ -326,7 +326,7 @@ void safetyModeAlertFlag_task(void *args)
 	uint8_t last_safetyModeAlertFlag_data = 0;
 	uint32_t corto = 20;
 	uint32_t largo = 200;
-	register_canlib_rx(device_id_rx, 0x09, VANTTEC_CANLIB_BYTE, &safetyModeAlertFlag_data, 1);
+	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x09, VANTTEC_CANLIB_BYTE, &safetyModeAlertFlag_data, 1);
 	for (;;)
 	{
 		if (last_safetyModeAlertFlag_data != safetyModeAlertFlag_data)
@@ -367,7 +367,7 @@ void objectNotificationFlag_task(void *args)
 	uint8_t last_objectNotificationFlag_data = 0;
 	uint32_t corto = 20;
 	uint32_t largo = 200;
-	register_canlib_rx(device_id_rx, 0x10, VANTTEC_CANLIB_BYTE, &objectNotificationFlag_data, 1);
+	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x10, VANTTEC_CANLIB_BYTE, &objectNotificationFlag_data, 1);
 	for (;;)
 	{
 		if (last_objectNotificationFlag_data != objectNotificationFlag_data)
@@ -402,7 +402,7 @@ void recognizeTrafficSignFlag_task(void *args)
 	uint8_t last_recognizeTrafficSignFlag_data = 0;
 	uint32_t corto = 20;
 	uint32_t largo = 200;
-	register_canlib_rx(device_id_rx, 0x11, VANTTEC_CANLIB_BYTE, &recognizeTrafficSignFlag_data, 1);
+	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x11, VANTTEC_CANLIB_BYTE, &recognizeTrafficSignFlag_data, 1);
 	for (;;)
 	{
 		if (last_recognizeTrafficSignFlag_data != recognizeTrafficSignFlag_data)
@@ -436,7 +436,7 @@ void detectLaneFlag_task(void *args)
 {
 	uint8_t detectLaneFlag_data = 0;
 	uint8_t last_detectLaneFlag_data = 0;
-	register_canlib_rx(device_id_rx, 0x12, VANTTEC_CANLIB_BYTE, &detectLaneFlag_data, 1);
+	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x12, VANTTEC_CANLIB_BYTE, &detectLaneFlag_data, 1);
 	uint32_t corto = 20;
 	uint32_t largo = 200;
 	for (;;)
@@ -471,7 +471,7 @@ void multimeter_task(void *args)
 	uint8_t multimeter_data = 0;
 	float battery_value = 0;
 	uint8_t buf[8];
-	register_canlib_rx(device_id_rx, 0x13, VANTTEC_CANLIB_BYTE, &multimeter_data, 1);
+	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x13, VANTTEC_CANLIB_BYTE, &multimeter_data, 1);
 	for (;;)
 	{
 		//if(enable_multimeter){
@@ -481,7 +481,7 @@ void multimeter_task(void *args)
 				canlib_send_float(0x5, battery_value);
 				buf[0]=0x13;
 			    buf[1]=0x0;
-			 	update_table(0x10, 0x13, buf, 2);
+			 	update_table(VANTTEC_CAN_ID_PANELRX, 0x13, buf, 2);
 				//last_multimeter_data = multimeter_data;
 			//}
 		//}

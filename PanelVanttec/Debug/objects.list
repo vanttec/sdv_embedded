@@ -36,7 +36,7 @@
 "./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o"
 "./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o"
 "./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o"
-"./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o"
+"./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o"
 "./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/ping_task.o"
 "./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o"
 "./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o"

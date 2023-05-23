@@ -1,5 +1,6 @@
-Core/Src/panel_tasks.o: ../Core/Src/panel_tasks.c ../Core/Inc/main.h \
- ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
+libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o: \
+ ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.c \
+ ../Core/Inc/main.h ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  ../Core/Inc/stm32l4xx_hal_conf.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h \
@@ -26,6 +27,7 @@ Core/Src/panel_tasks.o: ../Core/Src/panel_tasks.c ../Core/Inc/main.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_i2c_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h \
+ ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_generic_ids.h \
  ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.h \
  ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
@@ -38,9 +40,7 @@ Core/Src/panel_tasks.o: ../Core/Src/panel_tasks.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- ../Core/Inc/ltc4151cms.h \
- ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_generic_ids.h
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
@@ -69,6 +69,7 @@ Core/Src/panel_tasks.o: ../Core/Src/panel_tasks.c ../Core/Inc/main.h \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_i2c_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h:
+../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_generic_ids.h:
 ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.h:
 ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
@@ -82,5 +83,3 @@ Core/Src/panel_tasks.o: ../Core/Src/panel_tasks.c ../Core/Inc/main.h \
 ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
-../Core/Inc/ltc4151cms.h:
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_generic_ids.h:
