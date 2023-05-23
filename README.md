@@ -12,7 +12,7 @@
 # SDV_EMBEDDED
 
 
-SDV EMBEDDED_C is the official respository for VANTTEC self driving vehicle
+SDV EMBEDDED is the official respository for VANTTEC self driving vehicle
 
 It includes code  made for controlling the acceleartion, steering , braking and lights inside the car with our modules.<br />
 
@@ -25,7 +25,7 @@ It includes code  made for controlling the acceleartion, steering , braking and 
 ![Tutorial][tutorial]
 
 ```sh
-git clone -b feature/releasev1 --recurse-submodules https://github.com/vanttec/sdv_embedded.git
+git clone --recurse-submodules https://github.com/vanttec/sdv_embedded.git
 
 ```
 
