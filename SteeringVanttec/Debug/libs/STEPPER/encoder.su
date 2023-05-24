@@ -1,2 +1,2 @@
 ../libs/STEPPER/encoder.c:6:6:parse_ifm_encoder	24	static
-../libs/STEPPER/encoder.c:21:6:parse_brittle_encoder	16	static
+../libs/STEPPER/encoder.c:21:6:parse_briter_encoder	16	static

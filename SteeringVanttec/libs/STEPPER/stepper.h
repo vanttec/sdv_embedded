@@ -11,13 +11,11 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "stdlib.h"
-#include <math.h>
 #include "encoder.h"
 
 extern TIM_HandleTypeDef htim2;
-
-extern volatile encoder ifm_encoder;
-extern volatile encoder britter_encoder;
+extern encoder ifm_encoder;
+extern encoder briter_encoder;
 
 typedef enum {
 	STEERING,
@@ -43,26 +41,29 @@ typedef struct {
 
 	float MAX_ANGLE;			// Degrees
 	float current_angle; 		// Degrees
+	float desired_angle;		// Degrees
+
+	float STEP_ANGLE;				// Degrees/step
 
 	/*
-	float STEP_ANGLE;				// Degrees
+	uint16_t req_steps;			// Required steps to reach desired angle
 	uint16_t STEPS_REV;				// Steps per revolution
 	uint16_t MAX_STEPS;
-
-	float desired_angle;		// Degrees
-	uint16_t req_steps;			// Required steps to reach desired angle
 	uint16_t current_step;
 	*/
 } stepper;
 
-void configure_steppers();
-void start();
-void stop();
-void set_direction(const stepper_type stepper, uint8_t direction);
-//void set_setpoint(const stepper_type stepper, uint16_t setpoint, int8_t direction);
+void configure_steering();
+void configure_braking();
+void start(const stepper_type stepper);
+void pause(const stepper_type stepper);
+void stop(const stepper_type stepper);
+void set_direction(uint8_t direction);
+void set_setpoint(const stepper_type stepper, float setpoint);
 
-void steer();
-void brake();
+void steer_by_setpoint();
+void brake_by_setpoint();
+void update_stepper_pos(const stepper_type stepper);
 
 //void stepping_by_pwm(stepper *stpr, stepper_type id);
 //void stepping_by_steps(stepper *stpr, stepper_type id);

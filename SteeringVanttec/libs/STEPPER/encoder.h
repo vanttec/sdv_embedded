@@ -21,6 +21,6 @@ typedef struct {
 } encoder;
 
 void parse_ifm_encoder(uint32_t pos);
-void parse_brittle_encoder(uint32_t pos);
+void parse_briter_encoder(uint32_t pos);
 
 #endif /* INC_ENCODER_H_ */
