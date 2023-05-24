@@ -92,12 +92,15 @@ void stop(const stepper_type stepper)
 			steering_stepper.is_exec_started = 0;
 			break;
 		case BRAKING:
+			// For the break, the stop has a different meaning
+			/*
 			HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_SET);
 			HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_RESET);
 			HAL_TIM_PWM_Stop_IT(&htim2, TIM_CHANNEL_4);
 			braking_stepper.is_active = 0;
 			braking_stepper.direction = IDLE;
 			braking_stepper.is_exec_started = 0;
+			*/
 			break;
 		default:
 			break;
