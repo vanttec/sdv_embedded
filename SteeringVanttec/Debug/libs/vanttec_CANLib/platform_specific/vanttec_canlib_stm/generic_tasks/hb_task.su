@@ -1,2 +1,2 @@
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.c:7:6:hb_task	24	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.c:23:6:init_hb_task	8	static
+../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.c:8:6:hb_task	24	static
+../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.c:25:6:init_hb_task	8	static

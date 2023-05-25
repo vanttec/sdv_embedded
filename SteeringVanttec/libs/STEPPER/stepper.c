@@ -6,7 +6,7 @@ volatile stepper braking_stepper;
 volatile stepper steering_stepper;
 
 const static float STEER_RATIO = 1.5; // Stepper to steering wheel ratio
-const static uint16_t MAX_STEERING_ANGLE = 645;
+const static uint16_t MAX_STEERING_ANGLE = 500;//645;
 
 void configure_steering()
 {
@@ -46,15 +46,16 @@ void start(const stepper_type stepper)
 	switch(stepper)
 	{
 		case STEERING:
-			HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_SET);
-			HAL_TIM_PWM_Start_IT(&htim2, TIM_CHANNEL_1);
+			//HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 			steering_stepper.is_active = 1;
 			break;
 		case BRAKING:
-			HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin | LVL_SFTR_OE_2_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_SET);
 			HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_SET);
-			HAL_TIM_PWM_Start_IT(&htim2, TIM_CHANNEL_4);
+			//HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
 			braking_stepper.is_active = 1;
 			break;
 		default:
@@ -67,11 +68,11 @@ void pause(const stepper_type stepper)
 	switch(stepper)
 	{
 		case STEERING:
-			HAL_TIM_PWM_Stop_IT(&htim2, TIM_CHANNEL_1);
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 			steering_stepper.is_exec_started = 0;
 			break;
 		case BRAKING:
-			HAL_TIM_PWM_Stop_IT(&htim2, TIM_CHANNEL_4);
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
 			braking_stepper.is_exec_started = 0;
 			break;
 		default:
@@ -86,7 +87,7 @@ void stop(const stepper_type stepper)
 		case STEERING:
 			HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_SET);
 			HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_RESET);
-			HAL_TIM_PWM_Stop_IT(&htim2, TIM_CHANNEL_1);
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 			steering_stepper.is_active = 0;
 			steering_stepper.direction = IDLE;
 			steering_stepper.is_exec_started = 0;
@@ -96,7 +97,7 @@ void stop(const stepper_type stepper)
 			/*
 			HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_SET);
 			HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_RESET);
-			HAL_TIM_PWM_Stop_IT(&htim2, TIM_CHANNEL_4);
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
 			braking_stepper.is_active = 0;
 			braking_stepper.direction = IDLE;
 			braking_stepper.is_exec_started = 0;
@@ -107,40 +108,52 @@ void stop(const stepper_type stepper)
 	}
 }
 
-void set_direction(uint8_t direction){
+stepper_direction unsafe_direction;
 
-	if(direction != steering_stepper.direction)
-	{
-		steering_stepper.direction = direction;
-		HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
-	}
+void steer(uint8_t direction){
 	//steering_stepper.mode = CONTROLLER;
 
 	if(steering_stepper.is_active)
 	{
-		if(steering_stepper.direction != IDLE)
+		if(direction != IDLE)
 		{
+			if(direction != steering_stepper.direction)
+			{
+				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
+			}
+
 			// Check max steering angle is not exceded
 			if(fabsf(steering_stepper.current_angle) < steering_stepper.MAX_ANGLE)
 			{
 				if(!steering_stepper.is_exec_started)
 				{
-					HAL_TIM_PWM_Start_IT(&htim2, TIM_CHANNEL_1);
+					HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 					steering_stepper.is_exec_started = 1;
 				}
+				steering_stepper.direction = direction;
 			} else {
+				unsafe_direction = steering_stepper.direction;
+
 				// Only can continue if direction is changed
-				if(direction != steering_stepper.direction)
+				if(direction != unsafe_direction)
 				{
+					HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
 					if(!steering_stepper.is_exec_started)
 					{
-						HAL_TIM_PWM_Start_IT(&htim2, TIM_CHANNEL_1);
+						HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 						steering_stepper.is_exec_started = 1;
 					}
-				} else pause(STEERING);
+				} else {
+					pause(STEERING);
+				}
 			}
-		} else pause(STEERING);
-	} else stop(STEERING);
+
+		} else {
+			pause(STEERING);
+		}
+	} else {
+		stop(STEERING);
+	}
 }
 
 void set_setpoint(const stepper_type stepper, float setpoint){
@@ -196,7 +209,7 @@ void steer_by_setpoint()
 				// Start execution
 				if(!steering_stepper.is_exec_started)
 				{
-					HAL_TIM_PWM_Start_IT(&htim2, TIM_CHANNEL_1);
+					HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 					steering_stepper.is_exec_started = 1;
 				}
 			} else pause(STEERING);

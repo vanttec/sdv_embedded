@@ -58,7 +58,7 @@ void configure_braking();
 void start(const stepper_type stepper);
 void pause(const stepper_type stepper);
 void stop(const stepper_type stepper);
-void set_direction(uint8_t direction);
+void steer(uint8_t direction);
 void set_setpoint(const stepper_type stepper, float setpoint);
 
 void steer_by_setpoint();

@@ -14,19 +14,19 @@
 osThreadId_t steerTaskHandle;
 const osThreadAttr_t steeringTaskAttributes = {
     .name = "steering",
-    .stack_size = 128 * 4,
+    .stack_size = 128 * 4
 	/*.priority = (osPriority_t) osPriorityAboveNormal4*/};
 osThreadId_t brakingTaskHandle;
 const osThreadAttr_t brakingTaskAttributes = {
-    .name = "steering",
+    .name = "braking",
     .stack_size = 128 * 4};
 
 void steering_task()
 {
 	//uint16_t frame = 0U;
-	uint8_t dir = 0U;
+	uint8_t dir = IDLE;		// For safety do not modify this initial value
 	uint32_t pos = 0U;
-	register_canlib_rx(0x51, 0x10, VANTTEC_CANLIB_BYTE, &dir, 1);		// For direction
+	register_canlib_rx(0x11, 0x10, VANTTEC_CANLIB_BYTE, &dir, 1);		// For direction
 	register_canlib_rx(0x52, 0x11, VANTTEC_CANLIB_LONG, &pos, 4);		// To check IFM encoder angle
 
 	configure_steering();
@@ -36,7 +36,8 @@ void steering_task()
 	{
 		parse_ifm_encoder(pos);
 		update_stepper_pos(STEERING);
-		set_direction(dir);
+		steer(dir);
+		  //osDelay(1);
 	}
 }
 
