@@ -45,12 +45,6 @@ typedef struct {
 
 	float STEP_ANGLE;				// Degrees/step
 
-	/*
-	uint16_t req_steps;			// Required steps to reach desired angle
-	uint16_t STEPS_REV;				// Steps per revolution
-	uint16_t MAX_STEPS;
-	uint16_t current_step;
-	*/
 } stepper;
 
 void configure_steering();
@@ -61,8 +55,8 @@ void stop(const stepper_type stepper);
 void steer(uint8_t direction);
 void set_setpoint(const stepper_type stepper, float setpoint);
 
-void steer_by_setpoint();
-void brake_by_setpoint();
+void steer_by_setpoint(uint8_t direction);
+void brake_by_setpoint(uint8_t direction);
 void update_stepper_pos(const stepper_type stepper);
 
 //void stepping_by_pwm(stepper *stpr, stepper_type id);

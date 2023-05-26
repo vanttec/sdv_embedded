@@ -14,7 +14,7 @@ void parse_ifm_encoder(uint32_t pos){
 	}
 
 	ifm_encoder.turn = -(int16_t) position/ifm_encoder.steps;	// To account for gear counter rotation
-	ifm_encoder.absolute_angle = - (float) 360*position/ifm_encoder.revolutions;  	// To account for gear counter rotation
+	ifm_encoder.absolute_angle = -(float) 360*position/ifm_encoder.revolutions;  	// To account for gear counter rotation
 	ifm_encoder.angle = -(float) 360*step/ifm_encoder.steps;  	// To account for gear counter rotation
 }
 
