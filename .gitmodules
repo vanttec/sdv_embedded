@@ -9,6 +9,6 @@
 [submodule "ThrottleVanttec/libs/ThrottleVanttec/libs/vanttec_CANLib"]
 	path = ThrottleVanttec/libs/ThrottleVanttec/libs/vanttec_CANLib
 	url = https://github.com/vanttec/vanttec_CANLib.git
-[submodule "vanttec_CANLib_throttle"]
-	path = ThrottleVanttec/libs/ThrottleVanttec/libs/vanttec_CANLib
+[submodule "vanttec_CANLib_throttlev1"]
+	path = ThrottleVanttec/libs/vanttec_CANLib
 	url = https://github.com/vanttec/vanttec_CANLib.git
