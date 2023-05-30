@@ -1,9 +1,0 @@
-[submodule "vanttec_CANLib_throttle"]
-	path = ThrottleVanttec/libs/vanttec_CANLib
-	url = https://github.com/vanttec/vanttec_CANLib.git
-[submodule "vanttec_CANLib_panel"]
-	path = PanelVanttec/libs/vanttec_CANLib
-	url = https://github.com/vanttec/vanttec_CANLib.git
-[submodule "vanttec_CANLib_steering"]
-	path = SteeringVanttec/libs/vanttec_CANLib
-	url = https://github.com/vanttec/vanttec_CANLib.git
