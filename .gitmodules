@@ -6,3 +6,7 @@
 	path = PanelVanttec/libs/vanttec_CANLib
 	url = https://github.com/vanttec/vanttec_CANLib.git
 	branch = feature/sdv_panel
+[submodule "SteeringVanttec/libs/vanttec_CANLib"]
+	path = SteeringVanttec/libs/vanttec_CANLib
+	url = https://github.com/vanttec/vanttec_CANLib.git
+	branch = feature/sdv_can
