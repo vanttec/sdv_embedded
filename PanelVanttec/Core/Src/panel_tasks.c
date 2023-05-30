@@ -1,4 +1,4 @@
-/*
+	/*
  * panel_tasks.c
  *
  *  Created on: May 9, 2023
@@ -16,8 +16,8 @@ const osThreadAttr_t debugTaskAttributes = {
 	.stack_size = 128 * 4};
 osThreadId_t panelMovTaskHandle;
 const osThreadAttr_t panelMovTaskAttributes = {
-	.name = "panelMov",
-	.stack_size = 128 * 4};
+ 	.name = "panelMov",
+ 	.stack_size = 128 * 4};
 osThreadId_t panelDetTaskHandle;
 const osThreadAttr_t panelDetTaskAttributes = {
 	.name = "panelDet",
@@ -64,205 +64,264 @@ void debug_task(void *args)
 	uint8_t debug_data = 0;
 	uint32_t corto = 20;
 	uint32_t largo = 200;
-	// register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x04, VANTTEC_CANLIB_BYTE, &debug_data, 1);
+	// register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x04, VANTTEC_CANLIB_BYTE, &debug_data, 1);
 	for (;;)
 	{
 		HAL_GPIO_WritePin(DEBUG_1_GPIO_Port, DEBUG_1_Pin, GPIO_PIN_SET);
-
-		osDelay(10);
+		HAL_GPIO_WritePin(DEBUG_3_GPIO_Port, DEBUG_3_Pin, GPIO_PIN_SET);
+		/*HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_SET); 
+		HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, SET);
+		HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, SET);
+		HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, SET);
+		HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, SET);
+		HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, SET);
+		*/
+		osDelay(1000);
 	}
 }
 void panelMov_task(void *args)
 {
-	uint8_t panelMov_data = 0;
+	uint8_t panelMov_data=0;
 	uint8_t last_panelMov_data = 0;
-	uint32_t corto = 20;
-	uint32_t largo = 200;
-	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x05, VANTTEC_CANLIB_BYTE, &panelMov_data, 1);
+	uint32_t corto = 600;
+	uint32_t largo = 1200;
 	uint8_t buf[8];
+	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x05, VANTTEC_CANLIB_BYTE, &panelMov_data, 1);
 	for (;;)
 	{
-		// if (panelMov_data != last_panelMov_data)
-		// {
-		if (panelMov_data == 0x10)
-		{
 			// Frenado
-			HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_SET);
-			HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_SET);
-			HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_SET);
-			HAL_GPIO_WritePin(DEBUG_3_GPIO_Port, DEBUG_3_Pin, GPIO_PIN_SET);
-			osDelay(largo);
-			HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(DEBUG_3_GPIO_Port, DEBUG_3_Pin, GPIO_PIN_RESET);
-			osDelay(largo);
-			buf[0] = 0x05;
-			buf[1] = 0x0;
-			update_table(VANTTEC_CAN_ID_PANELRX, 0x05, buf, 2);
-		}
-		else if (panelMov_data == 0x11)
-		{
-			// Reversa
-			HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
-			HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
-			HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
-			osDelay(corto);
-			HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
-			HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
-			HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
-			osDelay(largo);
-		}
-		else if (panelMov_data == 0x13)
-		{
+			if (panelMov_data == 0x10)
+			{
+				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_SET);
+				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_SET);
+			 	HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_SET);
+				buf[0] = 0x05;
+            	buf[1] = 0x0;
+            	update_table(VANTTEC_CAN_ID_PANEL_RX, 0x05, buf, 2); 
+			}
 			// Carro encendido
-			for (int i = 0; i < 3; i++)
+			else if (panelMov_data == 0x11)
 			{
-				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_SET);
-				osDelay(corto);
-				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_RESET);
-				osDelay(corto);
+				for (int i = 0; i < 2; i++)
+				{
+					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_SET);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_SET);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_SET);
+					HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_SET);
+					osDelay(corto);
+					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_RESET);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_RESET);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_RESET);
+					HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_RESET);
+					osDelay(corto);
+				}
+				HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_SET);
+				panelMov_data = 0x05;
 			}
-			HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_SET);
-		}
-		else if (panelMov_data == 0x14)
-		{
-			// Carro apagado
-			for (int i = 0; i < 2; i++)
+			//Carro apagado
+			else if (panelMov_data == 0x12)
 			{
-				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_SET);
-				osDelay(corto);
+				for (int i = 0; i < 3; i++)
+				{
+					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_SET);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_SET);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_SET);
+					HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_SET);
+					osDelay(corto);
+					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_RESET);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_RESET);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_RESET);
+					HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_RESET);
+					osDelay(corto);
+				}
+				HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, GPIO_PIN_RESET);
 				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_RESET);
-				osDelay(largo);
+				panelMov_data = 0x05;
 			}
-			// Apaga todo
-			HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_RESET);
-		}
-		else if (panelMov_data == 0x16)
-		{
-			// Vehiculo estacionario pero encendido
-			for (int i = 0; i < 3; i++)
-			{
+			//Carro estacionario
+			else if(panelMov_data == 0x13){
 				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_SET);
 				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_SET);
 				osDelay(corto);
 				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_RESET);
 				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_RESET);
-				osDelay(largo);
-			}
-		}
-
-		else if (panelMov_data == 0x17)
-		{
-			// Aceleracion
-			for (int i = 0; i < 2; i++)
-			{
-				HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, GPIO_PIN_SET);
 				osDelay(corto);
-				HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, GPIO_PIN_RESET);
-				osDelay(largo);
 			}
-		}
-		else if (panelMov_data == 0x18)
-		{
-			// Tiempo sin cambios
-			for (int i = 0; i < 2; i++)
+			//Aceleracion
+			else if(panelMov_data == 0x14){
+				for (int i = 0; i < 2; i++)
+				{
+					HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, GPIO_PIN_SET);
+					osDelay(corto);
+					HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, GPIO_PIN_RESET);
+					osDelay(corto);
+				}
+				panelMov_data = 0x05;
+			}
+			//Tiempo sin cambios
+			else if (panelMov_data == 0x15)
 			{
-				HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, GPIO_PIN_SET);
-				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_SET);
-				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_SET);
-				osDelay(corto);
+				for (int i = 0; i < 3; i++)
+				{
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_SET);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_SET);
+					HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_SET);
+					osDelay(corto);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_RESET);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_RESET);
+					HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_RESET);
+					osDelay(corto);
+				}
+				HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_RESET);
 				HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_RESET);
+				panelMov_data = 0x05;
+			}
+			//Reset
+			else if(panelMov_data == 0x0A)
+			{
+				HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_RESET);
 				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_RESET);
 				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_RESET);
-				osDelay(largo);
 			}
-			// Apaga todo
-			HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_RESET);
-		}
-		// 	last_panelMov_data = panelMov_data;
-		// }
 		osDelay(10);
 	}
 }
 void panelDet_task(void *args)
 {
-	uint8_t panelDet_data;
+	uint8_t panelDet_data = 0;
 	uint8_t last_panelDet_data = 0;
-	uint32_t corto = 20;
-	uint32_t largo = 200;
-	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x06, VANTTEC_CANLIB_BYTE, &panelDet_data, 1);
+	uint32_t corto = 600;
+	uint32_t largo = 1200;
+	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x06, VANTTEC_CANLIB_BYTE, &panelDet_data, 1);
 	for (;;)
 	{
 		if (panelDet_data != last_panelDet_data)
 		{
-			// Giro Prominente  Derecha
+			// Giro Prominente Derecha
 			if (panelDet_data == 0x10)
 			{
-
-				for (int i = 0; i < 2; i++)
+				for (int i = 0; i < 4; i++)
 				{
 					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
+					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_SET);
 					osDelay(corto);
 					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
+					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_RESET);
 					osDelay(largo);
 				}
+				panelDet_data = 0x05;
 			}
 			// Giro Prominente Izquierda
 			else if (panelDet_data == 0x11)
 			{
-				for (int i = 0; i < 3; i++)
+				for (int i = 0; i < 4; i++)
 				{
 					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
+					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_SET);
 					osDelay(corto);
 					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
+					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_RESET);
 					osDelay(largo);
 				}
+				panelDet_data = 0x05;
 			}
 
 			else if (panelDet_data == 0x12)
 			{
 				// Gran tráfico humano
-				for (int i = 0; i < 3; i++)
-				{
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
 					osDelay(largo);
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
 					osDelay(largo);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
 					osDelay(corto);
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
 					osDelay(largo);
-				}
 			}
 			else if (panelDet_data == 0x13)
 			{
-				// Giro repentino
+				// Giro repentino derecha
 				for (int i = 0; i < 2; i++)
 				{
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
 					osDelay(corto);
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
 					osDelay(largo);
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
 					osDelay(corto);
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
 					osDelay(largo);
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
 					osDelay(largo);
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
 					osDelay(largo);
 				}
+				panelDet_data = 0x05;
 			}
-			last_panelDet_data = panelDet_data;
+			else if (panelDet_data == 0x14)
+			{
+				// Giro repentino izquierda
+				for (int i = 0; i < 2; i++)
+				{
+					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
+					osDelay(corto);
+					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L2D_Pin, RESET);
+					osDelay(largo);
+					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
+					osDelay(corto);
+					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
+					osDelay(largo);
+					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
+					osDelay(largo);
+					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
+					osDelay(largo);
+				}
+				panelDet_data = 0x05;
+			}
+			//Reset
+			else if (panelDet_data == 0x0A)
+			{
+				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
+				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
+			}
 		}
 		osDelay(10);
 	}
@@ -272,7 +331,7 @@ void driveModeStatusFlag_task(void *args)
 	// Si está en modo autónomo(10) se prenderá el led indicador 1, si está en manual se apagará este led.
 	uint8_t driveModeStatusFlag_data = 0;
 	uint8_t last_driveModeStatusFlag_data = 0;
-	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x07, VANTTEC_CANLIB_BYTE, &driveModeStatusFlag_data, 1);
+	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x07, VANTTEC_CANLIB_BYTE, &driveModeStatusFlag_data, 1);
 	for (;;)
 	{
 		if (driveModeStatusFlag_data != last_driveModeStatusFlag_data)
@@ -282,7 +341,6 @@ void driveModeStatusFlag_task(void *args)
 				// Autonomo
 				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, SET);
 			}
-
 			else
 			{
 				// Manual
@@ -299,9 +357,9 @@ void reverseSwitchStatusFlag_task(void *args)
 	// Si el carro va de reversa(10) se prendera el led indicador 2, si va de frente, se apagara
 	uint8_t reverseSwitchStatusFlag_data = 0;
 	uint8_t last_reverseSwitchStatusFlag_data = 0;
-	uint32_t corto = 20;
-	uint32_t largo = 200;
-	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x08, VANTTEC_CANLIB_BYTE, &reverseSwitchStatusFlag_data, 1);
+	uint32_t corto = 600;
+	uint32_t largo = 1200;
+	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x08, VANTTEC_CANLIB_BYTE, &reverseSwitchStatusFlag_data, 1);
 	for (;;)
 	{
 		//		if (last_reverseSwitchStatusFlag_data != reverseSwitchStatusFlag_data)
@@ -333,39 +391,57 @@ void safetyModeAlertFlag_task(void *args)
 {
 	uint8_t safetyModeAlertFlag_data = 0;
 	uint8_t last_safetyModeAlertFlag_data = 0;
-	uint32_t corto = 20;
-	uint32_t largo = 200;
-	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x09, VANTTEC_CANLIB_BYTE, &safetyModeAlertFlag_data, 1);
+	uint32_t corto = 600;
+	uint32_t largo = 1200;
+	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x09, VANTTEC_CANLIB_BYTE, &safetyModeAlertFlag_data, 1);
 	for (;;)
 	{
 		if (last_safetyModeAlertFlag_data != safetyModeAlertFlag_data)
 		{
-
 			if (safetyModeAlertFlag_data == 0x10)
 			{
-				// Mientras este en safety mode, parpadeara uno si, uno no
-				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, SET);
-				HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, RESET);
-				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, SET);
-				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, RESET);
-				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, SET);
+				// Mientras este en safety mode, parpadeara TODO
+				//On
+				HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_SET);
+				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_SET);
+				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_SET);
+				HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_SET);
+				HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, GPIO_PIN_SET);
+				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, GPIO_PIN_SET);
+				HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, GPIO_PIN_SET);
+				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, GPIO_PIN_SET);
+				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, GPIO_PIN_SET);
+				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, GPIO_PIN_SET);
+				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_SET);
 				osDelay(largo);
-				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, RESET);
-				HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, SET);
-				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
-				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, SET);
-				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
+				HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_RESET);
 				osDelay(largo);
 			}
-			else
+			else if (safetyModeAlertFlag_data == 0x11)
 			{
-				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, RESET);
-				HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, RESET);
-				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
-				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, RESET);
-				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
+				//Off
+				HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(L5D_GPIO_Port, L5D_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_RESET);
 			}
-			last_safetyModeAlertFlag_data = safetyModeAlertFlag_data;
 		}
 		osDelay(10);
 	}
@@ -374,9 +450,9 @@ void objectNotificationFlag_task(void *args)
 {
 	uint8_t objectNotificationFlag_data = 0;
 	uint8_t last_objectNotificationFlag_data = 0;
-	uint32_t corto = 20;
-	uint32_t largo = 200;
-	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x10, VANTTEC_CANLIB_BYTE, &objectNotificationFlag_data, 1);
+	uint32_t corto = 600;
+	uint32_t largo = 1200;
+	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x10, VANTTEC_CANLIB_BYTE, &objectNotificationFlag_data, 1);
 	for (;;)
 	{
 		if (last_objectNotificationFlag_data != objectNotificationFlag_data)
@@ -384,23 +460,27 @@ void objectNotificationFlag_task(void *args)
 			if (objectNotificationFlag_data == 0x10)
 			{
 				// Si hay un objeto en frente cerca se prende por unos segundos
-				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, SET);
-				osDelay(largo * 3);
-				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, RESET);
+				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, SET);
+				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
+				osDelay(corto);
+				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
 				osDelay(largo);
 			}
 			else if (objectNotificationFlag_data == 0x11)
 			{
 				// Si hay un objeto lejos parpadea
-				for (int i = 0; i < 4; i++)
-				{
-					HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, SET);
-					osDelay(corto);
-					HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, RESET);
-					osDelay(largo);
-				}
+				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, SET);
+				osDelay(corto);
+				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
+				osDelay(largo);
 			}
-			last_objectNotificationFlag_data = objectNotificationFlag_task;
+			else if(objectNotificationFlag_data == 0x12)
+			{
+				//Si no detecta nada, reset
+				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
+				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
+			}
+
 		}
 		osDelay(10);
 	}
@@ -409,9 +489,9 @@ void recognizeTrafficSignFlag_task(void *args)
 {
 	uint8_t recognizeTrafficSignFlag_data = 0;
 	uint8_t last_recognizeTrafficSignFlag_data = 0;
-	uint32_t corto = 20;
-	uint32_t largo = 200;
-	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x11, VANTTEC_CANLIB_BYTE, &recognizeTrafficSignFlag_data, 1);
+	uint32_t corto = 600;
+	uint32_t largo = 1200;
+	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x11, VANTTEC_CANLIB_BYTE, &recognizeTrafficSignFlag_data, 1);
 	for (;;)
 	{
 		if (last_recognizeTrafficSignFlag_data != recognizeTrafficSignFlag_data)
@@ -420,23 +500,20 @@ void recognizeTrafficSignFlag_task(void *args)
 			{
 				// Si es un STOP Sign se prende
 				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, SET);
-				osDelay(largo * 3);
-				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
-				osDelay(largo);
 			}
 			else if (recognizeTrafficSignFlag_data == 0x11)
 			{
 				// Si es un Pedestrian Crossing Sign, parpadea
-				for (int i = 0; i < 4; i++)
-				{
-					HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, SET);
-					osDelay(corto);
-					HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
-					osDelay(largo);
-				}
-				osDelay(10);
+				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, SET);
+				osDelay(corto);
+				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
+				osDelay(largo);
 			}
-			last_recognizeTrafficSignFlag_data = recognizeTrafficSignFlag_data;
+			else if (recognizeTrafficSignFlag_data == 0x0A)
+			{
+				//Reset
+				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
+			}
 		}
 		osDelay(10);
 	}
@@ -445,9 +522,9 @@ void detectLaneFlag_task(void *args)
 {
 	uint8_t detectLaneFlag_data = 0;
 	uint8_t last_detectLaneFlag_data = 0;
-	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x12, VANTTEC_CANLIB_BYTE, &detectLaneFlag_data, 1);
-	uint32_t corto = 20;
-	uint32_t largo = 200;
+	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x12, VANTTEC_CANLIB_BYTE, &detectLaneFlag_data, 1);
+	uint32_t corto = 600;
+	uint32_t largo = 1200;
 	for (;;)
 	{
 		if (last_detectLaneFlag_data != detectLaneFlag_data)
@@ -519,7 +596,6 @@ void init_panel_task()
 	safetyModeAlertFlagTaskHandle = osThreadNew(safetyModeAlertFlag_task, NULL, &safetyModeAlertFlagTaskAttributes);
 	recognizeTrafficSignFlagTaskHandle = osThreadNew(recognizeTrafficSignFlag_task, NULL, &recognizeTrafficSignFlagTaskAttributes);
 	objectNotificationFlagTaskHandle = osThreadNew(objectNotificationFlag_task, NULL, &objectNotificationFlagTaskAttributes);
-	detectLaneFlagTaskHandle = osThreadNew(detectLaneFlag_task, NULL, &detectLaneFlagTaskAttributes);
 	multimeterTaskHandle = osThreadNew(multimeter_task, NULL, &multimeterAttributes);
 	sendtxTaskHandle = osThreadNew(send_tx_task, NULL, &sendtxAttributes);
 }
