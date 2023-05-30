@@ -23,7 +23,7 @@ const osThreadAttr_t modeTaskAttributes = {
     .name = "mode",
     .stack_size = 128 * 4};
     
-#define MAX_VELOCITY 72 //10km/h (255-35km/h)
+#define MAX_VELOCITY 150 //10km/h (255-35km/h)
 void pot_task(void *args)
 {
     uint8_t pot_data = 0;
@@ -37,6 +37,9 @@ void pot_task(void *args)
             if (pot_data > MAX_VELOCITY)
             {
                 pot_data = MAX_VELOCITY;
+            }
+            else if(pot_data==0){
+            	pot_data=1;
             }
             // Change potentiometer
             writeWiper(pot_data);
