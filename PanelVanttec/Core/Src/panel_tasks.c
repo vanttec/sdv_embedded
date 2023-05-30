@@ -556,7 +556,7 @@ void multimeter_task(void *args)
 {
 	uint8_t multimeter_data = 0;
 	uint8_t buf[8];
-	register_canlib_rx(VANTTEC_CAN_ID_PANELRX, 0x13, VANTTEC_CANLIB_BYTE, &multimeter_data, 1);
+	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x13, VANTTEC_CANLIB_BYTE, &multimeter_data, 1);
 	for (;;)
 	{
 		if (multimeter_data == 0x1)
@@ -564,7 +564,7 @@ void multimeter_task(void *args)
 			voltage_flag = 1;
 			buf[0] = 0x13;
 			buf[1] = 3;
-			update_table(VANTTEC_CAN_ID_PANELRX, 0x13, buf, 2);
+			update_table(VANTTEC_CAN_ID_PANEL_RX, 0x13, buf, 2);
 		}
 		osDelay(10);
 	}

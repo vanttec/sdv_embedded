@@ -28,7 +28,7 @@ void pot_task(void *args)
 {
     uint8_t pot_data = 0;
     uint8_t last_pot_data = 0;
-    register_canlib_rx(VANTTEC_CAN_ID_THROTTLERX, 0x05, VANTTEC_CANLIB_BYTE, &pot_data, 1);
+    register_canlib_rx(VANTTEC_CAN_ID_THROTTLE_RX, 0x05, VANTTEC_CANLIB_BYTE, &pot_data, 1);
 
     for (;;)
     {
@@ -52,7 +52,7 @@ void motor_task(void *args)
 {
     uint8_t motor_data = 0;
     uint8_t last_motor_data = 0;
-    register_canlib_rx(VANTTEC_CAN_ID_THROTTLERX, 0x06, VANTTEC_CANLIB_BYTE, &motor_data, 1);
+    register_canlib_rx(VANTTEC_CAN_ID_THROTTLE_RX, 0x06, VANTTEC_CANLIB_BYTE, &motor_data, 1);
 
     for (;;)
     {
@@ -76,7 +76,7 @@ void mode_task(void *args)
 {
     uint8_t mode_data = 0;
     uint8_t last_mode_data = 0;
-    register_canlib_rx(VANTTEC_CAN_ID_THROTTLERX, 0x07, VANTTEC_CANLIB_BYTE, &mode_data, 1);
+    register_canlib_rx(VANTTEC_CAN_ID_THROTTLE_RX, 0x07, VANTTEC_CANLIB_BYTE, &mode_data, 1);
 
     for (;;)
     {
