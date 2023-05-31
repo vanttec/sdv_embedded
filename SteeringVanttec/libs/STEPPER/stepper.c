@@ -6,7 +6,7 @@ volatile stepper braking_stepper;
 volatile stepper steering_stepper;
 
 const static float STEER_RATIO = 1.5; // Stepper to steering wheel ratio
-const static uint16_t MAX_STEERING_ANGLE = 300;
+const static uint16_t MAX_STEERING_ANGLE = 500;
 
 void configure_steering()
 {
@@ -18,7 +18,8 @@ void configure_steering()
 	steering_stepper.current_angle = 0;
 	steering_stepper.STEP_ANGLE = 0.9;
 
-	htim2.Instance->CCR1 = 50000;	// For duty cycle of 50%
+	htim2.Instance->CCR1 = 2500;	// For duty cycle of 50%
+	HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_SET);
 }
 
 void configure_braking()
@@ -30,6 +31,7 @@ void configure_braking()
 	//braking_stepper.current_angle = 0;
 
 	//htim2.Instance->CCR1 = 500;	// For duty cycle of 50%
+	HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_SET);
 }
 
 void start(const stepper_type stepper)
@@ -38,13 +40,13 @@ void start(const stepper_type stepper)
 	{
 		case STEERING:
 			HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_SET);
 			steering_stepper.is_active = 1;
+			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_SET);
 			break;
 		case BRAKING:
 			HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_SET);
 			braking_stepper.is_active = 1;
+			HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
 			break;
 		default:
 			break;
@@ -58,10 +60,11 @@ void pause(const stepper_type stepper)
 		case STEERING:
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 			steering_stepper.is_exec_started = 0;
-			break;
+			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_SET);			break;
 		case BRAKING:
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
 			braking_stepper.is_exec_started = 0;
+			HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
 			break;
 		default:
 			break;
@@ -74,22 +77,24 @@ void stop(const stepper_type stepper)
 	{
 		case STEERING:
 			HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_SET);
-			HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_RESET);
+			//HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_RESET);
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 			steering_stepper.is_active = 0;
 			steering_stepper.direction = IDLE;
 			steering_stepper.is_exec_started = 0;
+			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_SET);
 			break;
 		case BRAKING:
 			// For the break, the stop has a different meaning
 			brake_by_setpoint(1);
 
 			HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_SET);
-			HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_RESET);
+			//HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_RESET);
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
 			braking_stepper.is_active = 0;
 			braking_stepper.direction = IDLE;
 			braking_stepper.is_exec_started = 0;
+			HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
 
 			break;
 		default:

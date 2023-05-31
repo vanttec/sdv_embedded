@@ -10,6 +10,7 @@
 
 void steering_task();
 void braking_task();
+void gpios_task();
 void init_stepper_tasks();
 void init_stepper_tasks();
 

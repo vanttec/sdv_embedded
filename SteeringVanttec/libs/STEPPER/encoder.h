@@ -13,7 +13,7 @@
 typedef struct {
 	uint32_t steps;
 	uint32_t revolutions;
-	uint32_t resolution;
+	uint32_t bit_resolution;
 
 	float 	absolute_angle;
 	float 	angle;			//0 - 360 degrees

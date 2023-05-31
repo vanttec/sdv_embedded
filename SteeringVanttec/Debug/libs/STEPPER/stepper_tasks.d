@@ -33,6 +33,7 @@ libs/STEPPER/stepper_tasks.o: ../libs/STEPPER/stepper_tasks.c \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
+ ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_generic_ids.h \
  ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.h \
  ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
@@ -83,6 +84,7 @@ libs/STEPPER/stepper_tasks.o: ../libs/STEPPER/stepper_tasks.c \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
+../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_generic_ids.h:
 ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.h:
 ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:

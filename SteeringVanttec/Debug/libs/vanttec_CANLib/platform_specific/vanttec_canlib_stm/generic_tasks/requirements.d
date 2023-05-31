@@ -1,19 +1,5 @@
-libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o: \
- ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.c \
- ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.h \
- ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_generic_ids.h \
- ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
- ../Core/Inc/FreeRTOSConfig.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
+libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o: \
+ ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.c \
  ../Core/Inc/main.h ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  ../Core/Inc/stm32l4xx_hal_conf.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h \
@@ -47,21 +33,21 @@ libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
- ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.h:
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_generic_ids.h:
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.h:
-../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
-../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
-../Core/Inc/FreeRTOSConfig.h:
-../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
-../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
-../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
-../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h:
-../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h:
-../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
-../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
-../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
+ ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_generic_ids.h \
+ ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.h \
+ ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
+ ../Core/Inc/FreeRTOSConfig.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
@@ -97,3 +83,17 @@ libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.o
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
+../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_generic_ids.h:
+../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.h:
+../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.h:
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
+../Core/Inc/FreeRTOSConfig.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
