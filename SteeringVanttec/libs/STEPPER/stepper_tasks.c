@@ -18,7 +18,7 @@
 1: heartbit
 2: Drive Mode: 0: manual
 3: Stepper Fault
-4: brake
+4: brake/em stop
 5: braking ON/OFF/pause
 6: steering ON/OFF/pause
 
@@ -70,7 +70,9 @@ void steering_task()
 				stop(STEERING);
 				init = 0;
 			}
+			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_RESET);
 		} else {
+			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
 			stop(STEERING);
 			init = 0;
 		}
