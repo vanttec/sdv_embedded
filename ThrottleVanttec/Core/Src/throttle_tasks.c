@@ -22,7 +22,10 @@ osThreadId_t modeTaskHandle;
 const osThreadAttr_t modeTaskAttributes = {
     .name = "mode",
     .stack_size = 128 * 4};
-    
+osThreadId_t brakeTaskHandle;
+const osThreadAttr_t brakeTaskAttributes = {
+    .name = "brake",
+    .stack_size = 128 * 4};
 #define MAX_VELOCITY 150 //10km/h (255-35km/h)
 void pot_task(void *args)
 {
@@ -74,7 +77,7 @@ void motor_task(void *args)
 
 void mode_task(void *args)
 {
-    uint8_t mode_data = 0;
+	uint8_t mode_data = 0;
     uint8_t last_mode_data = 0;
     register_canlib_rx(VANTTEC_CAN_ID_THROTTLE_RX, 0x07, VANTTEC_CANLIB_BYTE, &mode_data, 1);
 
@@ -95,10 +98,36 @@ void mode_task(void *args)
         osDelay(10);
     }
 }
+void brake_task(void *args)
+{
+	GPIO_PinState brake_status;
+	uint8_t prev_brake = 2;
+	for(;;)
+	{
+
+		brake_status = HAL_GPIO_ReadPin(hand_brake_GPIO_Port, hand_brake_Pin);
+
+		if(brake_status && prev_brake==0){
+
+				canlib_send_byte(VANTTEC_CAN_ID_FRENO_MANUAL, 1);
+
+		}
+		else{
+			if(prev_brake == 1 || prev_brake == 2){
+				canlib_send_byte(VANTTEC_CAN_ID_FRENO_MANUAL, 0);
+			}
+		}
+		prev_brake = brake_status;
+
+		osDelay(10);
+	}
+
+}
 
 void init_throttle_tasks()
 {
     potTaskHandle = osThreadNew(pot_task, NULL, &potTaskAttributes);
     motorTaskHandle = osThreadNew(motor_task, NULL, &motorTaskAttributes);
     modeTaskHandle = osThreadNew(mode_task, NULL, &modeTaskAttributes);
+    brakeTaskHandle = osThreadNew(brake_task, NULL, &brakeTaskAttributes);
 }

@@ -5594,7 +5594,7 @@ LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
                 0x0000000008000000                g_pfnVectors
                 0x000000000800018c                . = ALIGN (0x4)
 
-.text           0x0000000008000190     0x99f4
+.text           0x0000000008000190     0x9a74
                 0x0000000008000190                . = ALIGN (0x4)
  *(.text)
  .text          0x0000000008000190       0x40 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
@@ -6210,328 +6210,326 @@ LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
                 0x0000000008008a78       0x10 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
                 0x0000000008008a78                canlib_init_generic_tasks
  .text.emergencystop_task
-                0x0000000008008a88       0x42 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
+                0x0000000008008a88       0x58 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
                 0x0000000008008a88                emergencystop_task
- *fill*         0x0000000008008aca        0x2 
- .text.hb_task  0x0000000008008acc       0x30 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
-                0x0000000008008acc                hb_task
+ .text.hb_task  0x0000000008008ae0       0x30 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
+                0x0000000008008ae0                hb_task
  .text.drivemode_task
-                0x0000000008008afc       0x60 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
-                0x0000000008008afc                drivemode_task
+                0x0000000008008b10       0x8c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
+                0x0000000008008b10                drivemode_task
  .text.reverse_task
-                0x0000000008008b5c       0x42 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
-                0x0000000008008b5c                reverse_task
+                0x0000000008008b9c       0x58 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
+                0x0000000008008b9c                reverse_task
  .text.frenomanual_task
-                0x0000000008008b9e       0x42 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
-                0x0000000008008b9e                frenomanual_task
+                0x0000000008008bf4       0x58 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
+                0x0000000008008bf4                frenomanual_task
  .text.driverfault_task
-                0x0000000008008be0       0x46 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
-                0x0000000008008be0                driverfault_task
- *fill*         0x0000000008008c26        0x2 
+                0x0000000008008c4c       0x5c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
+                0x0000000008008c4c                driverfault_task
  .text.init_requirements_task
-                0x0000000008008c28       0xb0 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
-                0x0000000008008c28                init_requirements_task
+                0x0000000008008ca8       0xb0 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
+                0x0000000008008ca8                init_requirements_task
  .text.vanttec_canlib_error_handler
-                0x0000000008008cd8        0x6 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
-                0x0000000008008cd8                vanttec_canlib_error_handler
- *fill*         0x0000000008008cde        0x2 
+                0x0000000008008d58        0x6 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
+                0x0000000008008d58                vanttec_canlib_error_handler
+ *fill*         0x0000000008008d5e        0x2 
  .text.init_canlib
-                0x0000000008008ce0       0xdc ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
-                0x0000000008008ce0                init_canlib
+                0x0000000008008d60       0xdc ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
+                0x0000000008008d60                init_canlib
  .text.init_canlib_rx
-                0x0000000008008dbc       0x70 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
-                0x0000000008008dbc                init_canlib_rx
+                0x0000000008008e3c       0x70 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+                0x0000000008008e3c                init_canlib_rx
  .text.is_valid_length
-                0x0000000008008e2c       0x74 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
-                0x0000000008008e2c                is_valid_length
+                0x0000000008008eac       0x74 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+                0x0000000008008eac                is_valid_length
  .text.parse_data
-                0x0000000008008ea0       0x88 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
-                0x0000000008008ea0                parse_data
+                0x0000000008008f20       0x88 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+                0x0000000008008f20                parse_data
  .text.update_table
-                0x0000000008008f28      0x124 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
-                0x0000000008008f28                update_table
+                0x0000000008008fa8      0x124 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+                0x0000000008008fa8                update_table
  .text.register_canlib_rx
-                0x000000000800904c       0xd8 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
-                0x000000000800904c                register_canlib_rx
+                0x00000000080090cc       0xd8 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+                0x00000000080090cc                register_canlib_rx
  .text.can_rx_task
-                0x0000000008009124       0xec ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
-                0x0000000008009124                can_rx_task
+                0x00000000080091a4       0xec ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+                0x00000000080091a4                can_rx_task
  .text.can_rx_queue_task
-                0x0000000008009210       0x38 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
-                0x0000000008009210                can_rx_queue_task
+                0x0000000008009290       0x38 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+                0x0000000008009290                can_rx_queue_task
  .text.init_canlib_tx
-                0x0000000008009248       0x48 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
-                0x0000000008009248                init_canlib_tx
+                0x00000000080092c8       0x48 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+                0x00000000080092c8                init_canlib_tx
  .text.canlib_tx_update
-                0x0000000008009290       0x90 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
-                0x0000000008009290                canlib_tx_update
+                0x0000000008009310       0x90 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+                0x0000000008009310                canlib_tx_update
  .text.canlib_tx_task
-                0x0000000008009320       0x14 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
-                0x0000000008009320                canlib_tx_task
+                0x00000000080093a0       0x14 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+                0x00000000080093a0                canlib_tx_task
  .text.canlib_queue_tx
-                0x0000000008009334       0x54 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
-                0x0000000008009334                canlib_queue_tx
+                0x00000000080093b4       0x54 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+                0x00000000080093b4                canlib_queue_tx
  .text.canlib_send_debug_string
-                0x0000000008009388       0x9c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
-                0x0000000008009388                canlib_send_debug_string
+                0x0000000008009408       0x9c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+                0x0000000008009408                canlib_send_debug_string
  .text.canlib_send_byte
-                0x0000000008009424       0x32 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
-                0x0000000008009424                canlib_send_byte
+                0x00000000080094a4       0x32 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+                0x00000000080094a4                canlib_send_byte
  .text.canlib_send_float
-                0x0000000008009456       0x34 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
-                0x0000000008009456                canlib_send_float
+                0x00000000080094d6       0x34 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+                0x00000000080094d6                canlib_send_float
  .text.vanttec_ntohl
-                0x000000000800948a       0x18 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
-                0x000000000800948a                vanttec_ntohl
+                0x000000000800950a       0x18 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+                0x000000000800950a                vanttec_ntohl
  .text.vanttec_ntohs
-                0x00000000080094a2       0x1c ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
-                0x00000000080094a2                vanttec_ntohs
+                0x0000000008009522       0x1c ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+                0x0000000008009522                vanttec_ntohs
  .text.can_pack_byte
-                0x00000000080094be       0x3c ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
-                0x00000000080094be                can_pack_byte
+                0x000000000800953e       0x3c ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+                0x000000000800953e                can_pack_byte
  .text.can_parse_byte
-                0x00000000080094fa       0x28 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
-                0x00000000080094fa                can_parse_byte
+                0x000000000800957a       0x28 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+                0x000000000800957a                can_parse_byte
  .text.can_pack_float
-                0x0000000008009522       0x34 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
-                0x0000000008009522                can_pack_float
- *fill*         0x0000000008009556        0x2 
+                0x00000000080095a2       0x34 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+                0x00000000080095a2                can_pack_float
+ *fill*         0x00000000080095d6        0x2 
  .text.can_parse_float
-                0x0000000008009558       0x44 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
-                0x0000000008009558                can_parse_float
+                0x00000000080095d8       0x44 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+                0x00000000080095d8                can_parse_float
  .text.can_parse_short
-                0x000000000800959c       0x2c ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
-                0x000000000800959c                can_parse_short
+                0x000000000800961c       0x2c ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+                0x000000000800961c                can_parse_short
  .text.can_pack_long
-                0x00000000080095c8       0x40 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
-                0x00000000080095c8                can_pack_long
+                0x0000000008009648       0x40 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+                0x0000000008009648                can_pack_long
  .text.can_parse_long
-                0x0000000008009608       0x32 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
-                0x0000000008009608                can_parse_long
+                0x0000000008009688       0x32 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+                0x0000000008009688                can_parse_long
  .text._ZSt5ldexpfi
-                0x000000000800963a       0x24 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
-                0x000000000800963a                std::ldexp(float, int)
- *fill*         0x000000000800965e        0x2 
+                0x00000000080096ba       0x24 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
+                0x00000000080096ba                std::ldexp(float, int)
+ *fill*         0x00000000080096de        0x2 
  .text.deserialize_float
-                0x0000000008009660       0x6c ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
-                0x0000000008009660                deserialize_float
+                0x00000000080096e0       0x6c ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
+                0x00000000080096e0                deserialize_float
  .text.deserialize_short
-                0x00000000080096cc       0x32 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
-                0x00000000080096cc                deserialize_short
+                0x000000000800974c       0x32 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
+                0x000000000800974c                deserialize_short
  .text.deserialize_long
-                0x00000000080096fe       0x4e ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
-                0x00000000080096fe                deserialize_long
+                0x000000000800977e       0x4e ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
+                0x000000000800977e                deserialize_long
  .text.serialize_float
-                0x000000000800974c       0x60 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANSerialization.o
-                0x000000000800974c                serialize_float
+                0x00000000080097cc       0x60 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANSerialization.o
+                0x00000000080097cc                serialize_float
  .text.serialize_long
-                0x00000000080097ac       0x42 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANSerialization.o
-                0x00000000080097ac                serialize_long
- .text.ldexpf   0x00000000080097ee       0x4c c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_ldexp.o)
-                0x00000000080097ee                ldexpf
- *fill*         0x000000000800983a        0x2 
- .text.scalbnf  0x000000000800983c       0xe4 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_scalbn.o)
-                0x000000000800983c                scalbnf
- .text.finitef  0x0000000008009920       0x1a c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_finite.o)
-                0x0000000008009920                finitef
- *fill*         0x000000000800993a        0x2 
- .text.__errno  0x000000000800993c        0xc c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-errno.o)
-                0x000000000800993c                __errno
+                0x000000000800982c       0x42 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANSerialization.o
+                0x000000000800982c                serialize_long
+ .text.ldexpf   0x000000000800986e       0x4c c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_ldexp.o)
+                0x000000000800986e                ldexpf
+ *fill*         0x00000000080098ba        0x2 
+ .text.scalbnf  0x00000000080098bc       0xe4 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_scalbn.o)
+                0x00000000080098bc                scalbnf
+ .text.finitef  0x00000000080099a0       0x1a c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_finite.o)
+                0x00000000080099a0                finitef
+ *fill*         0x00000000080099ba        0x2 
+ .text.__errno  0x00000000080099bc        0xc c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-errno.o)
+                0x00000000080099bc                __errno
  .text.__libc_init_array
-                0x0000000008009948       0x48 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-init.o)
-                0x0000000008009948                __libc_init_array
+                0x00000000080099c8       0x48 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-init.o)
+                0x00000000080099c8                __libc_init_array
  .text.__retarget_lock_acquire_recursive
-                0x0000000008009990        0x2 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lock.o)
-                0x0000000008009990                __retarget_lock_acquire_recursive
+                0x0000000008009a10        0x2 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lock.o)
+                0x0000000008009a10                __retarget_lock_acquire_recursive
  .text.__retarget_lock_release_recursive
-                0x0000000008009992        0x2 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lock.o)
-                0x0000000008009992                __retarget_lock_release_recursive
- .text.memcpy   0x0000000008009994       0x1c c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memcpy-stub.o)
-                0x0000000008009994                memcpy
- .text.memset   0x00000000080099b0       0x10 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memset.o)
-                0x00000000080099b0                memset
- .text._free_r  0x00000000080099c0       0x98 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-freer.o)
-                0x00000000080099c0                _free_r
+                0x0000000008009a12        0x2 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lock.o)
+                0x0000000008009a12                __retarget_lock_release_recursive
+ .text.memcpy   0x0000000008009a14       0x1c c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memcpy-stub.o)
+                0x0000000008009a14                memcpy
+ .text.memset   0x0000000008009a30       0x10 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memset.o)
+                0x0000000008009a30                memset
+ .text._free_r  0x0000000008009a40       0x98 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-freer.o)
+                0x0000000008009a40                _free_r
  .text.cleanup_glue
-                0x0000000008009a58       0x1a c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-reent.o)
-                0x0000000008009a58                cleanup_glue
- *fill*         0x0000000008009a72        0x2 
+                0x0000000008009ad8       0x1a c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-reent.o)
+                0x0000000008009ad8                cleanup_glue
+ *fill*         0x0000000008009af2        0x2 
  .text._reclaim_reent
-                0x0000000008009a74       0xb8 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-reent.o)
-                0x0000000008009a74                _reclaim_reent
- .text.strncpy  0x0000000008009b2c       0x26 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strncpy.o)
-                0x0000000008009b2c                strncpy
- *fill*         0x0000000008009b52        0x2 
+                0x0000000008009af4       0xb8 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-reent.o)
+                0x0000000008009af4                _reclaim_reent
+ .text.strncpy  0x0000000008009bac       0x26 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strncpy.o)
+                0x0000000008009bac                strncpy
+ *fill*         0x0000000008009bd2        0x2 
  .text.__malloc_lock
-                0x0000000008009b54        0xc c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mlock.o)
-                0x0000000008009b54                __malloc_lock
+                0x0000000008009bd4        0xc c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mlock.o)
+                0x0000000008009bd4                __malloc_lock
  .text.__malloc_unlock
-                0x0000000008009b60        0xc c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mlock.o)
-                0x0000000008009b60                __malloc_unlock
+                0x0000000008009be0        0xc c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mlock.o)
+                0x0000000008009be0                __malloc_unlock
  *(.glue_7)
- .glue_7        0x0000000008009b6c        0x0 linker stubs
+ .glue_7        0x0000000008009bec        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x0000000008009b6c        0x0 linker stubs
+ .glue_7t       0x0000000008009bec        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x0000000008009b6c        0x0 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .eh_frame      0x0000000008009bec        0x0 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
  *(.init)
- .init          0x0000000008009b6c        0x4 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crti.o
-                0x0000000008009b6c                _init
- .init          0x0000000008009b70        0x8 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtn.o
+ .init          0x0000000008009bec        0x4 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crti.o
+                0x0000000008009bec                _init
+ .init          0x0000000008009bf0        0x8 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtn.o
  *(.fini)
- .fini          0x0000000008009b78        0x4 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crti.o
-                0x0000000008009b78                _fini
- .fini          0x0000000008009b7c        0x8 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtn.o
-                0x0000000008009b84                . = ALIGN (0x4)
-                0x0000000008009b84                _etext = .
+ .fini          0x0000000008009bf8        0x4 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crti.o
+                0x0000000008009bf8                _fini
+ .fini          0x0000000008009bfc        0x8 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtn.o
+                0x0000000008009c04                . = ALIGN (0x4)
+                0x0000000008009c04                _etext = .
 
-.vfp11_veneer   0x0000000008009b84        0x0
- .vfp11_veneer  0x0000000008009b84        0x0 linker stubs
+.vfp11_veneer   0x0000000008009c04        0x0
+ .vfp11_veneer  0x0000000008009c04        0x0 linker stubs
 
-.v4_bx          0x0000000008009b84        0x0
- .v4_bx         0x0000000008009b84        0x0 linker stubs
+.v4_bx          0x0000000008009c04        0x0
+ .v4_bx         0x0000000008009c04        0x0 linker stubs
 
-.iplt           0x0000000008009b84        0x0
- .iplt          0x0000000008009b84        0x0 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+.iplt           0x0000000008009c04        0x0
+ .iplt          0x0000000008009c04        0x0 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.rodata         0x0000000008009b84      0x510
-                0x0000000008009b84                . = ALIGN (0x4)
+.rodata         0x0000000008009c04      0x510
+                0x0000000008009c04                . = ALIGN (0x4)
  *(.rodata)
- .rodata        0x0000000008009b84        0xc ./Core/Src/main.o
- .rodata        0x0000000008009b90       0xb8 ./Core/Src/panel_tasks.o
- .rodata        0x0000000008009c48        0x5 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
- *fill*         0x0000000008009c4d        0x3 
- .rodata        0x0000000008009c50        0xd ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
- *fill*         0x0000000008009c5d        0x3 
- .rodata        0x0000000008009c60       0x18 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
- .rodata        0x0000000008009c78       0x5e ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
- *fill*         0x0000000008009cd6        0x2 
- .rodata        0x0000000008009cd8       0x1c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
- .rodata        0x0000000008009cf4        0xa ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+ .rodata        0x0000000008009c04        0xc ./Core/Src/main.o
+ .rodata        0x0000000008009c10       0xb8 ./Core/Src/panel_tasks.o
+ .rodata        0x0000000008009cc8        0x5 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ *fill*         0x0000000008009ccd        0x3 
+ .rodata        0x0000000008009cd0        0xd ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ *fill*         0x0000000008009cdd        0x3 
+ .rodata        0x0000000008009ce0       0x18 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
+ .rodata        0x0000000008009cf8       0x5e ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
+ *fill*         0x0000000008009d56        0x2 
+ .rodata        0x0000000008009d58       0x1c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+ .rodata        0x0000000008009d74        0xa ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
  *(.rodata*)
- *fill*         0x0000000008009cfe        0x2 
+ *fill*         0x0000000008009d7e        0x2 
  .rodata.defaultTask_attributes
-                0x0000000008009d00       0x24 ./Core/Src/main.o
-                0x0000000008009d00                defaultTask_attributes
+                0x0000000008009d80       0x24 ./Core/Src/main.o
+                0x0000000008009d80                defaultTask_attributes
  .rodata.debugTaskAttributes
-                0x0000000008009d24       0x24 ./Core/Src/panel_tasks.o
-                0x0000000008009d24                debugTaskAttributes
+                0x0000000008009da4       0x24 ./Core/Src/panel_tasks.o
+                0x0000000008009da4                debugTaskAttributes
  .rodata.panelMovTaskAttributes
-                0x0000000008009d48       0x24 ./Core/Src/panel_tasks.o
-                0x0000000008009d48                panelMovTaskAttributes
+                0x0000000008009dc8       0x24 ./Core/Src/panel_tasks.o
+                0x0000000008009dc8                panelMovTaskAttributes
  .rodata.panelDetTaskAttributes
-                0x0000000008009d6c       0x24 ./Core/Src/panel_tasks.o
-                0x0000000008009d6c                panelDetTaskAttributes
+                0x0000000008009dec       0x24 ./Core/Src/panel_tasks.o
+                0x0000000008009dec                panelDetTaskAttributes
  .rodata.driveModeStatusFlagTaskAttributes
-                0x0000000008009d90       0x24 ./Core/Src/panel_tasks.o
-                0x0000000008009d90                driveModeStatusFlagTaskAttributes
+                0x0000000008009e10       0x24 ./Core/Src/panel_tasks.o
+                0x0000000008009e10                driveModeStatusFlagTaskAttributes
  .rodata.reverseSwitchStatusFlagTaskAttributes
-                0x0000000008009db4       0x24 ./Core/Src/panel_tasks.o
-                0x0000000008009db4                reverseSwitchStatusFlagTaskAttributes
+                0x0000000008009e34       0x24 ./Core/Src/panel_tasks.o
+                0x0000000008009e34                reverseSwitchStatusFlagTaskAttributes
  .rodata.safetyModeAlertFlagTaskAttributes
-                0x0000000008009dd8       0x24 ./Core/Src/panel_tasks.o
-                0x0000000008009dd8                safetyModeAlertFlagTaskAttributes
+                0x0000000008009e58       0x24 ./Core/Src/panel_tasks.o
+                0x0000000008009e58                safetyModeAlertFlagTaskAttributes
  .rodata.objectNotificationFlagTaskAttributes
-                0x0000000008009dfc       0x24 ./Core/Src/panel_tasks.o
-                0x0000000008009dfc                objectNotificationFlagTaskAttributes
+                0x0000000008009e7c       0x24 ./Core/Src/panel_tasks.o
+                0x0000000008009e7c                objectNotificationFlagTaskAttributes
  .rodata.recognizeTrafficSignFlagTaskAttributes
-                0x0000000008009e20       0x24 ./Core/Src/panel_tasks.o
-                0x0000000008009e20                recognizeTrafficSignFlagTaskAttributes
+                0x0000000008009ea0       0x24 ./Core/Src/panel_tasks.o
+                0x0000000008009ea0                recognizeTrafficSignFlagTaskAttributes
  .rodata.multimeterAttributes
-                0x0000000008009e44       0x24 ./Core/Src/panel_tasks.o
-                0x0000000008009e44                multimeterAttributes
+                0x0000000008009ec4       0x24 ./Core/Src/panel_tasks.o
+                0x0000000008009ec4                multimeterAttributes
  .rodata.sendtxAttributes
-                0x0000000008009e68       0x24 ./Core/Src/panel_tasks.o
-                0x0000000008009e68                sendtxAttributes
+                0x0000000008009ee8       0x24 ./Core/Src/panel_tasks.o
+                0x0000000008009ee8                sendtxAttributes
  .rodata.AHBPrescTable
-                0x0000000008009e8c       0x10 ./Core/Src/system_stm32l4xx.o
-                0x0000000008009e8c                AHBPrescTable
+                0x0000000008009f0c       0x10 ./Core/Src/system_stm32l4xx.o
+                0x0000000008009f0c                AHBPrescTable
  .rodata.MSIRangeTable
-                0x0000000008009e9c       0x30 ./Core/Src/system_stm32l4xx.o
-                0x0000000008009e9c                MSIRangeTable
+                0x0000000008009f1c       0x30 ./Core/Src/system_stm32l4xx.o
+                0x0000000008009f1c                MSIRangeTable
  .rodata.canResetAttributes
-                0x0000000008009ecc       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
-                0x0000000008009ecc                canResetAttributes
+                0x0000000008009f4c       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
+                0x0000000008009f4c                canResetAttributes
  .rodata.emergencystopTaskAttributes
-                0x0000000008009ef0       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
-                0x0000000008009ef0                emergencystopTaskAttributes
+                0x0000000008009f70       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
+                0x0000000008009f70                emergencystopTaskAttributes
  .rodata.hbTaskAttributes
-                0x0000000008009f14       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
-                0x0000000008009f14                hbTaskAttributes
+                0x0000000008009f94       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
+                0x0000000008009f94                hbTaskAttributes
  .rodata.drivemodeTaskAttributes
-                0x0000000008009f38       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
-                0x0000000008009f38                drivemodeTaskAttributes
+                0x0000000008009fb8       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
+                0x0000000008009fb8                drivemodeTaskAttributes
  .rodata.reverseTaskAttributes
-                0x0000000008009f5c       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
-                0x0000000008009f5c                reverseTaskAttributes
+                0x0000000008009fdc       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
+                0x0000000008009fdc                reverseTaskAttributes
  .rodata.frenomanualTaskAttributes
-                0x0000000008009f80       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
-                0x0000000008009f80                frenomanualTaskAttributes
+                0x000000000800a000       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
+                0x000000000800a000                frenomanualTaskAttributes
  .rodata.driverfaultTaskAttributes
-                0x0000000008009fa4       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
-                0x0000000008009fa4                driverfaultTaskAttributes
+                0x000000000800a024       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
+                0x000000000800a024                driverfaultTaskAttributes
  .rodata.canRxTask_attributes
-                0x0000000008009fc8       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
-                0x0000000008009fc8                canRxTask_attributes
+                0x000000000800a048       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+                0x000000000800a048                canRxTask_attributes
  .rodata.canRxQueueTask_attributes
-                0x0000000008009fec       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
-                0x0000000008009fec                canRxQueueTask_attributes
+                0x000000000800a06c       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+                0x000000000800a06c                canRxQueueTask_attributes
  .rodata.canTxTask_attributes
-                0x000000000800a010       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
-                0x000000000800a010                canTxTask_attributes
+                0x000000000800a090       0x24 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+                0x000000000800a090                canTxTask_attributes
  .rodata.__sf_fake_stderr
-                0x000000000800a034       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
-                0x000000000800a034                __sf_fake_stderr
+                0x000000000800a0b4       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
+                0x000000000800a0b4                __sf_fake_stderr
  .rodata.__sf_fake_stdin
-                0x000000000800a054       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
-                0x000000000800a054                __sf_fake_stdin
+                0x000000000800a0d4       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
+                0x000000000800a0d4                __sf_fake_stdin
  .rodata.__sf_fake_stdout
-                0x000000000800a074       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
-                0x000000000800a074                __sf_fake_stdout
-                0x000000000800a094                . = ALIGN (0x4)
+                0x000000000800a0f4       0x20 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
+                0x000000000800a0f4                __sf_fake_stdout
+                0x000000000800a114                . = ALIGN (0x4)
 
-.rel.dyn        0x000000000800a094        0x0
- .rel.iplt      0x000000000800a094        0x0 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+.rel.dyn        0x000000000800a114        0x0
+ .rel.iplt      0x000000000800a114        0x0 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.ARM.extab      0x000000000800a094        0x0
-                0x000000000800a094                . = ALIGN (0x4)
+.ARM.extab      0x000000000800a114        0x0
+                0x000000000800a114                . = ALIGN (0x4)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x000000000800a094                . = ALIGN (0x4)
+                0x000000000800a114                . = ALIGN (0x4)
 
-.ARM            0x000000000800a094        0x0
-                0x000000000800a094                . = ALIGN (0x4)
-                0x000000000800a094                __exidx_start = .
+.ARM            0x000000000800a114        0x0
+                0x000000000800a114                . = ALIGN (0x4)
+                0x000000000800a114                __exidx_start = .
  *(.ARM.exidx*)
-                0x000000000800a094                __exidx_end = .
-                0x000000000800a094                . = ALIGN (0x4)
+                0x000000000800a114                __exidx_end = .
+                0x000000000800a114                . = ALIGN (0x4)
 
-.preinit_array  0x000000000800a094        0x0
-                0x000000000800a094                . = ALIGN (0x4)
-                0x000000000800a094                PROVIDE (__preinit_array_start = .)
+.preinit_array  0x000000000800a114        0x0
+                0x000000000800a114                . = ALIGN (0x4)
+                0x000000000800a114                PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x000000000800a094                PROVIDE (__preinit_array_end = .)
-                0x000000000800a094                . = ALIGN (0x4)
+                0x000000000800a114                PROVIDE (__preinit_array_end = .)
+                0x000000000800a114                . = ALIGN (0x4)
 
-.init_array     0x000000000800a094        0x4
-                0x000000000800a094                . = ALIGN (0x4)
-                0x000000000800a094                PROVIDE (__init_array_start = .)
+.init_array     0x000000000800a114        0x4
+                0x000000000800a114                . = ALIGN (0x4)
+                0x000000000800a114                PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x000000000800a094        0x4 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
-                0x000000000800a098                PROVIDE (__init_array_end = .)
-                0x000000000800a098                . = ALIGN (0x4)
+ .init_array    0x000000000800a114        0x4 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+                0x000000000800a118                PROVIDE (__init_array_end = .)
+                0x000000000800a118                . = ALIGN (0x4)
 
-.fini_array     0x000000000800a098        0x4
-                0x000000000800a098                . = ALIGN (0x4)
+.fini_array     0x000000000800a118        0x4
+                0x000000000800a118                . = ALIGN (0x4)
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x000000000800a098        0x4 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .fini_array    0x000000000800a118        0x4 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
                 [!provide]                        PROVIDE (__fini_array_end = .)
-                0x000000000800a09c                . = ALIGN (0x4)
-                0x000000000800a09c                _sidata = LOADADDR (.data)
+                0x000000000800a11c                . = ALIGN (0x4)
+                0x000000000800a11c                _sidata = LOADADDR (.data)
 
-.data           0x0000000020000000       0x78 load address 0x000000000800a09c
+.data           0x0000000020000000       0x78 load address 0x000000000800a11c
                 0x0000000020000000                . = ALIGN (0x4)
                 0x0000000020000000                _sdata = .
  *(.data)
@@ -6562,11 +6560,11 @@ LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
                 0x0000000020000078                . = ALIGN (0x4)
                 0x0000000020000078                _edata = .
 
-.igot.plt       0x0000000020000078        0x0 load address 0x000000000800a114
+.igot.plt       0x0000000020000078        0x0 load address 0x000000000800a194
  .igot.plt      0x0000000020000078        0x0 c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
                 0x0000000020000078                . = ALIGN (0x4)
 
-.bss            0x0000000020000078     0x8628 load address 0x000000000800a114
+.bss            0x0000000020000078     0x8628 load address 0x000000000800a194
                 0x0000000020000078                _sbss = .
                 0x0000000020000078                __bss_start__ = _sbss
  *(.bss)
@@ -6787,7 +6785,7 @@ LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
                 0x00000000200086a0                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x00000000200086a0      0x600 load address 0x000000000800a114
+                0x00000000200086a0      0x600 load address 0x000000000800a194
                 0x00000000200086a0                . = ALIGN (0x8)
                 [!provide]                        PROVIDE (end = .)
                 0x00000000200086a0                PROVIDE (_end = .)
@@ -7198,7 +7196,7 @@ LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_macro   0x000000000000761b      0x1c1 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
  .debug_macro   0x00000000000077dc      0x1c1 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANSerialization.o
 
-.debug_line     0x0000000000000000    0x1bc13
+.debug_line     0x0000000000000000    0x1bc3c
  .debug_line    0x0000000000000000      0xbf2 ./Core/Src/ltc4151cms.o
  .debug_line    0x0000000000000bf2      0xbd7 ./Core/Src/main.o
  .debug_line    0x00000000000017c9     0x108a ./Core/Src/panel_tasks.o
@@ -7224,15 +7222,15 @@ LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_line    0x0000000000015520      0x93c ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
  .debug_line    0x0000000000015e5c      0xa03 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
  .debug_line    0x000000000001685f       0xc9 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
- .debug_line    0x0000000000016928      0xb54 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
- .debug_line    0x000000000001747c       0x85 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
- .debug_line    0x0000000000017501      0x9bc ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
- .debug_line    0x0000000000017ebd      0xc8c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
- .debug_line    0x0000000000018b49      0xb71 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
- .debug_line    0x00000000000196ba      0x611 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
- .debug_line    0x0000000000019ccb      0xb83 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_line    0x000000000001a84e      0x9ff ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
- .debug_line    0x000000000001b24d      0x9c6 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANSerialization.o
+ .debug_line    0x0000000000016928      0xb7d ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o
+ .debug_line    0x00000000000174a5       0x85 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
+ .debug_line    0x000000000001752a      0x9bc ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
+ .debug_line    0x0000000000017ee6      0xc8c ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+ .debug_line    0x0000000000018b72      0xb71 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+ .debug_line    0x00000000000196e3      0x611 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+ .debug_line    0x0000000000019cf4      0xb83 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_line    0x000000000001a877      0x9ff ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
+ .debug_line    0x000000000001b276      0x9c6 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANSerialization.o
 
 .debug_str      0x0000000000000000    0xd3a30
  .debug_str     0x0000000000000000    0xc0dd2 ./Core/Src/ltc4151cms.o

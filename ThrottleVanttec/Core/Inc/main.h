@@ -57,6 +57,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define hand_brake_Pin GPIO_PIN_3
+#define hand_brake_GPIO_Port GPIOA
 #define WLAT_Pin GPIO_PIN_6
 #define WLAT_GPIO_Port GPIOA
 #define SHDN_Pin GPIO_PIN_7
