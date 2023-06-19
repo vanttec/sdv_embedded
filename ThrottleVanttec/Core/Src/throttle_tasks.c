@@ -101,21 +101,29 @@ void mode_task(void *args)
 void brake_task(void *args)
 {
 	GPIO_PinState brake_status;
+	uint8_t buf[8];
 	uint8_t prev_brake = 2;
 	for(;;)
 	{
 
 		brake_status = HAL_GPIO_ReadPin(hand_brake_GPIO_Port, hand_brake_Pin);
 
-		if(brake_status && prev_brake==0){
+		if(prev_brake!=brake_status){
+			if (brake_status){
+		            // Velocity to 0
+		            buf[0] = 0x05;
+		            buf[1] = 0x0;
+		            update_table(VANTTEC_CAN_ID_THROTTLE_RX, 0x05, buf, 2);
+		            // Switch to manual pedal
+		            buf[0] = 0x07;
+		            buf[1] = 0x0;
+		            update_table(VANTTEC_CAN_ID_THROTTLE_RX, 0x07, buf, 2);
+		            buf[0] = 0x06;
+		            buf[1] = 0x0;
+		            update_table(VANTTEC_CAN_ID_THROTTLE_RX, 0x06, buf, 2);
+				}
+				canlib_send_byte(VANTTEC_CAN_ID_FRENO_MANUAL, brake_status);
 
-				canlib_send_byte(VANTTEC_CAN_ID_FRENO_MANUAL, 1);
-
-		}
-		else{
-			if(prev_brake == 1 || prev_brake == 2){
-				canlib_send_byte(VANTTEC_CAN_ID_FRENO_MANUAL, 0);
-			}
 		}
 		prev_brake = brake_status;
 
