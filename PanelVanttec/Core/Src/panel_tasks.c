@@ -87,7 +87,7 @@ void panelMov_task(void *args)
 {
 	uint8_t panelMov_data=0;
 	uint8_t last_panelMov_data = 0;
-	uint32_t corto = 600;
+	uint32_t corto = 300;
 	uint32_t largo = 1200;
 	uint8_t buf[8];
 	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x05, VANTTEC_CANLIB_BYTE, &panelMov_data, 1);
@@ -106,20 +106,20 @@ void panelMov_task(void *args)
 			// Carro encendido
 			else if (panelMov_data == 0x11)
 			{
+				HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_SET);
 				for (int i = 0; i < 2; i++)
 				{
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_SET);
 					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_SET);
 					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_SET);
-					HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_SET);
 					osDelay(corto);
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_RESET);
 					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_RESET);
 					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_RESET);
-					HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_RESET);
 					osDelay(corto);
 				}
 				HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_SET);
+				HAL_GPIO_WritePin(L4D_GPIO_Port, L4D_Pin, GPIO_PIN_RESET);
 				panelMov_data = 0x05;
 			}
 			//Carro apagado
@@ -212,8 +212,8 @@ void panelDet_task(void *args)
 {
 	uint8_t panelDet_data = 0;
 	uint8_t last_panelDet_data = 0;
-	uint32_t corto = 600;
-	uint32_t largo = 1200;
+	uint32_t corto = 300;
+	uint32_t largo = 600;
 	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x06, VANTTEC_CANLIB_BYTE, &panelDet_data, 1);
 	for (;;)
 	{

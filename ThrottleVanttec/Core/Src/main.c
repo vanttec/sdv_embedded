@@ -24,6 +24,8 @@
 /* USER CODE BEGIN Includes */
 #include "mcp45hvx1.h"
 #include "throttle_tasks.h"
+#include "requirements.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -110,6 +112,7 @@ int main(void)
   //init_ping_task();
   initialize_devices();
   begin_pot();
+  init_requirements_task();
   init_throttle_tasks();
   /* USER CODE END 2 */
 

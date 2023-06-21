@@ -40,8 +40,7 @@ libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_i2c_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h \
- ../libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.h \
- ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_generic_ids.h
+ ../libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.h
 ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
@@ -83,4 +82,3 @@ libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h:
 ../libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.h:
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_generic_ids.h:

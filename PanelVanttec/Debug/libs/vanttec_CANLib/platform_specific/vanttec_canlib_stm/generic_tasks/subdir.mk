@@ -6,18 +6,15 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.c \
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.c \
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.c 
+../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.c 
 
 C_DEPS += \
 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.d \
-./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.d \
-./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.d 
+./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.d 
 
 OBJS += \
 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o \
-./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o \
-./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o 
+./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -27,7 +24,7 @@ libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/%.o libs/
 clean: clean-libs-2f-vanttec_CANLib-2f-platform_specific-2f-vanttec_canlib_stm-2f-generic_tasks
 
 clean-libs-2f-vanttec_CANLib-2f-platform_specific-2f-vanttec_canlib_stm-2f-generic_tasks:
-	-$(RM) ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.d ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.su ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.d ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.su ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.d ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.o ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.su
+	-$(RM) ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.d ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.su ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.d ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.su
 
 .PHONY: clean-libs-2f-vanttec_CANLib-2f-platform_specific-2f-vanttec_canlib_stm-2f-generic_tasks
 

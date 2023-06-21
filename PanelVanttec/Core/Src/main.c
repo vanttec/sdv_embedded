@@ -110,6 +110,7 @@ int main(void)
   canlib_init_generic_tasks();
   initialize_devices();
   begin_multimeter(&multimeter,0,0);
+  init_requirements_task();
   init_panel_task();
 
   /* USER CODE END 2 */

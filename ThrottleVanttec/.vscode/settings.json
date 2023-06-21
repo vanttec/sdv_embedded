@@ -1,8 +1,4 @@
 {
   "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
-  "cmake.configureOnOpen": true,
-  "files.associations": {
-    "vanttec_canlib_rx_task.h": "c",
-    "vanttec_canlib_tx_task.h": "c"
-  }
+  "cmake.configureOnOpen": true
 }
