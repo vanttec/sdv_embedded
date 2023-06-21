@@ -52,9 +52,9 @@ void steering_task()
 
 	for(;;)
 	{
-		if(!em_stop)
+		if(!em_stop || 1)
 		{
-			if(drive_mode)
+			if(drive_mode || 1)
 			{
 				if(!init)
 				{
@@ -76,6 +76,7 @@ void steering_task()
 			stop(STEERING);
 			init = 0;
 		}
+		osDelay(10);
 	}
 }
 
@@ -132,7 +133,7 @@ void gpios_task()
 			HAL_GPIO_WritePin(DEBUG_3_GPIO_Port, DEBUG_3_Pin, GPIO_PIN_SET);
 	        canlib_send_byte(VANTTEC_CAN_ID_DRIVER_FAULT, (uint8_t) 0);
 	        canlib_send_byte(VANTTEC_CAN_ID_ESTOP, (uint8_t) 0);
-			em_stop = 1;
+			//em_stop = 1;
 		} else {
 			HAL_GPIO_WritePin(DEBUG_3_GPIO_Port, DEBUG_3_Pin, GPIO_PIN_RESET);
 		}
@@ -168,8 +169,8 @@ void init_gpios_task()
 
 void init_stepper_tasks()
 {
-	register_canlib_rx(VANTTEC_CAN_ID_JETSON, VANTTEC_CAN_ID_DRIVE_MODE, VANTTEC_CANLIB_BYTE, &drive_mode, 1);
-	register_canlib_rx(VANTTEC_CAN_ID_JETSON, VANTTEC_CAN_ID_ESTOP, VANTTEC_CANLIB_BYTE, &em_stop, 1);
+	//register_canlib_rx(VANTTEC_CAN_ID_GENERAL_RX, VANTTEC_CAN_ID_DRIVE_MODE, VANTTEC_CANLIB_BYTE, &drive_mode, 1);
+	//register_canlib_rx(1, VANTTEC_CAN_ID_ESTOP, VANTTEC_CANLIB_BYTE, &em_stop, 1);
 	init_steer_task();
 	//init_brake_task();
 	init_gpios_task();
