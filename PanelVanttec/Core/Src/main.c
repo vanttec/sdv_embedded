@@ -108,7 +108,7 @@ int main(void)
   init_canlib_tx();
   init_canlib_rx();
   canlib_init_generic_tasks();
-  initialize_devices();
+  //initialize_devices();
   begin_multimeter(&multimeter,0,0);
   init_requirements_task();
   init_panel_task();
