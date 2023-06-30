@@ -8,7 +8,7 @@
 #include "vanttec_canlib_tx_task.h"
 #include "vanttec_canlib_rx_task.h"
 #include "ltc4151cms.h"
-#include "vanttec_canlib_generic_ids.h"
+#include "vanttec_sdv_ids.h"
 
 osThreadId_t debugTaskHandle;
 const osThreadAttr_t debugTaskAttributes = {
