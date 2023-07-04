@@ -1,4 +1,5 @@
-../Core/Src/throttle_tasks.c:23:6:pot_task	32	static
-../Core/Src/throttle_tasks.c:40:6:motor_task	32	static
-../Core/Src/throttle_tasks.c:64:6:mode_task	32	static
-../Core/Src/throttle_tasks.c:88:6:init_throttle_tasks	8	static
+../Core/Src/throttle_tasks.c:30:6:pot_task	32	static
+../Core/Src/throttle_tasks.c:54:6:motor_task	32	static
+../Core/Src/throttle_tasks.c:78:6:mode_task	32	static
+../Core/Src/throttle_tasks.c:101:6:brake_task	32	static
+../Core/Src/throttle_tasks.c:135:6:init_throttle_tasks	8	static

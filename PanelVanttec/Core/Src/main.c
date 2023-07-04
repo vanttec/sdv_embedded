@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "panel_tasks.h"
+#include "ltc4151cms.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -68,7 +69,8 @@ void StartDefaultTask(void *argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+struct LTC4151 multimeter;
+extern bool enable_multimeter = false;
 /* USER CODE END 0 */
 
 /**
@@ -102,12 +104,15 @@ int main(void)
   MX_CAN1_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-  init_canlib(hcan1, 0x50);
+  init_canlib(hcan1, 0x09);
   init_canlib_tx();
   init_canlib_rx();
   canlib_init_generic_tasks();
-
+  //initialize_devices();
+  begin_multimeter(&multimeter,0,0);
+  init_requirements_task();
   init_panel_task();
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -222,7 +227,7 @@ static void MX_CAN1_Init(void)
 
   /* USER CODE END CAN1_Init 1 */
   hcan1.Instance = CAN1;
-  hcan1.Init.Prescaler = 50;
+  hcan1.Init.Prescaler = 40;
   hcan1.Init.Mode = CAN_MODE_NORMAL;
   hcan1.Init.SyncJumpWidth = CAN_SJW_1TQ;
   hcan1.Init.TimeSeg1 = CAN_BS1_13TQ;

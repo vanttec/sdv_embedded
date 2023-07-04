@@ -2,7 +2,7 @@
 ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:66:6:is_valid_length	16	static
 ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:82:6:parse_data	24	static
 ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:99:6:update_table	64	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:124:6:register_canlib_rx	16	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:145:6:register_canlib_rx_queue	24	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:173:6:can_rx_task	64	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:198:6:can_rx_queue_task	32	static
+../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:123:6:register_canlib_rx	16	static
+../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:144:6:register_canlib_rx_queue	24	static
+../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:172:6:can_rx_task	64	static
+../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:208:6:can_rx_queue_task	32	static

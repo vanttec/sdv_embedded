@@ -24,6 +24,8 @@
 /* USER CODE BEGIN Includes */
 #include "mcp45hvx1.h"
 #include "throttle_tasks.h"
+#include "requirements.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -103,13 +105,14 @@ int main(void)
   MX_CAN1_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-  init_canlib(hcan1, 0x30);
+  init_canlib(hcan1, 0x5);
   init_canlib_tx();
   init_canlib_rx();
   canlib_init_generic_tasks();
   //init_ping_task();
   initialize_devices();
   begin_pot();
+  init_requirements_task();
   init_throttle_tasks();
   /* USER CODE END 2 */
 
@@ -225,7 +228,7 @@ static void MX_CAN1_Init(void)
 
   /* USER CODE END CAN1_Init 1 */
   hcan1.Instance = CAN1;
-  hcan1.Init.Prescaler = 50;
+  hcan1.Init.Prescaler = 40;
   hcan1.Init.Mode = CAN_MODE_NORMAL;
   hcan1.Init.SyncJumpWidth = CAN_SJW_1TQ;
   hcan1.Init.TimeSeg1 = CAN_BS1_13TQ;
@@ -317,6 +320,12 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, DEBUG_4_Pin|DEBUG_3_Pin|DEBUG_2_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : hand_brake_Pin */
+  GPIO_InitStruct.Pin = hand_brake_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(hand_brake_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : WLAT_Pin SHDN_Pin DEBUG_1_Pin Pot_Pin
                            RelayMotor_Pin */
