@@ -113,11 +113,11 @@ int main(void)
   MX_ADC1_Init();
   MX_CAN1_Init();
   /* USER CODE BEGIN 2 */
-  init_canlib(hcan1, 0x7);
+  init_canlib(hcan1, 0x40);
   init_canlib_tx();
   init_canlib_rx();
   canlib_init_generic_tasks();
-  init_steer_task();
+  init_stepper_tasks();
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -141,7 +141,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(default_task, NULL, &defaultTask_attributes);
+  //defaultTaskHandle = osThreadNew(default_task, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -411,7 +411,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 80-1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 100-1 ;
+  htim2.Init.Period = 5000-1 ;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
