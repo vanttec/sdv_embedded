@@ -20,8 +20,8 @@
 2: Drive Mode: 0: manual
 3: Stepper Fault
 4: brake/em stop
-5: braking ON/OFF/pause
-6: steering ON/OFF/pause
+5: braking or steering ON/OFF
+6: braking or steering pause/unpause
 
  * */
 
@@ -53,9 +53,9 @@ void steering_task()
 
 	for(;;)
 	{
-		if(!em_stop || 1)
+		if(!em_stop)
 		{
-			if(drive_mode || 1)
+			if(drive_mode)
 			{
 				if(!init)
 				{
@@ -91,24 +91,25 @@ void braking_task()
 
 	for(;;)
 	{
-		if(!em_stop){
+		if(!em_stop)
+		{
 			if(drive_mode)
 			{
 				if(!init)
 				{
-					//HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, DEBUG_2_Pin, GPIO_PIN_SET);
+					HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, DEBUG_2_Pin, GPIO_PIN_SET);
 					start(BRAKING);
 					init = 1;
 				}
 				parse_briter_encoder(pos);
 				update_stepper_pos(BRAKING);
 				set_setpoint(BRAKING, desired_pos);
-
 			} else {
-				//HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, DEBUG_2_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, DEBUG_2_Pin, GPIO_PIN_RESET);
 				stop(BRAKING);
 				init = 0;
 			}
+			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_RESET);
 		} else {
 			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
 			stop(BRAKING);
@@ -170,8 +171,8 @@ void init_gpios_task()
 
 void init_stepper_tasks()
 {
-	//register_canlib_rx(VANTTEC_CAN_ID_GENERAL_RX, VANTTEC_CAN_ID_DRIVE_MODE, VANTTEC_CANLIB_BYTE, &drive_mode, 1);
-	//register_canlib_rx(1, VANTTEC_CAN_ID_ESTOP, VANTTEC_CANLIB_BYTE, &em_stop, 1);
+	register_canlib_rx(VANTTEC_CAN_ID_GENERAL_RX, VANTTEC_CAN_ID_DRIVE_MODE, VANTTEC_CANLIB_BYTE, &drive_mode, 1);
+	register_canlib_rx(1, VANTTEC_CAN_ID_ESTOP, VANTTEC_CANLIB_BYTE, &em_stop, 1);
 	init_steer_task();
 	//init_brake_task();
 	init_gpios_task();

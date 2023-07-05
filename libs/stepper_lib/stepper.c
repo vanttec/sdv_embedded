@@ -28,7 +28,8 @@ void configure_braking()
 	braking_stepper.is_exec_started = 0;
 	braking_stepper.direction = IDLE;
 	braking_stepper.MAX_ANGLE = 57;
-	//braking_stepper.current_angle = 0;
+	braking_stepper.current_angle = 0;
+	braking_stepper.STEP_ANGLE = 0.9;
 
 	//htim2.Instance->CCR1 = 500;	// For duty cycle of 50%
 	HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_SET);
@@ -41,12 +42,14 @@ void start(const stepper_type stepper)
 		case STEERING:
 			HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_RESET);
 			steering_stepper.is_active = 1;
-			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
 			break;
 		case BRAKING:
 			HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_RESET);
 			braking_stepper.is_active = 1;
 			HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
 			break;
 		default:
 			break;
@@ -60,11 +63,12 @@ void pause(const stepper_type stepper)
 		case STEERING:
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 			steering_stepper.is_exec_started = 0;
-			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_SET);			break;
+			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_SET);
+			break;
 		case BRAKING:
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
 			braking_stepper.is_exec_started = 0;
-			HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_GPIO_Port, GPIO_PIN_SET);
 			break;
 		default:
 			break;
@@ -82,7 +86,8 @@ void stop(const stepper_type stepper)
 			steering_stepper.is_active = 0;
 			steering_stepper.direction = IDLE;
 			steering_stepper.is_exec_started = 0;
-			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
 			break;
 		case BRAKING:
 			// For the break, the stop has a different meaning
@@ -95,6 +100,7 @@ void stop(const stepper_type stepper)
 			braking_stepper.direction = IDLE;
 			braking_stepper.is_exec_started = 0;
 			HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
 
 			break;
 		default:
@@ -155,7 +161,7 @@ void set_setpoint(const stepper_type stepper, float setpoint){
 
 			direction = fabsf(error) < steering_stepper.STEP_ANGLE ? IDLE:error > 0? CCW:CW;
 
-			steer_by_setpoint(direction);
+			steer_by_setpoint(direction, error);
 			break;
 		case BRAKING:
 			// setpoint: [0,1]
@@ -165,12 +171,12 @@ void set_setpoint(const stepper_type stepper, float setpoint){
 
 			direction = fabsf(error) < braking_stepper.STEP_ANGLE ? IDLE:error > 0? CW:CCW;
 
-			brake_by_setpoint(direction);
+			brake_by_setpoint(direction, error);
 			break;
 	}
 }
 
-void steer_by_setpoint(uint8_t direction)
+void steer_by_setpoint(uint8_t direction, float error)
 {
 	float error = 0;
 	if(steering_stepper.is_active)
@@ -183,7 +189,6 @@ void steer_by_setpoint(uint8_t direction)
 				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
 			}
 
-			error = steering_stepper.desired_angle - steering_stepper.current_angle;
 			if(fabsf(error) > steering_stepper.STEP_ANGLE)
 			{
 				// Start execution
@@ -197,7 +202,7 @@ void steer_by_setpoint(uint8_t direction)
 	} else stop(STEERING);
 }
 
-void brake_by_setpoint(uint8_t direction)
+void brake_by_setpoint(uint8_t direction, float error)
 {
 	float error = 0;
 	if(braking_stepper.is_active)
@@ -207,10 +212,9 @@ void brake_by_setpoint(uint8_t direction)
 			if(braking_stepper.direction != direction)
 			{
 				braking_stepper.direction = direction;
-				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
+				HAL_GPIO_WritePin(GPIOB, STPR_DIR_2_Pin, direction);
 			}
 
-			error = braking_stepper.desired_angle - braking_stepper.current_angle;
 			if(fabsf(error) > braking_stepper.STEP_ANGLE)
 			{
 				// Start execution
@@ -232,7 +236,7 @@ void update_stepper_pos(const stepper_type stepper)
 			steering_stepper.current_angle = -ifm_encoder.absolute_angle*STEER_RATIO;  // - To account for gear counter rotation
 			break;
 		case BRAKING:
-			braking_stepper.current_angle = briter_encoder.absolute_angle;
+			braking_stepper.current_angle = briter_encoder.absolute_angle;		// REQUIRED RELATIONSHIP FROM PULLEY TO BRAKE ANGLE
 			break;
 	}
 }
