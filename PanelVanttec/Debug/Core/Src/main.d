@@ -37,7 +37,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- ../Core/Inc/panel_tasks.h ../Core/Inc/ltc4151cms.h
+ ../Core/Inc/panel_tasks.h ../Core/Inc/ltc4151cms.h \
+ ../Core/Inc/requirements.h ../Core/Inc/vanttec_sdv_ids.h
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
@@ -79,3 +80,5 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
 ../Core/Inc/panel_tasks.h:
 ../Core/Inc/ltc4151cms.h:
+../Core/Inc/requirements.h:
+../Core/Inc/vanttec_sdv_ids.h:

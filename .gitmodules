@@ -10,3 +10,6 @@
 	path = ThrottleVanttec/libs/vanttec_CANLib
 	url = https://github.com/vanttec/vanttec_CANLib.git
 	branch = feature/sdv_throttle
+[submodule "GeneralModuleVantTec/libs/vanttec_CANLib"]
+	path = GeneralModuleVantTec/libs/vanttec_CANLib
+	url = https://github.com/vanttec/vanttec_CANLib.git

@@ -10,7 +10,7 @@
 #include "vanttec_canlib_rx_task.h"
 #include "cmsis_os.h"
 #include <stddef.h>
-#include "vanttec_canlib_generic_ids.h"
+#include <vanttec_sdv_ids.h>
 
 osThreadId_t emergencystopTaskHandle;
 const osThreadAttr_t emergencystopTaskAttributes = {

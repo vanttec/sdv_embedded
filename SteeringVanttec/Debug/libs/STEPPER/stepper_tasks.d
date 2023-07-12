@@ -47,8 +47,8 @@ libs/STEPPER/stepper_tasks.o: ../libs/STEPPER/stepper_tasks.c \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- ../libs/STEPPER/stepper_tasks.h ../libs/STEPPER/stepper.h \
- ../libs/STEPPER/encoder.h
+ ../Core/Inc/vanttec_sdv_ids.h ../libs/STEPPER/stepper_tasks.h \
+ ../libs/STEPPER/stepper.h ../libs/STEPPER/encoder.h
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
@@ -98,6 +98,7 @@ libs/STEPPER/stepper_tasks.o: ../libs/STEPPER/stepper_tasks.c \
 ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
+../Core/Inc/vanttec_sdv_ids.h:
 ../libs/STEPPER/stepper_tasks.h:
 ../libs/STEPPER/stepper.h:
 ../libs/STEPPER/encoder.h:

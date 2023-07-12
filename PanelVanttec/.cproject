@@ -102,11 +102,14 @@
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.objcopy.symbolsrec.1166091028" name="MCU Output Converter Motorola S-rec with symbols" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.objcopy.symbolsrec"/>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.164490128.157392542" name="hb_task.c" rcbsApplicability="disable" resourcePath="libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.c" toolsToInvoke="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.186268968.1144675522">
+						<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.186268968.1144675522" name="MCU GCC Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.186268968"/>
+					</fileInfo>
 					<sourceEntries>
-						<entry excluding="tests/|platform_specific/vanttec_canlib_linux" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="libs/vanttec_CANLib"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
+						<entry excluding="platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.c|tests/|platform_specific/vanttec_canlib_linux" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="libs/vanttec_CANLib"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -235,5 +238,12 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/PanelVanttec"/>
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/PanelVanttec"/>
+		</configuration>
+	</storageModule>
 </cproject>
