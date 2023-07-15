@@ -2,7 +2,7 @@
  * ltc4151cms.h
  *
  *  Created on: May 16, 2023
- *      Author: Z0180064
+ *      Author: riky_
  */
 
 #ifndef INC_LTC4151CMS_H_

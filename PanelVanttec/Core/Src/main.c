@@ -106,12 +106,13 @@ int main(void)
   MX_CAN1_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
+  initialize_devices();
+  //I2C_ScanBus();
+  begin_multimeter(&multimeter,0,0);
   init_canlib(hcan1, VANTTEC_CAN_ID_PANEL_TX);
   init_canlib_tx();
   init_canlib_rx();
   canlib_init_generic_tasks();
-  //initialize_devices();
-  begin_multimeter(&multimeter,0,0);
   init_requirements_task();
   init_panel_task();
 

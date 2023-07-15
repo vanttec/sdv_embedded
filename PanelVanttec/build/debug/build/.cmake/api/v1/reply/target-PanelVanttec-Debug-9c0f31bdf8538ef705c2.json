@@ -67,7 +67,7 @@
 			{
 				"command" : 6,
 				"file" : 1,
-				"line" : 115,
+				"line" : 116,
 				"parent" : 2
 			}
 		]
@@ -116,43 +116,43 @@
 			[
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Core/Inc"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Core/Inc"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/STM32L4xx_HAL_Driver/Inc"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/STM32L4xx_HAL_Driver/Inc"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/STM32L4xx_HAL_Driver/Inc/Legacy"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/STM32L4xx_HAL_Driver/Inc/Legacy"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Middlewares/Third_Party/FreeRTOS/Source/include"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Middlewares/Third_Party/FreeRTOS/Source/include"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/CMSIS/Device/ST/STM32L4xx/Include"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/CMSIS/Device/ST/STM32L4xx/Include"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/CMSIS/Include"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/CMSIS/Include"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/libs/vanttec_CANLib/src/Vanttec_CANLib"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/libs/vanttec_CANLib/src/Vanttec_CANLib"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm"
 				}
 			],
 			"language" : "C",
@@ -165,6 +165,9 @@
 				4,
 				5,
 				6,
+				7,
+				8,
+				9,
 				11,
 				12,
 				13,
@@ -172,9 +175,6 @@
 				15,
 				16,
 				17,
-				18,
-				19,
-				20,
 				22,
 				23,
 				24,
@@ -201,6 +201,42 @@
 				45,
 				46,
 				47
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-g3"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-mcpu=cortex-m4"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-mfpu=fpv4-sp-d16"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-mfloat-abi=hard"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 5,
+					"define" : "DEBUG"
+				}
+			],
+			"language" : "ASM",
+			"sourceIndexes" : 
+			[
+				10
 			]
 		},
 		{
@@ -245,87 +281,51 @@
 			[
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Core/Inc"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Core/Inc"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/STM32L4xx_HAL_Driver/Inc"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/STM32L4xx_HAL_Driver/Inc"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/STM32L4xx_HAL_Driver/Inc/Legacy"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/STM32L4xx_HAL_Driver/Inc/Legacy"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Middlewares/Third_Party/FreeRTOS/Source/include"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Middlewares/Third_Party/FreeRTOS/Source/include"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/CMSIS/Device/ST/STM32L4xx/Include"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/CMSIS/Device/ST/STM32L4xx/Include"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/CMSIS/Include"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/Drivers/CMSIS/Include"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/libs/vanttec_CANLib/src/Vanttec_CANLib"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/libs/vanttec_CANLib/src/Vanttec_CANLib"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm"
+					"path" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm"
 				}
 			],
 			"language" : "CXX",
 			"sourceIndexes" : 
 			[
-				7,
-				8,
-				9,
-				10
-			]
-		},
-		{
-			"compileCommandFragments" : 
-			[
-				{
-					"fragment" : "-g"
-				},
-				{
-					"backtrace" : 4,
-					"fragment" : "-g3"
-				},
-				{
-					"backtrace" : 4,
-					"fragment" : "-mcpu=cortex-m4"
-				},
-				{
-					"backtrace" : 4,
-					"fragment" : "-mfpu=fpv4-sp-d16"
-				},
-				{
-					"backtrace" : 4,
-					"fragment" : "-mfloat-abi=hard"
-				}
-			],
-			"defines" : 
-			[
-				{
-					"backtrace" : 5,
-					"define" : "DEBUG"
-				}
-			],
-			"language" : "ASM",
-			"sourceIndexes" : 
-			[
+				18,
+				19,
+				20,
 				21
 			]
 		}
@@ -365,7 +365,7 @@
 			},
 			{
 				"backtrace" : 3,
-				"fragment" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/STM32L431RCTX_FLASH.ld",
+				"fragment" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/STM32L431RCTX_FLASH.ld",
 				"role" : "flags"
 			}
 		],
@@ -394,7 +394,6 @@
 				7,
 				8,
 				9,
-				10,
 				11,
 				12,
 				13,
@@ -405,6 +404,7 @@
 				18,
 				19,
 				20,
+				21,
 				22,
 				23,
 				24,
@@ -437,78 +437,12 @@
 			"name" : "",
 			"sourceIndexes" : 
 			[
-				21
+				10
 			]
 		}
 	],
 	"sources" : 
 	[
-		{
-			"backtrace" : 7,
-			"compileGroupIndex" : 0,
-			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 7,
-			"compileGroupIndex" : 0,
-			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 7,
-			"compileGroupIndex" : 0,
-			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/ping_task.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 7,
-			"compileGroupIndex" : 0,
-			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 7,
-			"compileGroupIndex" : 0,
-			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 7,
-			"compileGroupIndex" : 0,
-			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 7,
-			"compileGroupIndex" : 0,
-			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 7,
-			"compileGroupIndex" : 1,
-			"path" : "libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 7,
-			"compileGroupIndex" : 1,
-			"path" : "libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 7,
-			"compileGroupIndex" : 1,
-			"path" : "libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 7,
-			"compileGroupIndex" : 1,
-			"path" : "libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANSerialization.cpp",
-			"sourceGroupIndex" : 0
-		},
 		{
 			"backtrace" : 7,
 			"compileGroupIndex" : 0,
@@ -571,9 +505,75 @@
 		},
 		{
 			"backtrace" : 7,
-			"compileGroupIndex" : 2,
+			"compileGroupIndex" : 1,
 			"path" : "Core/Startup/startup_stm32l431rctx.s",
 			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/ping_task.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 2,
+			"path" : "libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 2,
+			"path" : "libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 2,
+			"path" : "libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 2,
+			"path" : "libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANSerialization.cpp",
+			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 7,

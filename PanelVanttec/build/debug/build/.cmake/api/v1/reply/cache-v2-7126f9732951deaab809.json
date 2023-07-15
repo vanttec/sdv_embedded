@@ -179,7 +179,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/build/debug/build"
+			"value" : "c:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/build/debug/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -203,7 +203,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "20"
+			"value" : "21"
 		},
 		{
 			"name" : "CMAKE_CACHE_PATCH_VERSION",
@@ -215,7 +215,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "0"
+			"value" : "21080301"
 		},
 		{
 			"name" : "CMAKE_COMMAND",
@@ -227,7 +227,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/Z0180064/AppData/Roaming/Code/User/globalStorage/ms-vscode.vscode-embedded-tools/vcpkg/root/downloads/artifacts/vcpkg-ce-default/tools.kitware.cmake/3.20.1/bin/cmake.exe"
+			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe"
 		},
 		{
 			"name" : "CMAKE_CPACK_COMMAND",
@@ -239,7 +239,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/Z0180064/AppData/Roaming/Code/User/globalStorage/ms-vscode.vscode-embedded-tools/vcpkg/root/downloads/artifacts/vcpkg-ce-default/tools.kitware.cmake/3.20.1/bin/cpack.exe"
+			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cpack.exe"
 		},
 		{
 			"name" : "CMAKE_CTEST_COMMAND",
@@ -251,7 +251,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/Z0180064/AppData/Roaming/Code/User/globalStorage/ms-vscode.vscode-embedded-tools/vcpkg/root/downloads/artifacts/vcpkg-ce-default/tools.kitware.cmake/3.20.1/bin/ctest.exe"
+			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/ctest.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER_AR",
@@ -491,7 +491,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "CMAKE_DLLTOOL-NOTFOUND"
+			"value" : "C:/MinGW/bin/dlltool.exe"
 		},
 		{
 			"name" : "CMAKE_EXECUTABLE_FORMAT",
@@ -671,7 +671,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec"
+			"value" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -683,7 +683,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/build/debug/install"
+			"value" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/build/debug/install"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -715,7 +715,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Users/Z0180064/AppData/Roaming/Code/User/globalStorage/ms-vscode.vscode-embedded-tools/vcpkg/root/downloads/artifacts/vcpkg-ce-default/tools.ninja.build.ninja/1.10.2/ninja.exe"
+			"value" : "C:/Users/riky_/AppData/Local/Programs/Python/Python39/Scripts/ninja.exe"
 		},
 		{
 			"name" : "CMAKE_MODULE_LINKER_FLAGS",
@@ -931,7 +931,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/Z0180064/AppData/Roaming/Code/User/globalStorage/ms-vscode.vscode-embedded-tools/vcpkg/root/downloads/artifacts/vcpkg-ce-default/tools.kitware.cmake/3.20.1/share/cmake-3.20"
+			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21"
 		},
 		{
 			"name" : "CMAKE_SHARED_LINKER_FLAGS",
@@ -1151,7 +1151,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/cmake/gcc-arm-none-eabi.cmake"
+			"value" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/cmake/gcc-arm-none-eabi.cmake"
 		},
 		{
 			"name" : "CMAKE_VERBOSE_MAKEFILE",
@@ -1191,7 +1191,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/build/debug/build"
+			"value" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec/build/debug/build"
 		},
 		{
 			"name" : "PanelVanttec_IS_TOP_LEVEL",
@@ -1215,7 +1215,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/Z0180064/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec"
+			"value" : "C:/Users/riky_/STM32CubeIDE/workspace_1.11.2/sdv_embedded/PanelVanttec"
 		}
 	],
 	"kind" : "cache",
