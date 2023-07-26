@@ -58,34 +58,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := GeneralModule
+BUILD_ARTIFACT_NAME := GeneralModuleVantTec
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-GeneralModule.elf \
+GeneralModuleVantTec.elf \
 
 MAP_FILES += \
-GeneralModule.map \
+GeneralModuleVantTec.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-GeneralModule.list \
+GeneralModuleVantTec.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: GeneralModule.elf secondary-outputs
+main-build: GeneralModuleVantTec.elf secondary-outputs
 
 # Tool invocations
-GeneralModule.elf GeneralModule.map: $(OBJS) $(USER_OBJS) C:\Users\riky_\STM32CubeIDE\workspace_1.11.2\sdv_embedded\GeneralModuleVantTec\STM32L431RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "GeneralModule.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\riky_\STM32CubeIDE\workspace_1.11.2\sdv_embedded\GeneralModuleVantTec\STM32L431RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="GeneralModule.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+GeneralModuleVantTec.elf GeneralModuleVantTec.map: $(OBJS) $(USER_OBJS) C:\Users\riky_\STM32CubeIDE\workspace_1.11.2\sdv_embedded\GeneralModuleVantTec\STM32L431RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "GeneralModuleVantTec.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\riky_\STM32CubeIDE\workspace_1.11.2\sdv_embedded\GeneralModuleVantTec\STM32L431RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="GeneralModuleVantTec.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -94,14 +94,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-GeneralModule.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "GeneralModule.list"
+GeneralModuleVantTec.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "GeneralModuleVantTec.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) GeneralModule.elf GeneralModule.list GeneralModule.map default.size.stdout
+	-$(RM) GeneralModuleVantTec.elf GeneralModuleVantTec.list GeneralModuleVantTec.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

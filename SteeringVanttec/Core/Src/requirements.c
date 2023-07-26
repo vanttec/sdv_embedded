@@ -11,6 +11,7 @@
 #include "cmsis_os.h"
 #include <stddef.h>
 #include <vanttec_sdv_ids.h>
+
 osThreadId_t emergencystopTaskHandle;
 const osThreadAttr_t emergencystopTaskAttributes = {
     .name = "emergencystop",
@@ -47,7 +48,18 @@ void emergencystop_task(void *args)
     register_canlib_rx(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_ESTOP, VANTTEC_CANLIB_BYTE, &emergencystop_data, 1);
     for (;;)
     {
-        
+        if (emergencystop_data == 1)
+        {
+            // Activate manual mode
+            buf[0] = VANTTEC_CAN_ID_EN_STEERING;
+            buf[1] = 0x0;
+            update_table(VANTTEC_CAN_ID_BRAKING_RX, VANTTEC_CAN_ID_EN_STEERING, buf, 2);
+
+            // Return emergency signal back to 0
+            buf[0] = VANTTEC_CAN_ID_ESTOP;
+            buf[1] = 0x0;
+            update_table(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_ESTOP, buf, 2);
+        }
         osDelay(10);
     }
 }
@@ -69,7 +81,30 @@ void drivemode_task(void *args)
     register_canlib_rx(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_DRIVE_MODE, VANTTEC_CANLIB_BYTE, &drivemode_data, 1);
     for (;;)
     {
-        
+        if (drivemode_data == 1)
+        {
+            // Activate autonomous mode
+            buf[0] = VANTTEC_CAN_ID_EN_STEERING;
+            buf[1] = 0x1;
+            update_table(VANTTEC_CAN_ID_BRAKING_RX, VANTTEC_CAN_ID_EN_STEERING, buf, 2);
+
+            // Return drivemode signal back to 3
+            buf[0] = VANTTEC_CAN_ID_DRIVE_MODE;
+            buf[1] = 0x3;
+            update_table(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_DRIVE_MODE, buf, 2);
+        }
+        else if (drivemode_data == 0)
+        {
+            // Activate manual mode
+            buf[0] = VANTTEC_CAN_ID_EN_STEERING;
+            buf[1] = 0x0;
+            update_table(VANTTEC_CAN_ID_BRAKING_RX, VANTTEC_CAN_ID_EN_STEERING, buf, 2);
+
+            // Return drivemode signal back to 3
+            buf[0] = VANTTEC_CAN_ID_DRIVE_MODE;
+            buf[1] = 0x3;
+            update_table(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_DRIVE_MODE, buf, 2);
+        }
         osDelay(10);
     }
 }
@@ -87,7 +122,16 @@ void reverse_task(void *args)
     register_canlib_rx(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_REVERSE, VANTTEC_CANLIB_BYTE, &reverse_data, 1);
     for (;;)
     {
-        
+        if (reverse_data == 1)
+        {
+            // Velocity to 0
+
+            // Return reverse signal back to 0
+            buf[0] = VANTTEC_CAN_ID_REVERSE;
+            buf[1] = 0x0;
+            update_table(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_REVERSE, buf, 2);
+        }
+
         osDelay(10);
     }
 }
@@ -98,7 +142,6 @@ void frenomanual_task(void *args)
     register_canlib_rx(VANTTEC_CAN_ID_THROTTLE_TX, VANTTEC_CAN_ID_FRENO_MANUAL, VANTTEC_CANLIB_BYTE, &frenomanual_data, 1);
     for (;;)
     {
-        
         osDelay(10);
     }
 }
@@ -111,7 +154,14 @@ void driverfault_task(void *args)
     for (;;)
     {
 
-        
+        if (driverfault_data == 1)
+        {
+
+            // Return reverse signal back to 0
+            buf[0] = VANTTEC_CAN_ID_DRIVER_FAULT;
+            buf[1] = 0x0;
+            update_table(VANTTEC_CAN_ID_STEPPER_TX, VANTTEC_CAN_ID_DRIVER_FAULT, buf, 2);
+        }
         osDelay(10);
     }
 }
@@ -121,7 +171,7 @@ void init_requirements_task()
     emergencystopTaskHandle = osThreadNew(emergencystop_task, NULL, &emergencystopTaskAttributes);
     hbTaskHandle = osThreadNew(hb_task, NULL, &hbTaskAttributes);
     drivemodeTaskHandle = osThreadNew(drivemode_task, NULL, &drivemodeTaskAttributes);
-    driverpresentTaskHandle = osThreadNew(driverpresent_task, NULL, &driverpresentTaskAttributes);
+    // driverpresentTaskHandle = osThreadNew(driverpresent_task, NULL, &driverpresentTaskAttributes);
     reverseTaskHandle = osThreadNew(reverse_task, NULL, &reverseTaskAttributes);
     frenomanualTaskHandle = osThreadNew(frenomanual_task, NULL, &frenomanualTaskAttributes);
     driverfaultTaskHandle = osThreadNew(driverfault_task, NULL, &driverfaultTaskAttributes);

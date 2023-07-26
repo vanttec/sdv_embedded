@@ -466,22 +466,22 @@ Discarded input sections
  .rodata.driverfaultTaskAttributes
                 0x0000000000000000       0x24 ./Core/Src/requirements.o
  .text.emergencystop_task
-                0x0000000000000000       0x26 ./Core/Src/requirements.o
+                0x0000000000000000       0x58 ./Core/Src/requirements.o
  .text.hb_task  0x0000000000000000       0x26 ./Core/Src/requirements.o
  .text.drivemode_task
-                0x0000000000000000       0x26 ./Core/Src/requirements.o
+                0x0000000000000000       0x8c ./Core/Src/requirements.o
  .text.driverpresent_task
                 0x0000000000000000       0x10 ./Core/Src/requirements.o
  .text.reverse_task
-                0x0000000000000000       0x26 ./Core/Src/requirements.o
+                0x0000000000000000       0x42 ./Core/Src/requirements.o
  .text.frenomanual_task
                 0x0000000000000000       0x26 ./Core/Src/requirements.o
  .text.driverfault_task
-                0x0000000000000000       0x2a ./Core/Src/requirements.o
+                0x0000000000000000       0x46 ./Core/Src/requirements.o
  .text.init_requirements_task
-                0x0000000000000000       0xcc ./Core/Src/requirements.o
- .debug_info    0x0000000000000000      0x6b0 ./Core/Src/requirements.o
- .debug_abbrev  0x0000000000000000      0x183 ./Core/Src/requirements.o
+                0x0000000000000000       0xb0 ./Core/Src/requirements.o
+ .debug_info    0x0000000000000000      0x73e ./Core/Src/requirements.o
+ .debug_abbrev  0x0000000000000000      0x1c4 ./Core/Src/requirements.o
  .debug_aranges
                 0x0000000000000000       0x58 ./Core/Src/requirements.o
  .debug_ranges  0x0000000000000000       0x48 ./Core/Src/requirements.o
@@ -556,9 +556,9 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x74 ./Core/Src/requirements.o
  .debug_macro   0x0000000000000000       0xdd ./Core/Src/requirements.o
  .debug_macro   0x0000000000000000       0x10 ./Core/Src/requirements.o
- .debug_macro   0x0000000000000000       0x7c ./Core/Src/requirements.o
- .debug_line    0x0000000000000000      0xb66 ./Core/Src/requirements.o
- .debug_str     0x0000000000000000    0xe05f8 ./Core/Src/requirements.o
+ .debug_macro   0x0000000000000000       0x94 ./Core/Src/requirements.o
+ .debug_line    0x0000000000000000      0xbb9 ./Core/Src/requirements.o
+ .debug_str     0x0000000000000000    0xe0682 ./Core/Src/requirements.o
  .comment       0x0000000000000000       0x51 ./Core/Src/requirements.o
  .debug_frame   0x0000000000000000      0x10c ./Core/Src/requirements.o
  .ARM.attributes
@@ -5980,7 +5980,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x74 ./libs/STEPPER/stepper_tasks.o
  .debug_macro   0x0000000000000000       0xdd ./libs/STEPPER/stepper_tasks.o
  .debug_macro   0x0000000000000000       0x10 ./libs/STEPPER/stepper_tasks.o
- .debug_macro   0x0000000000000000       0x7c ./libs/STEPPER/stepper_tasks.o
+ .debug_macro   0x0000000000000000       0x94 ./libs/STEPPER/stepper_tasks.o
  .debug_macro   0x0000000000000000       0x16 ./libs/STEPPER/stepper_tasks.o
  .debug_macro   0x0000000000000000      0x341 ./libs/STEPPER/stepper_tasks.o
  .debug_macro   0x0000000000000000       0x16 ./libs/STEPPER/stepper_tasks.o
@@ -8889,7 +8889,7 @@ LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_aranges
                 0x0000000000001d00       0x38 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
 
-.debug_macro    0x0000000000000000    0x293d9
+.debug_macro    0x0000000000000000    0x293f1
  .debug_macro   0x0000000000000000      0x15b ./Core/Src/FreeRTOS-openocd.o
  .debug_macro   0x000000000000015b      0xa78 ./Core/Src/FreeRTOS-openocd.o
  .debug_macro   0x0000000000000bd3      0x174 ./Core/Src/FreeRTOS-openocd.o
@@ -8963,74 +8963,74 @@ LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_macro   0x0000000000022449       0x66 ./Core/Src/main.o
  .debug_macro   0x00000000000224af       0x74 ./Core/Src/main.o
  .debug_macro   0x0000000000022523       0xdd ./Core/Src/main.o
- .debug_macro   0x0000000000022600       0x7c ./Core/Src/main.o
- .debug_macro   0x000000000002267c      0x215 ./Core/Src/stm32l4xx_hal_msp.o
- .debug_macro   0x0000000000022891      0x206 ./Core/Src/stm32l4xx_hal_timebase_tim.o
- .debug_macro   0x0000000000022a97      0x21f ./Core/Src/stm32l4xx_it.o
- .debug_macro   0x0000000000022cb6      0x206 ./Core/Src/system_stm32l4xx.o
- .debug_macro   0x0000000000022ebc      0x254 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
- .debug_macro   0x0000000000023110      0x223 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_adc.o
- .debug_macro   0x0000000000023333      0x20e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
- .debug_macro   0x0000000000023541      0x206 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
- .debug_macro   0x0000000000023747      0x20d ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
- .debug_macro   0x0000000000023954      0x22a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
- .debug_macro   0x0000000000023b7e      0x248 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
- .debug_macro   0x0000000000023dc6      0x23c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
- .debug_macro   0x0000000000024002      0x207 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
- .debug_macro   0x0000000000024209      0x206 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
- .debug_macro   0x000000000002440f      0x231 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.o
- .debug_macro   0x0000000000024640      0x40f ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000000000024a4f       0x10 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000000000024a5f       0x20 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000000000024a7f       0x10 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000000000024a8f       0xf5 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000000000024b84       0x16 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000000000024b9a       0x91 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000000000024c2b       0x8d ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000000000024cb8       0x9a ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000000000024d52       0x22 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000000000024d74       0x56 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000000000024dca      0x199 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
- .debug_macro   0x0000000000024f63      0x228 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
- .debug_macro   0x000000000002518b       0x16 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
- .debug_macro   0x00000000000251a1       0x87 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
- .debug_macro   0x0000000000025228      0x352 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
- .debug_macro   0x000000000002557a       0x10 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
- .debug_macro   0x000000000002558a      0x1ee ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
- .debug_macro   0x0000000000025778       0x97 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
- .debug_macro   0x000000000002580f      0x233 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
- .debug_macro   0x0000000000025a42      0x1c0 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
- .debug_macro   0x0000000000025c02       0x6d ./libs/STEPPER/encoder.o
- .debug_macro   0x0000000000025c6f      0x3aa ./libs/STEPPER/stepper.o
- .debug_macro   0x0000000000026019      0x19b ./libs/STEPPER/stepper.o
- .debug_macro   0x00000000000261b4      0x3c6 ./libs/STEPPER/stepper_tasks.o
- .debug_macro   0x000000000002657a       0x10 ./libs/STEPPER/stepper_tasks.o
- .debug_macro   0x000000000002658a      0x343 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
- .debug_macro   0x00000000000268cd       0x22 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
- .debug_macro   0x00000000000268ef       0x19 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
- .debug_macro   0x0000000000026908       0x15 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
- .debug_macro   0x000000000002691d      0x33b ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
- .debug_macro   0x0000000000026c58      0x3cd ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
- .debug_macro   0x0000000000027025      0x394 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
- .debug_macro   0x00000000000273b9       0x99 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
- .debug_macro   0x0000000000027452      0xb50 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
- .debug_macro   0x0000000000027fa2      0x18a ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
- .debug_macro   0x000000000002812c       0x10 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
- .debug_macro   0x000000000002813c      0x3d1 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
- .debug_macro   0x000000000002850d       0x1c ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
- .debug_macro   0x0000000000028529      0x1bb ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_macro   0x00000000000286e4       0x18 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_macro   0x00000000000286fc       0x34 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_macro   0x0000000000028730      0x17b ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_macro   0x00000000000288ab       0x43 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_macro   0x00000000000288ee       0x16 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_macro   0x0000000000028904      0x364 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_macro   0x0000000000028c68      0x194 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_macro   0x0000000000028dfc       0x10 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_macro   0x0000000000028e0c       0x35 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_macro   0x0000000000028e41       0x10 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_macro   0x0000000000028e51      0x3c7 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
- .debug_macro   0x0000000000029218      0x1c1 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
+ .debug_macro   0x0000000000022600       0x94 ./Core/Src/main.o
+ .debug_macro   0x0000000000022694      0x215 ./Core/Src/stm32l4xx_hal_msp.o
+ .debug_macro   0x00000000000228a9      0x206 ./Core/Src/stm32l4xx_hal_timebase_tim.o
+ .debug_macro   0x0000000000022aaf      0x21f ./Core/Src/stm32l4xx_it.o
+ .debug_macro   0x0000000000022cce      0x206 ./Core/Src/system_stm32l4xx.o
+ .debug_macro   0x0000000000022ed4      0x254 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
+ .debug_macro   0x0000000000023128      0x223 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_adc.o
+ .debug_macro   0x000000000002334b      0x20e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
+ .debug_macro   0x0000000000023559      0x206 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
+ .debug_macro   0x000000000002375f      0x20d ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
+ .debug_macro   0x000000000002396c      0x22a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
+ .debug_macro   0x0000000000023b96      0x248 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
+ .debug_macro   0x0000000000023dde      0x23c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
+ .debug_macro   0x000000000002401a      0x207 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
+ .debug_macro   0x0000000000024221      0x206 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
+ .debug_macro   0x0000000000024427      0x231 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.o
+ .debug_macro   0x0000000000024658      0x40f ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000000000024a67       0x10 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000000000024a77       0x20 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000000000024a97       0x10 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000000000024aa7       0xf5 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000000000024b9c       0x16 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000000000024bb2       0x91 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000000000024c43       0x8d ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000000000024cd0       0x9a ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000000000024d6a       0x22 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000000000024d8c       0x56 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000000000024de2      0x199 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
+ .debug_macro   0x0000000000024f7b      0x228 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
+ .debug_macro   0x00000000000251a3       0x16 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
+ .debug_macro   0x00000000000251b9       0x87 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
+ .debug_macro   0x0000000000025240      0x352 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ .debug_macro   0x0000000000025592       0x10 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ .debug_macro   0x00000000000255a2      0x1ee ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ .debug_macro   0x0000000000025790       0x97 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ .debug_macro   0x0000000000025827      0x233 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
+ .debug_macro   0x0000000000025a5a      0x1c0 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
+ .debug_macro   0x0000000000025c1a       0x6d ./libs/STEPPER/encoder.o
+ .debug_macro   0x0000000000025c87      0x3aa ./libs/STEPPER/stepper.o
+ .debug_macro   0x0000000000026031      0x19b ./libs/STEPPER/stepper.o
+ .debug_macro   0x00000000000261cc      0x3c6 ./libs/STEPPER/stepper_tasks.o
+ .debug_macro   0x0000000000026592       0x10 ./libs/STEPPER/stepper_tasks.o
+ .debug_macro   0x00000000000265a2      0x343 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
+ .debug_macro   0x00000000000268e5       0x22 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
+ .debug_macro   0x0000000000026907       0x19 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
+ .debug_macro   0x0000000000026920       0x15 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
+ .debug_macro   0x0000000000026935      0x33b ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
+ .debug_macro   0x0000000000026c70      0x3cd ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+ .debug_macro   0x000000000002703d      0x394 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+ .debug_macro   0x00000000000273d1       0x99 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+ .debug_macro   0x000000000002746a      0xb50 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+ .debug_macro   0x0000000000027fba      0x18a ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+ .debug_macro   0x0000000000028144       0x10 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+ .debug_macro   0x0000000000028154      0x3d1 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+ .debug_macro   0x0000000000028525       0x1c ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+ .debug_macro   0x0000000000028541      0x1bb ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_macro   0x00000000000286fc       0x18 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_macro   0x0000000000028714       0x34 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_macro   0x0000000000028748      0x17b ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_macro   0x00000000000288c3       0x43 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_macro   0x0000000000028906       0x16 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_macro   0x000000000002891c      0x364 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_macro   0x0000000000028c80      0x194 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_macro   0x0000000000028e14       0x10 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_macro   0x0000000000028e24       0x35 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_macro   0x0000000000028e59       0x10 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_macro   0x0000000000028e69      0x3c7 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_macro   0x0000000000029230      0x1c1 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
 
 .debug_line     0x0000000000000000    0x23236
  .debug_line    0x0000000000000000      0x5af ./Core/Src/FreeRTOS-openocd.o
@@ -9072,82 +9072,82 @@ LOAD c:/st/stm32cubeide_1.11.2/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_line    0x0000000000021cb4      0xb83 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
  .debug_line    0x0000000000022837      0x9ff ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
 
-.debug_str      0x0000000000000000    0xf1f96
+.debug_str      0x0000000000000000    0xf2013
  .debug_str     0x0000000000000000     0x86f2 ./Core/Src/FreeRTOS-openocd.o
                                        0x890b (size before relaxing)
  .debug_str     0x00000000000086f2    0xd6464 ./Core/Src/freertos.o
                                       0xdf027 (size before relaxing)
- .debug_str     0x00000000000deb56     0x2570 ./Core/Src/main.o
-                                      0xe170c (size before relaxing)
- .debug_str     0x00000000000e10c6      0x67e ./Core/Src/stm32l4xx_hal_msp.o
+ .debug_str     0x00000000000deb56     0x25ed ./Core/Src/main.o
+                                      0xe1789 (size before relaxing)
+ .debug_str     0x00000000000e1143      0x67e ./Core/Src/stm32l4xx_hal_msp.o
                                       0xdace5 (size before relaxing)
- .debug_str     0x00000000000e1744      0x108 ./Core/Src/stm32l4xx_hal_timebase_tim.o
+ .debug_str     0x00000000000e17c1      0x108 ./Core/Src/stm32l4xx_hal_timebase_tim.o
                                       0xd9f8e (size before relaxing)
- .debug_str     0x00000000000e184c       0xa5 ./Core/Src/stm32l4xx_it.o
+ .debug_str     0x00000000000e18c9       0xa5 ./Core/Src/stm32l4xx_it.o
                                       0xd9de2 (size before relaxing)
- .debug_str     0x00000000000e18f1       0xf2 ./Core/Src/system_stm32l4xx.o
+ .debug_str     0x00000000000e196e       0xf2 ./Core/Src/system_stm32l4xx.o
                                       0xd95c1 (size before relaxing)
- .debug_str     0x00000000000e19e3       0x36 ./Core/Startup/startup_stm32l431rctx.o
+ .debug_str     0x00000000000e1a60       0x36 ./Core/Startup/startup_stm32l431rctx.o
                                          0x86 (size before relaxing)
- .debug_str     0x00000000000e1a19      0x600 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
+ .debug_str     0x00000000000e1a96      0x600 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
                                       0xda071 (size before relaxing)
- .debug_str     0x00000000000e2019      0xa3b ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_adc.o
+ .debug_str     0x00000000000e2096      0xa3b ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_adc.o
                                       0xda3bc (size before relaxing)
- .debug_str     0x00000000000e2a54      0x55a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
+ .debug_str     0x00000000000e2ad1      0x55a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_can.o
                                       0xd9c4c (size before relaxing)
- .debug_str     0x00000000000e2fae      0x323 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
+ .debug_str     0x00000000000e302b      0x323 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
                                       0xd9d22 (size before relaxing)
- .debug_str     0x00000000000e32d1      0x123 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
+ .debug_str     0x00000000000e334e      0x123 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
                                       0xd9735 (size before relaxing)
- .debug_str     0x00000000000e33f4      0x3fc ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
+ .debug_str     0x00000000000e3471      0x3fc ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
                                       0xd99f8 (size before relaxing)
- .debug_str     0x00000000000e37f0      0x356 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
+ .debug_str     0x00000000000e386d      0x356 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
                                       0xd9bc1 (size before relaxing)
- .debug_str     0x00000000000e3b46      0x540 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
+ .debug_str     0x00000000000e3bc3      0x540 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
                                       0xd9e4c (size before relaxing)
- .debug_str     0x00000000000e4086      0xd68 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
+ .debug_str     0x00000000000e4103      0xd68 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
                                       0xda8ee (size before relaxing)
- .debug_str     0x00000000000e4dee      0x4a5 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
+ .debug_str     0x00000000000e4e6b      0x4a5 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
                                       0xda212 (size before relaxing)
- .debug_str     0x00000000000e5293      0x8b7 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.o
+ .debug_str     0x00000000000e5310      0x8b7 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.o
                                       0xda2f1 (size before relaxing)
- .debug_str     0x00000000000e5b4a     0x4781 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_str     0x00000000000e5bc7     0x4781 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
                                       0xe413d (size before relaxing)
- .debug_str     0x00000000000ea2cb      0x20f ./Middlewares/Third_Party/FreeRTOS/Source/list.o
+ .debug_str     0x00000000000ea348      0x20f ./Middlewares/Third_Party/FreeRTOS/Source/list.o
                                        0xa6e8 (size before relaxing)
- .debug_str     0x00000000000ea4da      0x892 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
+ .debug_str     0x00000000000ea557      0x892 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
                                        0xc228 (size before relaxing)
- .debug_str     0x00000000000ead6c     0x20f1 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ .debug_str     0x00000000000eade9     0x20f1 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
                                        0xe152 (size before relaxing)
- .debug_str     0x00000000000ece5d      0x5a6 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ .debug_str     0x00000000000eceda      0x5a6 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
                                        0xcacb (size before relaxing)
- .debug_str     0x00000000000ed403      0x783 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
+ .debug_str     0x00000000000ed480      0x783 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
                                        0xa006 (size before relaxing)
- .debug_str     0x00000000000edb86      0x324 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
+ .debug_str     0x00000000000edc03      0x324 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
                                        0xb02a (size before relaxing)
- .debug_str     0x00000000000edeaa       0x90 ./libs/STEPPER/encoder.o
+ .debug_str     0x00000000000edf27       0x90 ./libs/STEPPER/encoder.o
                                        0x3ceb (size before relaxing)
- .debug_str     0x00000000000edf3a      0x99b ./libs/STEPPER/stepper.o
+ .debug_str     0x00000000000edfb7      0x99b ./libs/STEPPER/stepper.o
                                       0xe20c7 (size before relaxing)
- .debug_str     0x00000000000ee8d5      0x1e0 ./libs/STEPPER/stepper_tasks.o
-                                      0xe1b3a (size before relaxing)
- .debug_str     0x00000000000eeab5       0xfa ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
+ .debug_str     0x00000000000ee952      0x1e0 ./libs/STEPPER/stepper_tasks.o
+                                      0xe1bb7 (size before relaxing)
+ .debug_str     0x00000000000eeb32       0xfa ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.o
                                       0xdff70 (size before relaxing)
- .debug_str     0x00000000000eebaf       0x5a ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
+ .debug_str     0x00000000000eec2c       0x5a ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.o
                                        0x2d60 (size before relaxing)
- .debug_str     0x00000000000eec09       0x61 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
+ .debug_str     0x00000000000eec86       0x61 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.o
                                        0x2d39 (size before relaxing)
- .debug_str     0x00000000000eec6a       0x72 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
+ .debug_str     0x00000000000eece7       0x72 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.o
                                       0xdfbb4 (size before relaxing)
- .debug_str     0x00000000000eecdc      0x1e8 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
+ .debug_str     0x00000000000eed59      0x1e8 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.o
                                       0xe1875 (size before relaxing)
- .debug_str     0x00000000000eeec4      0x1a5 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
+ .debug_str     0x00000000000eef41      0x1a5 ./libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.o
                                       0xe16cb (size before relaxing)
- .debug_str     0x00000000000ef069     0x1ec5 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
+ .debug_str     0x00000000000ef0e6     0x1ec5 ./libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.o
                                        0x5a52 (size before relaxing)
- .debug_str     0x00000000000f0f2e     0x1016 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
+ .debug_str     0x00000000000f0fab     0x1016 ./libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.o
                                        0xa243 (size before relaxing)
- .debug_str     0x00000000000f1f44       0x52 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
+ .debug_str     0x00000000000f1fc1       0x52 ./libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.o
                                        0xa208 (size before relaxing)
 
 .comment        0x0000000000000000       0x50

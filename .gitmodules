@@ -13,3 +13,6 @@
 [submodule "GeneralModuleVantTec/libs/vanttec_CANLib"]
 	path = GeneralModuleVantTec/libs/vanttec_CANLib
 	url = https://github.com/vanttec/vanttec_CANLib.git
+[submodule "BrakingVanttec/libs/vanttec_CANLib"]
+	path = BrakingVanttec/libs/vanttec_CANLib
+	url = https://github.com/vanttec/vanttec_CANLib.git

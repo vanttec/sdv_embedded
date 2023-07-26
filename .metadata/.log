@@ -4727,3 +4727,18 @@ java.lang.NullPointerException
 
 !ENTRY org.eclipse.equinox.p2.metadata.repository 4 1000 2023-07-11 21:41:22.375
 !MESSAGE No repository found at https://sw-center.st.com/stm32cubeide/eclipse.
+!SESSION 2023-07-25 19:37:02.920 -----------------------------------------------
+eclipse.buildId=Version 1.11.2
+java.version=11.0.16
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\riky_\STM32CubeIDE\workspace_1.11.2\sdv_embedded
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2023-07-25 19:37:23.167
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2023-07-25 19:37:23.450
+!MESSAGE Log4j initialized with config file C:\Users\riky_\STM32CubeIDE\workspace_1.11.2\sdv_embedded\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-07-25 19:37:47.592
+!MESSAGE Started RMI Server, listening on port 41337

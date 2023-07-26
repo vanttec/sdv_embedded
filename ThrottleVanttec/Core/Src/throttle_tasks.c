@@ -8,7 +8,7 @@
 #include "vanttec_canlib_tx_task.h"
 #include "vanttec_canlib_rx_task.h"
 #include "stm32l4xx_hal.h"
-#include "vanttec_canlib_generic_ids.h"
+#include "vanttec_sdv_ids.h"
 
 osThreadId_t potTaskHandle;
 const osThreadAttr_t potTaskAttributes = {
