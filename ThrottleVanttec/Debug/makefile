@@ -84,8 +84,8 @@ all: main-build
 main-build: ThrottleVanttec.elf secondary-outputs
 
 # Tool invocations
-ThrottleVanttec.elf ThrottleVanttec.map: $(OBJS) $(USER_OBJS) C:\Users\Z0180064\STM32CubeIDE\workspace_1.11.2\sdv_embedded\ThrottleVanttec\STM32L431RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "ThrottleVanttec.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Z0180064\STM32CubeIDE\workspace_1.11.2\sdv_embedded\ThrottleVanttec\STM32L431RCTX_FLASH.ld" -Wl,-Map="ThrottleVanttec.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+ThrottleVanttec.elf ThrottleVanttec.map: $(OBJS) $(USER_OBJS) C:\Users\riky_\STM32CubeIDE\workspace_1.11.2\sdv_embedded\ThrottleVanttec\STM32L431RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "ThrottleVanttec.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\riky_\STM32CubeIDE\workspace_1.11.2\sdv_embedded\ThrottleVanttec\STM32L431RCTX_FLASH.ld" -Wl,-Map="ThrottleVanttec.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

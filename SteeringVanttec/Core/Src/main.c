@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stepper_tasks.h"
+#include "vanttec_sdv_ids.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -113,7 +114,7 @@ int main(void)
   MX_ADC1_Init();
   MX_CAN1_Init();
   /* USER CODE BEGIN 2 */
-  init_canlib(hcan1, 0x40);
+  init_canlib(hcan1, VANTTEC_CAN_ID_STEPPER_TX);
   init_canlib_tx();
   init_canlib_rx();
   canlib_init_generic_tasks();

@@ -1,0 +1,32 @@
+/*
+ * requirements.h
+ *
+ *  Created on: May 22, 2023
+ *      Author: Z0180064
+ */
+
+#pragma once
+
+#define VANTTEC_CAN_ID_JETSON 0x01
+//Rx Device IDs
+#define VANTTEC_CAN_ID_GENERAL_RX 0x04
+#define VANTTEC_CAN_ID_THROTTLE_RX 0x06
+#define VANTTEC_CAN_ID_STEPPER_RX 0x08
+#define VANTTEC_CAN_ID_PANEL_RX 0x10
+//Tx Device IDs
+#define VANTTEC_CAN_ID_GENERAL_TX 0x03
+#define VANTTEC_CAN_ID_THROTTLE_TX 0x05
+#define VANTTEC_CAN_ID_STEPPER_TX 0x07
+#define VANTTEC_CAN_ID_PANEL_TX 0x09
+//Messages IDs
+#define VANTTEC_CAN_ID_ESTOP 0x00
+#define VANTTEC_CAN_ID_HB 0x01
+#define VANTTEC_CAN_ID_DRIVE_MODE 0x02
+#define VANTTEC_CAN_ID_DRIVER_PRESENT 0x03
+#define VANTTEC_CAN_ID_REVERSE 0x04
+#define VANTTEC_CAN_ID_FRENO_MANUAL 0x05
+#define VANTTEC_CAN_ID_DRIVER_FAULT 0x06
+#define VANTTEC_CAN_ID_PEDAL_BRAKE 0x07
+#define VANTTEC_CAN_ID_DEBUG 0xFA
+
+void init_requirements_task();

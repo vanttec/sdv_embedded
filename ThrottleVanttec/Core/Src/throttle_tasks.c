@@ -8,7 +8,7 @@
 #include "vanttec_canlib_tx_task.h"
 #include "vanttec_canlib_rx_task.h"
 #include "stm32l4xx_hal.h"
-#include "vanttec_canlib_generic_ids.h"
+#include "vanttec_sdv_ids.h"
 
 osThreadId_t potTaskHandle;
 const osThreadAttr_t potTaskAttributes = {
@@ -105,9 +105,7 @@ void brake_task(void *args)
 	uint8_t prev_brake = 2;
 	for(;;)
 	{
-
 		brake_status = HAL_GPIO_ReadPin(hand_brake_GPIO_Port, hand_brake_Pin);
-
 		if(prev_brake!=brake_status){
 			if (brake_status){
 		            // Velocity to 0
@@ -123,10 +121,8 @@ void brake_task(void *args)
 		            update_table(VANTTEC_CAN_ID_THROTTLE_RX, 0x06, buf, 2);
 				}
 				canlib_send_byte(VANTTEC_CAN_ID_FRENO_MANUAL, brake_status);
-
 		}
 		prev_brake = brake_status;
-
 		osDelay(10);
 	}
 

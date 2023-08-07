@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.ejs": "html",
+        "vanttec_canlib_tx_task.h": "c"
+    }
+}

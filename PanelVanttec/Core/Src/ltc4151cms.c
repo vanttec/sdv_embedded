@@ -2,7 +2,7 @@
  * ltc4151cms.c
  *
  *  Created on: May 16, 2023
- *      Author: Z0180064
+ *      Author: riky_
  */
 #include "ltc4151cms.h"
 #include "stdbool.h"
@@ -14,6 +14,9 @@ extern I2C_HandleTypeDef hi2c1;
 extern bool enable_multimeter;
 uint8_t i2cBuffer[MAX_REGISTER_SIZE];
 uint8_t multi_address = 222;
+#define I2C_ADDRESS_START   0x00
+#define I2C_ADDRESS_END     230
+
 void initialize_devices()
 {
 
@@ -24,6 +27,23 @@ void initialize_devices()
     enable_multimeter = true;
   }
 }
+void I2C_ScanBus()
+{
+  uint8_t address;
+  uint8_t status;
+
+  for (address = I2C_ADDRESS_START; address <= I2C_ADDRESS_END; address++)
+  {
+    status = HAL_I2C_Master_Transmit(&hi2c1, address << 1, NULL, 0, 10);
+
+    if (status == HAL_OK)
+    {
+      printf("Device found at address 0x%02X\n", address);
+      HAL_GPIO_WritePin(DEBUG_3_GPIO_Port, DEBUG_3_Pin, GPIO_PIN_SET);
+    }
+  }
+}
+
 
 void send_command(uint8_t address, uint8_t command, const uint8_t *data, uint32_t size)
 {
