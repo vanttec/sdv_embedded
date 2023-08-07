@@ -2,4 +2,4 @@
 ../Core/Src/throttle_tasks.c:54:6:motor_task	32	static
 ../Core/Src/throttle_tasks.c:78:6:mode_task	32	static
 ../Core/Src/throttle_tasks.c:101:6:brake_task	32	static
-../Core/Src/throttle_tasks.c:135:6:init_throttle_tasks	8	static
+../Core/Src/throttle_tasks.c:131:6:init_throttle_tasks	8	static

@@ -9,7 +9,7 @@
 #include "vanttec_canlib_generic_ids.h"
 #include "vanttec_canlib_tx_task.h"
 #include "vanttec_canlib_rx_task.h"
-#include "vanttec_canlib_generic_ids.h"
+#include "vanttec_sdv_ids.h"
 #include "stepper_tasks.h"
 #include "stepper.h"
 
