@@ -36,17 +36,15 @@ const osThreadAttr_t seatSensorTaskAttributes = {
 void estop_task(void *args)
 {
     GPIO_PinState emergency_button;
-    GPIO_PinState emergency_button_aux;
     uint8_t prev_emergency_button = 2;
-    uint8_t prev_emergency_button_aux = 2;
 
     for (;;)
     {
         emergency_button = HAL_GPIO_ReadPin(I_BotonEmergencia_GPIO_Port, I_BotonEmergencia_Pin);           // Se lee el estado del botón
-        emergency_button_aux = HAL_GPIO_ReadPin(I_BotonEmergenciaAux_GPIO_Port, I_BotonEmergenciaAux_Pin); // Se lee el estado del botón
+        //emergency_button_aux = HAL_GPIO_ReadPin(I_BotonEmergenciaAux_GPIO_Port, I_BotonEmergenciaAux_Pin); // Se lee el estado del botón
         if (prev_emergency_button != emergency_button)
         {
-            if (emergency_button | emergency_button_aux)
+            if (emergency_button )
             {
                 HAL_GPIO_WritePin(GPIOC, DEBUG_1_Pin, GPIO_PIN_SET);
                 // envío de ID de can
@@ -92,16 +90,15 @@ void reverse_task(void *args)
 
 void drive_mode_task(void *args)
 {
-    GPIO_PinState drive_mode, drive_mode_aux;
+    GPIO_PinState drive_mode;
     uint8_t prev_drive_mode = 2;
     uint8_t prev_drive_mode_aux = 2;
     for (;;)
     {
         drive_mode = HAL_GPIO_ReadPin(I_BotonAutonomo_Manual_GPIO_Port, I_BotonAutonomo_Manual_Pin);       // Se lee el estado del botón
-        drive_mode_aux = HAL_GPIO_ReadPin(I_BotonAutonomo_Manual2_GPIO_Port, I_BotonAutonomo_Manual2_Pin); // Se lee el estado del botón
         if (prev_drive_mode != drive_mode)
         {
-            if (drive_mode | drive_mode_aux)
+            if (drive_mode)
             {
                 HAL_GPIO_WritePin(GPIOC, DEBUG_3_Pin, GPIO_PIN_SET);
                 // envío de ID de can

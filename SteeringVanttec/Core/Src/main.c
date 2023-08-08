@@ -118,6 +118,7 @@ int main(void)
   init_canlib_tx();
   init_canlib_rx();
   canlib_init_generic_tasks();
+  init_requirements_task();
   init_stepper_tasks();
   /* USER CODE END 2 */
 
