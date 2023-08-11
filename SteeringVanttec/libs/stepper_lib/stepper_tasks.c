@@ -53,9 +53,9 @@ void steering_task()
 
 	for(;;)
 	{
-		if(!em_stop)
+		if(!em_stop || 1)
 		{
-			if(drive_mode)
+			if(drive_mode || 1)
 			{
 				if(!init)
 				{
@@ -171,8 +171,8 @@ void init_gpios_task()
 
 void init_stepper_tasks()
 {
-	register_canlib_rx(VANTTEC_CAN_ID_GENERAL_RX, VANTTEC_CAN_ID_DRIVE_MODE, VANTTEC_CANLIB_BYTE, &drive_mode, 1);
-	register_canlib_rx(1, VANTTEC_CAN_ID_ESTOP, VANTTEC_CANLIB_BYTE, &em_stop, 1);
+	// register_canlib_rx(VANTTEC_CAN_ID_GENERAL_RX, VANTTEC_CAN_ID_DRIVE_MODE, VANTTEC_CANLIB_BYTE, &drive_mode, 1);
+	// register_canlib_rx(1, VANTTEC_CAN_ID_ESTOP, VANTTEC_CANLIB_BYTE, &em_stop, 1);
 	init_steer_task();
 	//init_brake_task();
 	init_gpios_task();

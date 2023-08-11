@@ -1,0 +1,8 @@
+../Core/Src/requirements.c:44:6:emergencystop_task	2
+../Core/Src/requirements.c:66:6:hb_task	1
+../Core/Src/requirements.c:77:6:drivemode_task	3
+../Core/Src/requirements.c:111:6:driverpresent_task	1
+../Core/Src/requirements.c:118:6:reverse_task	2
+../Core/Src/requirements.c:138:6:frenomanual_task	1
+../Core/Src/requirements.c:148:6:driverfault_task	2
+../Core/Src/requirements.c:169:6:init_requirements_task	1

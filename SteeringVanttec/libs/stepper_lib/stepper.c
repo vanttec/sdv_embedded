@@ -91,7 +91,7 @@ void stop(const stepper_type stepper)
 			break;
 		case BRAKING:
 			// For the break, the stop has a different meaning
-			brake_by_setpoint(1);
+			brake_by_setpoint(1, 0);
 
 			HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_SET);
 			//HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_RESET);
@@ -178,7 +178,6 @@ void set_setpoint(const stepper_type stepper, float setpoint){
 
 void steer_by_setpoint(uint8_t direction, float error)
 {
-	float error = 0;
 	if(steering_stepper.is_active)
 	{
 		if(steering_stepper.direction != IDLE)
@@ -204,7 +203,6 @@ void steer_by_setpoint(uint8_t direction, float error)
 
 void brake_by_setpoint(uint8_t direction, float error)
 {
-	float error = 0;
 	if(braking_stepper.is_active)
 	{
 		if(braking_stepper.direction != IDLE)
