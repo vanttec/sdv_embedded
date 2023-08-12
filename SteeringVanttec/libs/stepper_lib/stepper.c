@@ -7,6 +7,8 @@ volatile stepper steering_stepper;
 
 const static float STEER_RATIO = 1.5; // Stepper to steering wheel ratio
 const static uint16_t MAX_STEERING_ANGLE = 500;
+const static uint16_t PEDAL_LENGTH = 0.18;
+const static uint16_t PULLEY_RADIUS = 0.0353;
 
 void configure_steering()
 {
@@ -27,29 +29,31 @@ void configure_braking()
 	braking_stepper.is_active = 0;
 	braking_stepper.is_exec_started = 0;
 	braking_stepper.direction = IDLE;
-	braking_stepper.MAX_ANGLE = 57;
+	braking_stepper.MAX_ANGLE = 60; // Degrees
 	braking_stepper.current_angle = 0;
-	braking_stepper.STEP_ANGLE = 0.9;
+	braking_stepper.STEP_ANGLE = 1.8;
 
-	//htim2.Instance->CCR1 = 500;	// For duty cycle of 50%
-	HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_SET);
+	htim2.Instance->CCR1 = 392; // For duty cycle of 50%
+	// HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_SET); // Temp steering
 }
 
 void start(const stepper_type stepper)
 {
-	switch(stepper)
+	switch (stepper)
 	{
-		case STEERING:
-			HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_RESET);
-			steering_stepper.is_active = 1;
-			HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
-			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
-			break;
-		case BRAKING:
-			HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_RESET);
-			braking_stepper.is_active = 1;
-			HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
-			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
+	case STEERING:
+		HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_RESET);
+		steering_stepper.is_active = 1;
+		HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
+		break;
+	case BRAKING:
+		// HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_RESET); // Temp Steering
+		braking_stepper.is_active = 1;
+		HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
 			break;
 		default:
 			break;
@@ -58,55 +62,87 @@ void start(const stepper_type stepper)
 
 void pause(const stepper_type stepper)
 {
-	switch(stepper)
+	switch (stepper)
 	{
-		case STEERING:
-			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
-			steering_stepper.is_exec_started = 0;
-			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_SET);
-			break;
-		case BRAKING:
-			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
-			braking_stepper.is_exec_started = 0;
-			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_GPIO_Port, GPIO_PIN_SET);
-			break;
-		default:
-			break;
+	case STEERING:
+		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
+		steering_stepper.is_exec_started = 0;
+		HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_SET);
+		break;
+	case BRAKING:
+		// HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
+		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1); // Temp Steering
+		braking_stepper.is_exec_started = 0;
+		HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_GPIO_Port, GPIO_PIN_SET);
+		break;
+	default:
+		break;
 	}
 }
 
 void stop(const stepper_type stepper)
 {
-	switch(stepper)
+	switch (stepper)
 	{
-		case STEERING:
-			HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_SET);
-			//HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_RESET);
-			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
-			steering_stepper.is_active = 0;
-			steering_stepper.direction = IDLE;
-			steering_stepper.is_exec_started = 0;
-			HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
-			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
-			break;
-		case BRAKING:
-			// For the break, the stop has a different meaning
-			brake_by_setpoint(1, 0);
-
-			HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_SET);
-			//HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_RESET);
-			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
-			braking_stepper.is_active = 0;
-			braking_stepper.direction = IDLE;
-			braking_stepper.is_exec_started = 0;
-			HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
-			HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
-
-			break;
-		default:
-			break;
+	case STEERING:
+		HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_SET);
+		// HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_RESET);
+		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
+		steering_stepper.is_active = 0;
+		steering_stepper.direction = IDLE;
+		steering_stepper.is_exec_started = 0;
+		HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
+		break;
+	case BRAKING:
+		// HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_SET);
+		// HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_RESET);
+		// HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
+		HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_SET); // Temp Steering
+		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);			   // Temp Steering
+		braking_stepper.is_active = 0;
+		braking_stepper.direction = IDLE;
+		braking_stepper.is_exec_started = 0;
+		HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
+		break;
+	default:
+		break;
 	}
 }
+
+void em_stop()
+{
+	// For the break, the stop has a different meaning
+	float error = braking_stepper.desired_angle - braking_stepper.current_angle;
+	uint8_t direction = CW;
+
+	if (braking_stepper.direction != IDLE)
+	{
+		if (braking_stepper.direction != direction)
+		{
+			braking_stepper.direction = direction;
+			// HAL_GPIO_WritePin(GPIOB, STPR_DIR_2_Pin, direction);
+			HAL_GPIO_WritePin(GPIOB, STPR_DIR_1_Pin, direction); // Temp Steering
+		}
+
+		if (fabsf(error) > braking_stepper.STEP_ANGLE)
+		{
+			// Start execution
+			if (!braking_stepper.is_exec_started)
+			{
+				// HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+				HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1); // Temp Steering
+				braking_stepper.is_exec_started = 1;
+			}
+		}
+		else
+			pause(BRAKING);
+	}
+	else
+		pause(BRAKING);
+}
+
 
 stepper_direction unsafe_direction;
 void steer(uint8_t direction){
@@ -203,42 +239,50 @@ void steer_by_setpoint(uint8_t direction, float error)
 
 void brake_by_setpoint(uint8_t direction, float error)
 {
-	if(braking_stepper.is_active)
+
+	if (braking_stepper.is_active)
 	{
-		if(braking_stepper.direction != IDLE)
+		if (direction != IDLE)
 		{
-			if(braking_stepper.direction != direction)
+			if (braking_stepper.direction != direction)
 			{
 				braking_stepper.direction = direction;
-				HAL_GPIO_WritePin(GPIOB, STPR_DIR_2_Pin, direction);
+				HAL_GPIO_WritePin(GPIOB, STPR_DIR_1_Pin, direction); // Temp Steering
+				// HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
 			}
 
-			if(fabsf(error) > braking_stepper.STEP_ANGLE)
+			if (fabsf(error) > braking_stepper.STEP_ANGLE)
 			{
 				// Start execution
-				if(!braking_stepper.is_exec_started)
+				if (!braking_stepper.is_exec_started)
 				{
-					HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+					HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1); // Temp Steering
+					// HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
 					braking_stepper.is_exec_started = 1;
 				}
-			} else pause(BRAKING);
-		} else pause(BRAKING);
-	} else stop(BRAKING);
+			}
+			else
+				pause(BRAKING);
+		}
+		else
+			pause(BRAKING);
+	}
+	else
+		stop(BRAKING);
 }
 
 void update_stepper_pos(const stepper_type stepper)
 {
-	switch(stepper)
+	switch (stepper)
 	{
-		case STEERING:
-			steering_stepper.current_angle = -ifm_encoder.absolute_angle*STEER_RATIO;  // - To account for gear counter rotation
-			break;
-		case BRAKING:
-			braking_stepper.current_angle = briter_encoder.absolute_angle;		// REQUIRED RELATIONSHIP FROM PULLEY TO BRAKE ANGLE
-			break;
+	case STEERING:
+		steering_stepper.current_angle = -ifm_encoder.absolute_angle * STEER_RATIO; // - To account for gear counter rotation
+		break;
+	case BRAKING:
+		braking_stepper.current_angle = briter_encoder.absolute_angle * (PEDAL_LENGTH / PULLEY_RADIUS); // REQUIRED RELATIONSHIP FROM PULLEY TO BRAKE ANGLE
+		break;
 	}
 }
-
 /*
 void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 {
