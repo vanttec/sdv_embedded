@@ -39,7 +39,7 @@ const osThreadAttr_t GPIOsTaskAttributes = {
     .stack_size = 128 * 4};
 
 uint8_t drive_mode = 0U;		//0: Manual, 1: Controller/Autonomous
-uint8_t em_stop = 0U;
+//uint8_t em_stop = 0U;
 
 void steering_task()
 {
@@ -115,7 +115,7 @@ void braking_task()
 		if (es_braking)
 		{
 			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_RESET);
-			em_stop(BRAKING);
+			//em_stop(BRAKING);
 			init = 0;
 		}
 		else
