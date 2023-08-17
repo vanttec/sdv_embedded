@@ -47,10 +47,11 @@ void steering_task()
 	uint8_t drivemode_data = 0;
 	uint8_t init = 0;
 	uint8_t dir = IDLE; // For safety do not modify this initial value
-	uint32_t pos = 0U;
+	float desired_pos = 0.0f;
+	uint32_t encoder_pos = 0U;
 	//register_canlib_rx(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_STEERING, VANTTEC_CANLIB_BYTE, &dir, 1);			// For direction
-	register_canlib_rx(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_STEERING, VANTTEC_CANLIB_BYTE, &pos, 1);
-	register_canlib_rx(0x52, 0x11, VANTTEC_CANLIB_LONG, &pos, 4);														// To check IFM encoder angle
+	register_canlib_rx(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_STEERING, VANTTEC_CANLIB_FLOAT, &desired_pos, 4);
+	register_canlib_rx(0x52, 0x11, VANTTEC_CANLIB_LONG, &encoder_pos, 4);														// To check IFM encoder angle
 	register_canlib_rx(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_ES_STEERING, VANTTEC_CANLIB_BYTE, &es_steering, 1);	// For EM braking
 	register_canlib_rx(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_DR_STEERING, VANTTEC_CANLIB_BYTE, &drivemode_data, 1); // For enable braking
 
@@ -58,7 +59,7 @@ void steering_task()
 
 	for(;;)
 	{
-		parse_ifm_encoder(pos);
+		parse_ifm_encoder(encoder_pos);
 		update_stepper_pos(STEERING);
 		if (es_steering)
 		{
@@ -80,7 +81,7 @@ void steering_task()
 				}
 				// Auto mode
 				//steer(dir)
-				set_setpoint(STEERING, pos);
+				set_setpoint(STEERING, desired_pos);
 				HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
 			}
 			else

@@ -5,7 +5,7 @@
 ../libs/stepper_lib/stepper.c:83:6:stop	16	static
 ../libs/stepper_lib/stepper.c:114:6:em_stop	16	static
 ../libs/stepper_lib/stepper.c:148:6:steer	16	static
-../libs/stepper_lib/stepper.c:187:6:set_setpoint	24	static
-../libs/stepper_lib/stepper.c:215:6:steer_by_setpoint	16	static
-../libs/stepper_lib/stepper.c:240:6:brake_by_setpoint	16	static
-../libs/stepper_lib/stepper.c:274:6:update_stepper_pos	16	static
+../libs/stepper_lib/stepper.c:188:6:set_setpoint	24	static
+../libs/stepper_lib/stepper.c:216:6:steer_by_setpoint	16	static
+../libs/stepper_lib/stepper.c:241:6:brake_by_setpoint	16	static
+../libs/stepper_lib/stepper.c:275:6:update_stepper_pos	16	static

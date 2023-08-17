@@ -1,7 +1,7 @@
 ../libs/stepper_lib/stepper_tasks.c:44:6:steering_task	4
-../libs/stepper_lib/stepper_tasks.c:98:6:braking_task	4
-../libs/stepper_lib/stepper_tasks.c:150:6:gpios_task	4
-../libs/stepper_lib/stepper_tasks.c:186:6:init_steer_task	1
-../libs/stepper_lib/stepper_tasks.c:191:6:init_brake_task	1
-../libs/stepper_lib/stepper_tasks.c:196:6:init_gpios_task	1
-../libs/stepper_lib/stepper_tasks.c:201:6:init_stepper_tasks	1
+../libs/stepper_lib/stepper_tasks.c:99:6:braking_task	4
+../libs/stepper_lib/stepper_tasks.c:151:6:gpios_task	4
+../libs/stepper_lib/stepper_tasks.c:187:6:init_steer_task	1
+../libs/stepper_lib/stepper_tasks.c:192:6:init_brake_task	1
+../libs/stepper_lib/stepper_tasks.c:197:6:init_gpios_task	1
+../libs/stepper_lib/stepper_tasks.c:202:6:init_stepper_tasks	1

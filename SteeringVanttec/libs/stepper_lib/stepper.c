@@ -6,7 +6,7 @@ volatile stepper braking_stepper;
 volatile stepper steering_stepper;
 
 const static float STEER_RATIO = 1.5; // Stepper to steering wheel ratio
-const static uint16_t MAX_STEERING_ANGLE = 500;
+const static uint16_t MAX_STEERING_ANGLE = 300;
 const static uint16_t PEDAL_LENGTH = 0.18;
 const static uint16_t PULLEY_RADIUS = 0.0353;
 
@@ -18,7 +18,7 @@ void configure_steering()
 	steering_stepper.direction = IDLE;
 	steering_stepper.MAX_ANGLE = MAX_STEERING_ANGLE*STEER_RATIO;	//Degrees
 	steering_stepper.current_angle = 0;
-	steering_stepper.STEP_ANGLE = 0.9;
+	steering_stepper.STEP_ANGLE = 10;//1.8;
 
 	htim2.Instance->CCR1 = 2500;	// For duty cycle of 50%
 	HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_SET);
@@ -184,6 +184,7 @@ void steer(uint8_t direction){
 	} else stop(STEERING);
 }
 
+
 void set_setpoint(const stepper_type stepper, float setpoint){
 	uint8_t direction = IDLE;
 	float error = 0;
@@ -195,7 +196,7 @@ void set_setpoint(const stepper_type stepper, float setpoint){
 			steering_stepper.desired_angle = -setpoint*steering_stepper.MAX_ANGLE;  // - To account for gear counter rotation
 			error = steering_stepper.desired_angle - steering_stepper.current_angle;
 
-			direction = fabsf(error) < steering_stepper.STEP_ANGLE ? IDLE:error > 0? CCW:CW;
+			direction = fabsf(error) < steering_stepper.STEP_ANGLE ? IDLE:error > 0? CW:CCW;
 
 			steer_by_setpoint(direction, error);
 			break;
@@ -216,7 +217,7 @@ void steer_by_setpoint(uint8_t direction, float error)
 {
 	if(steering_stepper.is_active)
 	{
-		if(steering_stepper.direction != IDLE)
+		if(direction != IDLE)
 		{
 			if(steering_stepper.direction != direction)
 			{
