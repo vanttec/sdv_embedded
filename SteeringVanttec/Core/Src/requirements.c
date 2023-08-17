@@ -21,7 +21,7 @@ const osThreadAttr_t hbTaskAttributes = {
     .name = "canlib_hb",
     .stack_size = 128 * 1};
 osThreadId_t drivemodeTaskHandle;
-const osThreadAttr_t drivemodeTaskAttributes = {
+const osThreadAttr_t driveModeTaskAttributes = {
     .name = "drivemode",
     .stack_size = 128 * 4};
 osThreadId_t driverpresentTaskHandle;
@@ -32,23 +32,23 @@ osThreadId_t reverseTaskHandle;
 const osThreadAttr_t reverseTaskAttributes = {
     .name = "reserve",
     .stack_size = 128 * 4};
-osThreadId_t frenomanualTaskHandle;
-const osThreadAttr_t frenomanualTaskAttributes = {
+osThreadId_t pedalBrakeTaskHandle;
+const osThreadAttr_t pedalBrakeTaskAttributes = {
     .name = "frenomanual",
     .stack_size = 128 * 4};
 osThreadId_t driverfaultTaskHandle;
-const osThreadAttr_t driverfaultTaskAttributes = {
+const osThreadAttr_t driverFaultTaskAttributes = {
     .name = "driverfault",
     .stack_size = 128 * 4};
 
-void emergencystop_task(void *args)
+void emergency_stop_task(void *args)
 {
     uint8_t buf[8];
-    uint8_t emergencystop_data = 0;
-    register_canlib_rx(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_ESTOP, VANTTEC_CANLIB_BYTE, &emergencystop_data, 1);
+    uint8_t e_stop_data = 0;
+    register_canlib_rx(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_ESTOP, VANTTEC_CANLIB_BYTE, &e_stop_data, 1);
     for (;;)
     {
-        if (emergencystop_data == 1)
+        if (e_stop_data == 1)
         {
             // Activate manual mode
             buf[0] = VANTTEC_CAN_ID_ES_STEERING;
@@ -63,6 +63,7 @@ void emergencystop_task(void *args)
         osDelay(10);
     }
 }
+
 void hb_task(void *args)
 {
     uint8_t data = 0;
@@ -75,7 +76,7 @@ void hb_task(void *args)
         osDelay(1000);
     }
 }
-void drivemode_task(void *args)
+void drive_mode_task(void *args)
 {
     uint8_t buf[8];
     uint8_t drivemode_data = 3;
@@ -109,13 +110,7 @@ void drivemode_task(void *args)
         osDelay(10);
     }
 }
-void driverpresent_task(void *args)
-{
-    for (;;)
-    {
-        osDelay(10);
-    }
-}
+
 void reverse_task(void *args)
 {
     uint8_t buf[8];
@@ -136,7 +131,8 @@ void reverse_task(void *args)
         osDelay(10);
     }
 }
-void frenomanual_task(void *args)
+
+void pedal_brake_task(void *args)
 {
     uint8_t buf[8];
     uint8_t frenomanual_data = 0;
@@ -169,11 +165,10 @@ void driverfault_task(void *args)
 
 void init_requirements_task()
 {
-    emergencystopTaskHandle = osThreadNew(emergencystop_task, NULL, &emergencystopTaskAttributes);
+    //emergencystopTaskHandle = osThreadNew(emergency_stop_task, NULL, &emergencystopTaskAttributes);
     hbTaskHandle = osThreadNew(hb_task, NULL, &hbTaskAttributes);
-    drivemodeTaskHandle = osThreadNew(drivemode_task, NULL, &drivemodeTaskAttributes);
-    // driverpresentTaskHandle = osThreadNew(driverpresent_task, NULL, &driverpresentTaskAttributes);
-    reverseTaskHandle = osThreadNew(reverse_task, NULL, &reverseTaskAttributes);
-    frenomanualTaskHandle = osThreadNew(frenomanual_task, NULL, &frenomanualTaskAttributes);
-    driverfaultTaskHandle = osThreadNew(driverfault_task, NULL, &driverfaultTaskAttributes);
+    drivemodeTaskHandle = osThreadNew(drive_mode_task, NULL, &driveModeTaskAttributes);
+    //reverseTaskHandle = osThreadNew(reverse_task, NULL, &reverseTaskAttributes);
+    //pedalBrakeTaskHandle = osThreadNew(pedal_brake_task, NULL, &pedalBrakeTaskAttributes);
+    //driverfaultTaskHandle = osThreadNew(driverfault_task, NULL, &driverFaultTaskAttributes);
 }
