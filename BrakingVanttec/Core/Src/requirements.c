@@ -51,9 +51,9 @@ void emergencystop_task(void *args)
         if (emergencystop_data == 1)
         {
             // Activate manual mode
-            buf[0] = VANTTEC_CAN_ID_EN_BRAKING;
+            buf[0] = VANTTEC_CAN_ID_ES_BRAKING;
             buf[1] = 0x0;
-            update_table(VANTTEC_CAN_ID_BRAKING_RX, VANTTEC_CAN_ID_EN_BRAKING, buf, 2);
+            update_table(VANTTEC_CAN_ID_BRAKING_RX, VANTTEC_CAN_ID_ES_BRAKING, buf, 2);
 
             // Return emergency signal back to 0
             buf[0] = VANTTEC_CAN_ID_ESTOP;
@@ -70,6 +70,7 @@ void hb_task(void *args)
     {
         //canlib_send_debug_string("Hello");
         canlib_send_byte(VANTTEC_CAN_ID_HB, data);
+        HAL_GPIO_TogglePin(DEBUG_2_GPIO_Port,DEBUG_2_Pin);
         data++;
         osDelay(1000);
     }
@@ -84,9 +85,9 @@ void drivemode_task(void *args)
         if (drivemode_data == 1)
         {
             // Activate autonomous mode
-            buf[0] = VANTTEC_CAN_ID_EN_BRAKING;
+            buf[0] = VANTTEC_CAN_ID_DR_BRAKING;
             buf[1] = 0x1;
-            update_table(VANTTEC_CAN_ID_BRAKING_RX, VANTTEC_CAN_ID_EN_BRAKING, buf, 2);
+            update_table(VANTTEC_CAN_ID_BRAKING_RX, VANTTEC_CAN_ID_DR_BRAKING, buf, 2);
 
             // Return drivemode signal back to 3
             buf[0] = VANTTEC_CAN_ID_DRIVE_MODE;
@@ -96,9 +97,9 @@ void drivemode_task(void *args)
         else if (drivemode_data == 0)
         {
             // Activate manual mode
-            buf[0] = VANTTEC_CAN_ID_EN_BRAKING;
+            buf[0] = VANTTEC_CAN_ID_DR_BRAKING;
             buf[1] = 0x0;
-            update_table(VANTTEC_CAN_ID_BRAKING_RX, VANTTEC_CAN_ID_EN_BRAKING, buf, 2);
+            update_table(VANTTEC_CAN_ID_BRAKING_RX, VANTTEC_CAN_ID_DR_BRAKING, buf, 2);
 
             // Return drivemode signal back to 3
             buf[0] = VANTTEC_CAN_ID_DRIVE_MODE;
