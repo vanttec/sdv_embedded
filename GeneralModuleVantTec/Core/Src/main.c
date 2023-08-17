@@ -114,6 +114,7 @@ int main(void)
   canlib_init_generic_tasks();
 
   //init_ping_task();
+  init_requirements_task();
   init_general_task();
 
   /* USER CODE END 2 */
