@@ -40,6 +40,10 @@ osThreadId_t driverfaultTaskHandle;
 const osThreadAttr_t driverFaultTaskAttributes = {
     .name = "driverfault",
     .stack_size = 128 * 4};
+osThreadId_t xboxTaskHandle;
+const osThreadAttr_t xboxTaskAttributes = {
+    .name = "xbox",
+    .stack_size = 128 * 4};
 
 void emergency_stop_task(void *args)
 {
@@ -163,11 +167,46 @@ void driverfault_task(void *args)
     }
 }
 
+void xbox_task(void *args)
+{
+    uint8_t buf[8];
+    uint8_t xbox_data = 0;
+    register_canlib_rx(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_XBOX, VANTTEC_CANLIB_BYTE, &xbox_data, 1);
+    for (;;)
+    {
+
+        if (xbox_data == 1)
+        {
+            //Activate steer 
+            buf[0] = VANTTEC_CAN_ID_EN_XBOX;
+            buf[1] = 0x1;
+            update_table(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_EN_XBOX, buf, 2);
+
+            buf[0] = VANTTEC_CAN_ID_XBOX;
+            buf[1] = 0x3;
+            update_table(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_XBOX, buf, 2);
+        }
+        else if (xbox_data==0){
+
+            //Continue with setpoint control
+            buf[0] = VANTTEC_CAN_ID_EN_XBOX;
+            buf[1] = 0x0;
+            update_table(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_EN_XBOX, buf, 2);
+
+            buf[0] = VANTTEC_CAN_ID_XBOX;
+            buf[1] = 0x3;
+            update_table(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_XBOX, buf, 2);
+        }
+        osDelay(10);
+    }
+}
+
 void init_requirements_task()
 {
-    //emergencystopTaskHandle = osThreadNew(emergency_stop_task, NULL, &emergencystopTaskAttributes);
+    emergencystopTaskHandle = osThreadNew(emergency_stop_task, NULL, &emergencystopTaskAttributes);
     hbTaskHandle = osThreadNew(hb_task, NULL, &hbTaskAttributes);
     drivemodeTaskHandle = osThreadNew(drive_mode_task, NULL, &driveModeTaskAttributes);
+    xboxTaskHandle = osThreadNew(xbox_task, NULL, &xboxTaskAttributes);
     //reverseTaskHandle = osThreadNew(reverse_task, NULL, &reverseTaskAttributes);
     //pedalBrakeTaskHandle = osThreadNew(pedal_brake_task, NULL, &pedalBrakeTaskAttributes);
     //driverfaultTaskHandle = osThreadNew(driverfault_task, NULL, &driverFaultTaskAttributes);
