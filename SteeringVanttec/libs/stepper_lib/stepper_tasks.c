@@ -20,8 +20,8 @@
 2: Drive Mode: 0: manual
 3: Stepper Fault
 4: brake/em stop
-5: braking ON/OFF/pause
-6: steering ON/OFF/pause
+5: braking or steering ON/OFF
+6: braking or steering pause/unpause
 
  * */
 
@@ -39,43 +39,58 @@ const osThreadAttr_t GPIOsTaskAttributes = {
     .stack_size = 128 * 4};
 
 uint8_t drive_mode = 0U;		//0: Manual, 1: Controller/Autonomous
-uint8_t em_stop = 0U;
+//uint8_t em_stop = 0U;
 
 void steering_task()
 {
+	uint8_t es_steering = 0;
+	uint8_t drivemode_data = 0;
 	uint8_t init = 0;
-	uint8_t dir = IDLE;		// For safety do not modify this initial value
-	uint32_t pos = 0U;
-	register_canlib_rx(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_STEERING, VANTTEC_CANLIB_BYTE, &dir, 1);		// For direction
-	register_canlib_rx(0x52, 0x11, VANTTEC_CANLIB_LONG, &pos, 4);		// To check IFM encoder angle
+	uint8_t dir = IDLE; // For safety do not modify this initial value
+	float desired_pos = 0.0f;
+	uint32_t encoder_pos = 0U;
+	//register_canlib_rx(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_STEERING, VANTTEC_CANLIB_BYTE, &dir, 1);			// For direction
+	register_canlib_rx(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_STEERING, VANTTEC_CANLIB_FLOAT, &desired_pos, 4);
+	register_canlib_rx(0x52, 0x11, VANTTEC_CANLIB_LONG, &encoder_pos, 4);														// To check IFM encoder angle
+	register_canlib_rx(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_ES_STEERING, VANTTEC_CANLIB_BYTE, &es_steering, 1);	// For EM braking
+	register_canlib_rx(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_DR_STEERING, VANTTEC_CANLIB_BYTE, &drivemode_data, 1); // For enable braking
 
 	configure_steering();
 
 	for(;;)
 	{
-		if(!em_stop || 1)
+		parse_ifm_encoder(encoder_pos);
+		update_stepper_pos(STEERING);
+		if (es_steering)
 		{
-			if(drive_mode || 1)
+			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_RESET);
+			stop(STEERING);
+			init = 0;
+		}
+		else 
+		{
+			// Analyze drive mode
+			if (drivemode_data)
 			{
-				if(!init)
+				// Start if not initialized
+				if (!init)
 				{
 					HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, DEBUG_2_Pin, GPIO_PIN_SET);
 					start(STEERING);
 					init = 1;
 				}
-				parse_ifm_encoder(pos);
-				update_stepper_pos(STEERING);
-				steer(dir);
-			} else {
+				// Auto mode
+				//steer(dir)
+				set_setpoint(STEERING, desired_pos);
+				HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
+			}
+			else
+			{
 				HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, DEBUG_2_Pin, GPIO_PIN_RESET);
-				stop(STEERING);
+				// Manual Mode
+				pause(STEERING);
 				init = 0;
 			}
-			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_RESET);
-		} else {
-			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
-			stop(STEERING);
-			init = 0;
 		}
 		osDelay(10);
 	}
@@ -83,37 +98,53 @@ void steering_task()
 
 void braking_task()
 {
+	uint8_t es_braking = 0;
+	uint8_t drivemode_data = 0;
 	uint8_t init = 0;
 	uint32_t pos = 0U;
 	float desired_pos = 0;
-	register_canlib_rx(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_BRAKING, VANTTEC_CANLIB_FLOAT, &desired_pos, 4);
-	register_canlib_rx(0x53, 0x11, VANTTEC_CANLIB_LONG, &pos, 4);		// To check briter encoder angle
-
-	for(;;)
+	register_canlib_rx(VANTTEC_CAN_ID_BRAKING_RX, VANTTEC_CAN_ID_ES_BRAKING, VANTTEC_CANLIB_BYTE, &es_braking, 1);	   // For EM braking
+	register_canlib_rx(VANTTEC_CAN_ID_BRAKING_RX, VANTTEC_CAN_ID_DR_BRAKING, VANTTEC_CANLIB_BYTE, &drivemode_data, 1); // For enable braking
+	register_canlib_rx(VANTTEC_CAN_ID_BRAKING_RX, VANTTEC_CAN_ID_BRAKING, VANTTEC_CANLIB_FLOAT, &desired_pos, 4);
+	register_canlib_rx(0x53, 0x11, VANTTEC_CANLIB_LONG, &pos, 4); // To check IFM encoder angle
+	configure_braking();
+	for (;;)
 	{
-		if(!em_stop){
-			if(drive_mode)
+
+		parse_briter_encoder(pos);
+		update_stepper_pos(BRAKING);
+		if (es_braking)
+		{
+			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_RESET);
+			//em_stop(BRAKING);
+			init = 0;
+		}
+		else
+		{
+
+			// Analyze drive mode
+			if (drivemode_data)
 			{
-				if(!init)
+				// Start if not initialized
+				if (!init)
 				{
-					//HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, DEBUG_2_Pin, GPIO_PIN_SET);
+					HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, DEBUG_2_Pin, GPIO_PIN_SET);
 					start(BRAKING);
 					init = 1;
 				}
-				parse_briter_encoder(pos);
-				update_stepper_pos(BRAKING);
+				// Auto mode
 				set_setpoint(BRAKING, desired_pos);
-
-			} else {
-				//HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, DEBUG_2_Pin, GPIO_PIN_RESET);
-				stop(BRAKING);
+				HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
+			}
+			else
+			{
+				HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, DEBUG_2_Pin, GPIO_PIN_RESET);
+				// Manual Mode
+				pause(BRAKING);
 				init = 0;
 			}
-		} else {
-			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
-			stop(BRAKING);
-			init = 0;
 		}
+		osDelay(10);
 	}
 }
 
@@ -170,8 +201,8 @@ void init_gpios_task()
 
 void init_stepper_tasks()
 {
-	//register_canlib_rx(VANTTEC_CAN_ID_GENERAL_RX, VANTTEC_CAN_ID_DRIVE_MODE, VANTTEC_CANLIB_BYTE, &drive_mode, 1);
-	//register_canlib_rx(1, VANTTEC_CAN_ID_ESTOP, VANTTEC_CANLIB_BYTE, &em_stop, 1);
+	// register_canlib_rx(VANTTEC_CAN_ID_GENERAL_RX, VANTTEC_CAN_ID_DRIVE_MODE, VANTTEC_CANLIB_BYTE, &drive_mode, 1);
+	// register_canlib_rx(1, VANTTEC_CAN_ID_ESTOP, VANTTEC_CANLIB_BYTE, &em_stop, 1);
 	init_steer_task();
 	//init_brake_task();
 	init_gpios_task();

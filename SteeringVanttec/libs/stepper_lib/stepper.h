@@ -40,10 +40,11 @@ typedef struct {
 	stepper_direction direction;
 
 	float MAX_ANGLE;			// Degrees
+	float MIN_ANGLE;			// Degrees
 	float current_angle; 		// Degrees
 	float desired_angle;		// Degrees
 
-	float STEP_ANGLE;				// Degrees/step
+	float STEPPER_OFFSET;				// Offset to stop spinning
 
 } stepper;
 
@@ -55,8 +56,8 @@ void stop(const stepper_type stepper);
 void steer(uint8_t direction);
 void set_setpoint(const stepper_type stepper, float setpoint);
 
-void steer_by_setpoint(uint8_t direction);
-void brake_by_setpoint(uint8_t direction);
+void steer_by_setpoint(uint8_t direction, float error);
+void brake_by_setpoint(uint8_t direction, float error);
 void update_stepper_pos(const stepper_type stepper);
 
 //void stepping_by_pwm(stepper *stpr, stepper_type id);
