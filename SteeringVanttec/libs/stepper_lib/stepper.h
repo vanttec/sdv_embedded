@@ -40,10 +40,11 @@ typedef struct {
 	stepper_direction direction;
 
 	float MAX_ANGLE;			// Degrees
+	float MIN_ANGLE;			// Degrees
 	float current_angle; 		// Degrees
 	float desired_angle;		// Degrees
 
-	float STEP_ANGLE;				// Degrees/step
+	float STEPPER_OFFSET;				// Offset to stop spinning
 
 } stepper;
 
