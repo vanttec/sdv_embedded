@@ -83,15 +83,16 @@ void steering_task()
 				}
 
 				// Auto mode
-				// Use with Xbox
+
 				if (xboxmode_data)
-				{
-					steer(dir);
-				}
-				else
 				{
 					// Use with setpoint
 					set_setpoint(STEERING, desired_pos);
+				}
+				else
+				{
+					// Use with Xbox
+					steer(dir);
 				}
 				HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
 			}
