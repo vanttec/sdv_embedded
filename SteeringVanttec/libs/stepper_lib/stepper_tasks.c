@@ -37,9 +37,14 @@ const osThreadAttr_t brakingTaskAttributes = {
 const osThreadAttr_t GPIOsTaskAttributes = {
 	.name = "gpios_monitoring",
 	.stack_size = 128 * 4};
+osThreadId_t xboxTaskHandle;
+const osThreadAttr_t xboxTaskAttributes = {
+    .name = "xbox",
+    .stack_size = 128 * 4};
 
 uint8_t drive_mode = 0U; // 0: Manual, 1: Controller/Autonomous
 // uint8_t em_stop = 0U;
+
 
 void steering_task()
 {
@@ -199,6 +204,49 @@ void gpios_task()
 		osDelay(10);
 	}
 }
+void xbox_task(void *args)
+{
+    uint8_t buf[8];
+    uint8_t xbox_data = 0;
+    register_canlib_rx(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_XBOX, VANTTEC_CANLIB_BYTE, &xbox_data, 1);
+    for (;;)
+    {
+
+        if (xbox_data == 1)
+        {
+            //Activate steer
+            buf[0] = VANTTEC_CAN_ID_EN_XBOX;
+            buf[1] = 0x1;
+            update_table(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_EN_XBOX, buf, 2);
+
+            uint32_t current_angle = obtain_current_angle();
+            //cangle = vanttec_htonl(cangle);
+            buf[0] = VANTTEC_CAN_ID_STEERING;
+            buf[1] = current_angle >> (8 * 3);
+            buf[3] = current_angle >> (8 * 2);
+            buf[4] = current_angle >> 8;
+            buf[5] = current_angle & 0xFF;
+
+            update_table(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_STEERING, buf, 5);
+            buf[0] = VANTTEC_CAN_ID_XBOX;
+            buf[1] = 0x3;
+            update_table(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_XBOX, buf, 2);
+        }
+        else if (xbox_data==0){
+
+            //Continue with setpoint control
+            buf[0] = VANTTEC_CAN_ID_EN_XBOX;
+            buf[1] = 0x0;
+            update_table(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_EN_XBOX, buf, 2);
+
+            buf[0] = VANTTEC_CAN_ID_XBOX;
+            buf[1] = 0x3;
+            update_table(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_XBOX, buf, 2);
+        }
+        osDelay(10);
+    }
+}
+
 
 void init_steer_task()
 {
@@ -215,11 +263,16 @@ void init_gpios_task()
 	brakingTaskHandle = osThreadNew(gpios_task, NULL, &GPIOsTaskAttributes);
 }
 
+void init_xbox_task(){
+    xboxTaskHandle = osThreadNew(xbox_task, NULL, &xboxTaskAttributes);
+}
+
 void init_stepper_tasks()
 {
 	// register_canlib_rx(VANTTEC_CAN_ID_GENERAL_RX, VANTTEC_CAN_ID_DRIVE_MODE, VANTTEC_CANLIB_BYTE, &drive_mode, 1);
 	// register_canlib_rx(1, VANTTEC_CAN_ID_ESTOP, VANTTEC_CANLIB_BYTE, &em_stop, 1);
 	init_steer_task();
+	init_xbox_task();
 	// init_brake_task();
 	init_gpios_task();
 }

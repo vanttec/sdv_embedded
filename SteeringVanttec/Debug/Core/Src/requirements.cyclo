@@ -1,8 +1,7 @@
-../Core/Src/requirements.c:48:6:emergency_stop_task	2
-../Core/Src/requirements.c:71:6:hb_task	1
-../Core/Src/requirements.c:83:6:drive_mode_task	3
-../Core/Src/requirements.c:118:6:reverse_task	2
-../Core/Src/requirements.c:139:6:pedal_brake_task	1
-../Core/Src/requirements.c:149:6:driverfault_task	2
-../Core/Src/requirements.c:170:6:xbox_task	3
-../Core/Src/requirements.c:204:6:init_requirements_task	1
+../Core/Src/requirements.c:45:6:emergency_stop_task	2
+../Core/Src/requirements.c:68:6:hb_task	1
+../Core/Src/requirements.c:80:6:drive_mode_task	3
+../Core/Src/requirements.c:115:6:reverse_task	2
+../Core/Src/requirements.c:136:6:pedal_brake_task	1
+../Core/Src/requirements.c:146:6:driverfault_task	2
+../Core/Src/requirements.c:167:6:init_requirements_task	1
