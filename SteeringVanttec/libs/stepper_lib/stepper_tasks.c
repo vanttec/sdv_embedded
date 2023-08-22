@@ -12,7 +12,6 @@
 #include "vanttec_sdv_ids.h"
 #include "stepper_tasks.h"
 #include "stepper.h"
-
 /*
  * LEDs
 
@@ -218,14 +217,13 @@ void xbox_task(void *args)
             buf[0] = VANTTEC_CAN_ID_EN_XBOX;
             buf[1] = 0x1;
             update_table(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_EN_XBOX, buf, 2);
-
+			
             uint32_t current_angle = obtain_current_angle();
-            //cangle = vanttec_htonl(cangle);
             buf[0] = VANTTEC_CAN_ID_STEERING;
-            buf[1] = current_angle >> (8 * 3);
-            buf[3] = current_angle >> (8 * 2);
-            buf[4] = current_angle >> 8;
-            buf[5] = current_angle & 0xFF;
+			buf[1] = (current_angle & 0xFF) >> (8);
+			buf[2] = (current_angle & 0x0000FF00) >> 8;
+			buf[3] = (current_angle & 0x00FF0000) >> 8*2;
+            buf[4] = (current_angle &  0xFF000000) >> (8*3);
 
             update_table(VANTTEC_CAN_ID_STEPPER_RX, VANTTEC_CAN_ID_STEERING, buf, 5);
             buf[0] = VANTTEC_CAN_ID_XBOX;

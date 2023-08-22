@@ -1,4 +1,0 @@
-../Core/Src/steering_tasks.c:20:6:steering_task	16	static
-../Core/Src/steering_tasks.c:30:6:braking_task	16	static
-../Core/Src/steering_tasks.c:37:6:receiveID	32	static
-../Core/Src/steering_tasks.c:73:6:init_steering_task	8	static

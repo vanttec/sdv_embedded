@@ -1,7 +1,8 @@
 #include <stdint.h>
 #include "math.h"
 #include "stepper.h"
-#include "vanttec_canlib_rx_task.h"
+#include "Utils/CANSerialization.h"
+
 volatile stepper braking_stepper;
 volatile stepper steering_stepper;
 
@@ -187,7 +188,9 @@ void steer(uint8_t direction){
 }
 
 uint32_t obtain_current_angle(){
-	return serialize_float(steering_stepper.current_angle);
+	uint32_t angle = 0;
+	angle =  serialize_float(steering_stepper.current_angle);
+	return angle;
 }
 
 void set_setpoint(const stepper_type stepper, float setpoint){

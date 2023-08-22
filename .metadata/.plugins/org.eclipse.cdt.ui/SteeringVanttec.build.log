@@ -1,12 +1,10 @@
-06:36:46 **** Build of configuration Debug for project SteeringVanttec ****
+00:44:43 **** Incremental Build of configuration Debug for project SteeringVanttec ****
 make -j8 all 
-arm-none-eabi-gcc "../Core/Src/STEPPER/stepper.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L431xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../libs/vanttec_CANLib/src/Vanttec_CANLib -I../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/STEPPER/stepper.d" -MT"Core/Src/STEPPER/stepper.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/STEPPER/stepper.o"
-../Core/Src/STEPPER/stepper.c:3:10: fatal error: CAN/can_bus.h: No such file or directory
-    3 | #include "CAN/can_bus.h"
-      |          ^~~~~~~~~~~~~~~
-compilation terminated.
-make: *** [Core/Src/STEPPER/subdir.mk:19: Core/Src/STEPPER/stepper.o] Error 1
-"make -j8 all" terminated with exit code 2. Build might be incomplete.
+arm-none-eabi-size   SteeringVanttec.elf 
+   text	   data	    bss	    dec	    hex	filename
+  45516	    172	  26244	  71932	  118fc	SteeringVanttec.elf
+Finished building: default.size.stdout
+ 
 
-06:36:47 Build Failed. 2 errors, 0 warnings. (took 1s.370ms)
+00:44:47 Build Finished. 0 errors, 0 warnings. (took 4s.33ms)
 
