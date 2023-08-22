@@ -97,14 +97,17 @@ void braking_task()
 	uint8_t init = 0;
 	uint32_t pos = 0U;
 	float desired_pos = 0;
+	int test = 0;
 	register_canlib_rx(VANTTEC_CAN_ID_BRAKING_RX, VANTTEC_CAN_ID_ES_BRAKING, VANTTEC_CANLIB_BYTE, &es_braking, 1);	   // For EM braking
+	register_canlib_rx(0x53, 0x13, VANTTEC_CANLIB_LONG, &pos, 4); // To check IFM encoder angle check angle and the way it dd  dd
 	register_canlib_rx(VANTTEC_CAN_ID_BRAKING_RX, VANTTEC_CAN_ID_DR_BRAKING, VANTTEC_CANLIB_BYTE, &drivemode_data, 1); // For enable braking
 	register_canlib_rx(VANTTEC_CAN_ID_BRAKING_RX, VANTTEC_CAN_ID_BRAKING, VANTTEC_CANLIB_FLOAT, &desired_pos, 4);
-	register_canlib_rx(0x53, 0x11, VANTTEC_CANLIB_LONG, &pos, 4); // To check IFM encoder angle
-	configure_braking();
+	configure_braking(); //no
 	for (;;)
 	{
-
+		if(pos != 0){
+			int test = 1;
+		}
 		parse_briter_encoder(pos);
 		update_stepper_pos(BRAKING);
 		if (es_braking)
@@ -119,16 +122,21 @@ void braking_task()
 			// Analyze drive mode
 			if (drivemode_data)
 			{
-				// Start if not initialized
+			test = 1;
+			 	// Start if not initialized
 				if (!init)
 				{
 					start(BRAKING);
 					init = 1;
 				}
+				if(desired_pos != 0){
+					test = 2;
+				}
 				// Auto mode
 				set_setpoint(BRAKING, desired_pos);
 				HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
-			}
+				
+			} 
 			else
 			{
 				HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_RESET);

@@ -6,9 +6,10 @@ volatile stepper braking_stepper;
 volatile stepper steering_stepper;
 
 const static float STEER_RATIO = 1.5; // Stepper to steering wheel ratio
-const static uint16_t MAX_STEERING_ANGLE = 500;
-const static uint16_t PEDAL_LENGTH = 0.18;
-const static uint16_t PULLEY_RADIUS = 0.0353;
+const static float MAX_STEERING_ANGLE = 500;
+const static float PEDAL_LENGTH = 0.18;
+const static float PULLEY_RADIUS = 0.0353;
+float alpha = 13.0;
 
 void configure_steering()
 {
@@ -17,6 +18,7 @@ void configure_steering()
 	steering_stepper.is_exec_started = 0;
 	steering_stepper.direction = IDLE;
 	steering_stepper.MAX_ANGLE = MAX_STEERING_ANGLE * STEER_RATIO; // Degrees
+	
 	steering_stepper.current_angle = 0;
 	steering_stepper.STEP_ANGLE = 0.9;
 
@@ -29,7 +31,7 @@ void configure_braking()
 	braking_stepper.is_active = 0;
 	braking_stepper.is_exec_started = 0;
 	braking_stepper.direction = IDLE;
-	braking_stepper.MAX_ANGLE = 60; // Degrees
+	braking_stepper.MAX_ANGLE = alpha*(PEDAL_LENGTH/PULLEY_RADIUS); // Degrees
 	braking_stepper.current_angle = 0;
 	braking_stepper.STEP_ANGLE = 1.8;
 
