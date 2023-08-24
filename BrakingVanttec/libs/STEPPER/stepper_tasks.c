@@ -105,7 +105,7 @@ void braking_task()
 	configure_braking(); //no
 	for (;;)
 	{
-		if(pos != 0){
+		if(pos != 0){ //NO EXCEDER DE 180 EN DESIRED POS POR AHORA!!!!!
 			int test = 1;
 		}
 		parse_briter_encoder(pos);

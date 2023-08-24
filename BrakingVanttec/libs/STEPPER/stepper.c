@@ -217,11 +217,13 @@ void set_setpoint(const stepper_type stepper, float setpoint)
 		{
 			a = 0;
 		}
-		braking_stepper.desired_angle = setpoint * braking_stepper.MAX_ANGLE;
+		braking_stepper.desired_angle = setpoint * braking_stepper.MAX_ANGLE;	
 		error = braking_stepper.desired_angle - braking_stepper.current_angle;
-
-		direction = fabsf(error) < braking_stepper.STEP_ANGLE ? IDLE : error > 0 ? CW
-																				 : CCW;
+		// if(abs(error) < 2){
+ 		// 	int test = 1;
+		// }
+		direction = fabsf(error) < braking_stepper.STEP_ANGLE ? IDLE : error > 0 ? CCW
+																				 : CW;
 
 		brake_by_setpoint(direction, error);
 		break;
@@ -301,7 +303,7 @@ void update_stepper_pos(const stepper_type stepper)
 		steering_stepper.current_angle = -ifm_encoder.absolute_angle * STEER_RATIO; // - To account for gear counter rotation
 		break;
 	case BRAKING:
-		braking_stepper.current_angle = briter_encoder.absolute_angle * (PEDAL_LENGTH / PULLEY_RADIUS); // REQUIRED RELATIONSHIP FROM PULLEY TO BRAKE ANGLE
+		braking_stepper.current_angle = briter_encoder.angle * (PEDAL_LENGTH / PULLEY_RADIUS); // REQUIRED RELATIONSHIP FROM PULLEY TO BRAKE ANGLE
 		break;
 	}
 }
