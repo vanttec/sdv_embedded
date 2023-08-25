@@ -1,13 +1,13 @@
 #include <stdint.h>
 #include "math.h"
 #include "stepper.h"
-#include "Utils/CANSerialization.h"
+//#include "Utils/CANSerialization.h"
 
 volatile stepper braking_stepper;
 volatile stepper steering_stepper;
 
 const static float STEER_RATIO = 1.5; // Stepper to steering wheel ratio
-const static uint16_t MAX_STEERING_ANGLE = 550;
+const static uint16_t MAX_STEERING_ANGLE = 600;
 const static uint16_t MIN_STEERING_ANGLE = 400;
 const static uint16_t PEDAL_LENGTH = 0.18;
 const static uint16_t PULLEY_RADIUS = 0.0353;
@@ -150,6 +150,7 @@ void em_stop()
 stepper_direction unsafe_direction;
 void steer(uint8_t direction){
 	//steering_stepper.mode = CONTROLLER;
+	float SAT_ANGLE;
 
 	if(steering_stepper.is_active)
 	{
@@ -161,7 +162,13 @@ void steer(uint8_t direction){
 			}
 
 			// Check max steering angle is not exceded
-			if(fabsf(steering_stepper.current_angle) < steering_stepper.MAX_ANGLE)
+			if(direction == CCW)
+				SAT_ANGLE = steering_stepper.MAX_ANGLE;
+			else
+				SAT_ANGLE = steering_stepper.MIN_ANGLE;
+
+
+			if(fabsf(steering_stepper.current_angle) < SAT_ANGLE)
 			{
 				if(!steering_stepper.is_exec_started)
 				{
@@ -186,12 +193,18 @@ void steer(uint8_t direction){
 		} else pause(STEERING);
 	} else stop(STEERING);
 }
-
+/*
 uint32_t obtain_current_angle(){
 	uint32_t angle = 0;
 	angle =  serialize_float(steering_stepper.current_angle);
 	return angle;
 }
+*/
+
+float get_current_angle(){
+	return steering_stepper.current_angle;
+}
+
 
 void set_setpoint(const stepper_type stepper, float setpoint){
 	uint8_t direction = IDLE;

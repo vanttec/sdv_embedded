@@ -1,9 +1,7 @@
 ../libs/stepper_lib/stepper_tasks.c:48:6:steering_task	32	static
 ../libs/stepper_lib/stepper_tasks.c:115:6:braking_task	32	static
 ../libs/stepper_lib/stepper_tasks.c:167:6:gpios_task	16	static
-../libs/stepper_lib/stepper_tasks.c:206:6:xbox_task	40	static
-../libs/stepper_lib/stepper_tasks.c:249:6:init_steer_task	8	static
-../libs/stepper_lib/stepper_tasks.c:254:6:init_brake_task	8	static
-../libs/stepper_lib/stepper_tasks.c:259:6:init_gpios_task	8	static
-../libs/stepper_lib/stepper_tasks.c:264:6:init_xbox_task	8	static
-../libs/stepper_lib/stepper_tasks.c:268:6:init_stepper_tasks	8	static
+../libs/stepper_lib/stepper_tasks.c:250:6:init_steer_task	8	static
+../libs/stepper_lib/stepper_tasks.c:255:6:init_brake_task	8	static
+../libs/stepper_lib/stepper_tasks.c:260:6:init_gpios_task	8	static
+../libs/stepper_lib/stepper_tasks.c:271:6:init_stepper_tasks	8	static

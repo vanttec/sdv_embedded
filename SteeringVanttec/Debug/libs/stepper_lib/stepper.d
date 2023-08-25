@@ -45,8 +45,7 @@ libs/stepper_lib/stepper.o: ../libs/stepper_lib/stepper.c \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- ../libs/stepper_lib/encoder.h \
- ../libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANSerialization.h
+ ../libs/stepper_lib/encoder.h
 ../libs/stepper_lib/stepper.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
@@ -95,4 +94,3 @@ libs/stepper_lib/stepper.o: ../libs/stepper_lib/stepper.c \
 ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
 ../libs/stepper_lib/encoder.h:
-../libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANSerialization.h:
