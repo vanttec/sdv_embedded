@@ -1,0 +1,9 @@
+vanttec_canlib_tx_task.c:27:6:init_canlib_tx	2
+vanttec_canlib_tx_task.c:36:6:canlib_tx_update	3
+vanttec_canlib_tx_task.c:58:6:canlib_tx_task	1
+vanttec_canlib_tx_task.c:66:6:canlib_queue_tx	3
+vanttec_canlib_tx_task.c:83:8:canlib_send_debug_string	4
+vanttec_canlib_tx_task.c:112:6:canlib_send_byte	1
+vanttec_canlib_tx_task.c:118:6:canlib_send_short	1
+vanttec_canlib_tx_task.c:124:6:canlib_send_long	1
+vanttec_canlib_tx_task.c:130:6:canlib_send_float	1
