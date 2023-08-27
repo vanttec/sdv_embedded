@@ -1,12 +1,13 @@
 #include <stdint.h>
 #include "math.h"
 #include "stepper.h"
+//#include "Utils/CANSerialization.h"
 
 volatile stepper braking_stepper;
 volatile stepper steering_stepper;
 
 const static float STEER_RATIO = 1.5; // Stepper to steering wheel ratio
-const static uint16_t MAX_STEERING_ANGLE = 550;
+const static uint16_t MAX_STEERING_ANGLE = 600;
 const static uint16_t MIN_STEERING_ANGLE = 400;
 const static uint16_t PEDAL_LENGTH = 0.18;
 const static uint16_t PULLEY_RADIUS = 0.0353;
@@ -100,7 +101,7 @@ void stop(const stepper_type stepper)
 		// HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_SET);
 		// HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_RESET);
 		// HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
-		HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_SET); // Temp Steering
+		HAL_GPIO_WritePin(STPR_EN_1_GPIO_Port, STPR_EN_1_Pin, GPIO_PIN_SET); // Temp Steering
 		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);			   // Temp Steering
 		braking_stepper.is_active = 0;
 		braking_stepper.direction = IDLE;
@@ -149,6 +150,7 @@ void em_stop()
 stepper_direction unsafe_direction;
 void steer(uint8_t direction){
 	//steering_stepper.mode = CONTROLLER;
+	float SAT_ANGLE;
 
 	if(steering_stepper.is_active)
 	{
@@ -160,7 +162,13 @@ void steer(uint8_t direction){
 			}
 
 			// Check max steering angle is not exceded
-			if(fabsf(steering_stepper.current_angle) < steering_stepper.MAX_ANGLE)
+			if(direction == CCW)
+				SAT_ANGLE = steering_stepper.MAX_ANGLE;
+			else
+				SAT_ANGLE = steering_stepper.MIN_ANGLE;
+
+
+			if(fabsf(steering_stepper.current_angle) < SAT_ANGLE)
 			{
 				if(!steering_stepper.is_exec_started)
 				{
@@ -186,6 +194,22 @@ void steer(uint8_t direction){
 	} else stop(STEERING);
 }
 
+uint32_t obtain_current_angle(){
+	uint32_t angle = 0;
+	float f_angle = -steering_stepper.current_angle/STEER_RATIO >= 0.0f ?
+			steering_stepper.current_angle/steering_stepper.MAX_ANGLE:
+			steering_stepper.current_angle/steering_stepper.MIN_ANGLE;
+	angle =  serialize_float(f_angle);
+	return angle;
+}
+
+
+float get_current_pos(){
+	return steering_stepper.current_angle >= 0.0f ?
+			-steering_stepper.current_angle/steering_stepper.MIN_ANGLE:
+			-steering_stepper.current_angle/steering_stepper.MAX_ANGLE;
+}
+
 
 void set_setpoint(const stepper_type stepper, float setpoint){
 	uint8_t direction = IDLE;
@@ -196,9 +220,9 @@ void set_setpoint(const stepper_type stepper, float setpoint){
 		case STEERING:
 			// setpoint: [-1,1]
 			if(setpoint >= 0)
-				steering_stepper.desired_angle = -setpoint*steering_stepper.MAX_ANGLE;  // - To account for gear counter rotation
+				steering_stepper.desired_angle = -setpoint*steering_stepper.MAX_ANGLE;  // To account for gear counter rotation
 			else
-				steering_stepper.desired_angle = -setpoint*steering_stepper.MIN_ANGLE;  // - To account for gear counter rotation
+				steering_stepper.desired_angle = -setpoint*steering_stepper.MIN_ANGLE;  // To account for gear counter rotation
 
 			error = steering_stepper.desired_angle - steering_stepper.current_angle;
 
@@ -253,7 +277,7 @@ void brake_by_setpoint(uint8_t direction, float error)
 			if (braking_stepper.direction != direction)
 			{
 				braking_stepper.direction = direction;
-				HAL_GPIO_WritePin(GPIOB, STPR_DIR_1_Pin, direction); // Temp Steering
+				HAL_GPIO_WritePin(STPR_DIR_1_GPIO_Port, STPR_DIR_1_Pin, direction); // Temp Steering
 				// HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
 			}
 

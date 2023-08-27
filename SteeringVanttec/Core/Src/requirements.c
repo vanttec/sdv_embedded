@@ -41,6 +41,7 @@ const osThreadAttr_t driverFaultTaskAttributes = {
     .name = "driverfault",
     .stack_size = 128 * 4};
 
+
 void emergency_stop_task(void *args)
 {
     uint8_t buf[8];
@@ -165,7 +166,7 @@ void driverfault_task(void *args)
 
 void init_requirements_task()
 {
-    //emergencystopTaskHandle = osThreadNew(emergency_stop_task, NULL, &emergencystopTaskAttributes);
+    emergencystopTaskHandle = osThreadNew(emergency_stop_task, NULL, &emergencystopTaskAttributes);
     hbTaskHandle = osThreadNew(hb_task, NULL, &hbTaskAttributes);
     drivemodeTaskHandle = osThreadNew(drive_mode_task, NULL, &driveModeTaskAttributes);
     //reverseTaskHandle = osThreadNew(reverse_task, NULL, &reverseTaskAttributes);
