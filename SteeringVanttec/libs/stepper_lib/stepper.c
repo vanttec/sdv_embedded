@@ -101,7 +101,7 @@ void stop(const stepper_type stepper)
 		// HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_SET);
 		// HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_RESET);
 		// HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
-		HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_SET); // Temp Steering
+		HAL_GPIO_WritePin(STPR_EN_1_GPIO_Port, STPR_EN_1_Pin, GPIO_PIN_SET); // Temp Steering
 		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);			   // Temp Steering
 		braking_stepper.is_active = 0;
 		braking_stepper.direction = IDLE;
@@ -193,16 +193,21 @@ void steer(uint8_t direction){
 		} else pause(STEERING);
 	} else stop(STEERING);
 }
-/*
+
 uint32_t obtain_current_angle(){
 	uint32_t angle = 0;
-	angle =  serialize_float(steering_stepper.current_angle);
+	float f_angle = -steering_stepper.current_angle/STEER_RATIO >= 0.0f ?
+			steering_stepper.current_angle/steering_stepper.MAX_ANGLE:
+			steering_stepper.current_angle/steering_stepper.MIN_ANGLE;
+	angle =  serialize_float(f_angle);
 	return angle;
 }
-*/
 
-float get_current_angle(){
-	return steering_stepper.current_angle;
+
+float get_current_pos(){
+	return steering_stepper.current_angle >= 0.0f ?
+			-steering_stepper.current_angle/steering_stepper.MIN_ANGLE:
+			-steering_stepper.current_angle/steering_stepper.MAX_ANGLE;
 }
 
 
@@ -215,9 +220,9 @@ void set_setpoint(const stepper_type stepper, float setpoint){
 		case STEERING:
 			// setpoint: [-1,1]
 			if(setpoint >= 0)
-				steering_stepper.desired_angle = -setpoint*steering_stepper.MAX_ANGLE;  // - To account for gear counter rotation
+				steering_stepper.desired_angle = -setpoint*steering_stepper.MAX_ANGLE;  // To account for gear counter rotation
 			else
-				steering_stepper.desired_angle = -setpoint*steering_stepper.MIN_ANGLE;  // - To account for gear counter rotation
+				steering_stepper.desired_angle = -setpoint*steering_stepper.MIN_ANGLE;  // To account for gear counter rotation
 
 			error = steering_stepper.desired_angle - steering_stepper.current_angle;
 
@@ -272,7 +277,7 @@ void brake_by_setpoint(uint8_t direction, float error)
 			if (braking_stepper.direction != direction)
 			{
 				braking_stepper.direction = direction;
-				HAL_GPIO_WritePin(GPIOB, STPR_DIR_1_Pin, direction); // Temp Steering
+				HAL_GPIO_WritePin(STPR_DIR_1_GPIO_Port, STPR_DIR_1_Pin, direction); // Temp Steering
 				// HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
 			}
 

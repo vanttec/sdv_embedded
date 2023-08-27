@@ -55,8 +55,8 @@ void pause(const stepper_type stepper);
 void stop(const stepper_type stepper);
 void steer(uint8_t direction);
 void set_setpoint(const stepper_type stepper, float setpoint);
-//uint32_t obtain_current_angle();
-float get_current_angle();
+uint32_t obtain_current_angle();
+float get_current_pos();
 
 void steer_by_setpoint(uint8_t direction, float error);
 void brake_by_setpoint(uint8_t direction, float error);
