@@ -1,2 +1,0 @@
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.c:10:6:can_reset_task	16	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.c:36:6:init_can_reset_task	8	static

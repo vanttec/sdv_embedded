@@ -1,8 +1,0 @@
-../Core/Src/requirements.c:44:6:emergencystop_task	40	static
-../Core/Src/requirements.c:72:6:hb_task	24	static
-../Core/Src/requirements.c:83:6:drivemode_task	40	static
-../Core/Src/requirements.c:127:6:driverpresent_task	16	static
-../Core/Src/requirements.c:134:6:reverse_task	40	static
-../Core/Src/requirements.c:163:6:frenomanual_task	40	static
-../Core/Src/requirements.c:174:6:driverfault_task	40	static
-../Core/Src/requirements.c:205:6:init_requirements_task	8	static

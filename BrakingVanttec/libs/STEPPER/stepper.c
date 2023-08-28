@@ -35,7 +35,7 @@ void configure_braking()
 	braking_stepper.current_angle = 0;
 	braking_stepper.STEP_ANGLE = 1.8;
 
-	htim2.Instance->CCR1 = 400; // For duty cycle of 50%
+	htim2.Instance->CCR1 = 500; // For duty cycle of 50%
 	// HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_SET); // Temp steering
 }
@@ -100,7 +100,7 @@ void stop(const stepper_type stepper)
 		// HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_SET);
 		// HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_RESET);
 		// HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
-		HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_SET); // Temp Steering
+		HAL_GPIO_WritePin(STPR_EN_1_GPIO_Port, STPR_EN_1_Pin, GPIO_PIN_SET); // Temp Steering
 		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);			   // Temp Steering
 		braking_stepper.is_active = 0;
 		braking_stepper.direction = IDLE;
@@ -115,34 +115,34 @@ void stop(const stepper_type stepper)
 
 void em_stop()
 {
-	// For the break, the stop has a different meaning
-	float error = braking_stepper.desired_angle - braking_stepper.current_angle;
-	uint8_t direction = CW;
-
-	if (braking_stepper.direction != IDLE)
-	{
-		if (braking_stepper.direction != direction)
-		{
-			braking_stepper.direction = direction;
-			// HAL_GPIO_WritePin(GPIOB, STPR_DIR_2_Pin, direction);
-			HAL_GPIO_WritePin(GPIOB, STPR_DIR_1_Pin, direction); // Temp Steering
-		}
-
-		if (fabsf(error) > braking_stepper.STEP_ANGLE)
-		{
-			// Start execution
-			if (!braking_stepper.is_exec_started)
-			{
-				// HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
-				HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1); // Temp Steering
-				braking_stepper.is_exec_started = 1;
-			}
-		}
-		else
-			pause(BRAKING);
-	}
-	else
-		pause(BRAKING);
+//	// For the break, the stop has a different meaning
+//	float error = braking_stepper.desired_angle - braking_stepper.current_angle;
+//	uint8_t direction = CW;
+//
+//	if (braking_stepper.direction != IDLE)
+//	{
+//		if (braking_stepper.direction != direction)
+//		{
+//			braking_stepper.direction = direction;
+//			// HAL_GPIO_WritePin(GPIOB, STPR_DIR_2_Pin, direction);
+//			HAL_GPIO_WritePin(GPIOB, STPR_DIR_1_Pin, direction); // Temp Steering
+//		}
+//
+//		if (fabsf(error) > braking_stepper.STEP_ANGLE)
+//		{
+//			// Start execution
+//			if (!braking_stepper.is_exec_started)
+//			{
+//				// HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+//				HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1); // Temp Steering
+//				braking_stepper.is_exec_started = 1;
+//			}
+//		}
+//		else
+//			pause(BRAKING);
+//	}
+//	else
+//		pause(BRAKING);
 }
 
 stepper_direction unsafe_direction;
@@ -156,7 +156,7 @@ void steer(uint8_t direction)
 		{
 			if (direction != steering_stepper.direction)
 			{
-				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
+//				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
 			}
 
 			// Check max steering angle is not exceded
@@ -176,7 +176,7 @@ void steer(uint8_t direction)
 				// Only can continue if direction is changed
 				if (direction != unsafe_direction)
 				{
-					HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
+//					HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
 					if (!steering_stepper.is_exec_started)
 					{
 						HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
@@ -217,13 +217,42 @@ void set_setpoint(const stepper_type stepper, float setpoint)
 		{
 			a = 0;
 		}
-		braking_stepper.desired_angle = setpoint * braking_stepper.MAX_ANGLE;	
+		braking_stepper.desired_angle = setpoint * braking_stepper.MAX_ANGLE;
 		error = braking_stepper.desired_angle - braking_stepper.current_angle;
-		// if(abs(error) < 2){
- 		// 	int test = 1;
-		// }
-		direction = fabsf(error) < braking_stepper.STEP_ANGLE ? IDLE : error > 0 ? CCW
-																				 : CW;
+
+		if(error < 6){
+			HAL_GPIO_WritePin(DEBUG_1_GPIO_Port, DEBUG_1_Pin, 1);
+		} else {
+			HAL_GPIO_WritePin(DEBUG_1_GPIO_Port, DEBUG_1_Pin, 0);
+		}
+
+		direction = fabsf(error) < braking_stepper.STEP_ANGLE ? IDLE : error > 0 ? CW
+																				 : CCW;
+
+		switch (direction) {
+
+		case IDLE:
+			HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, DEBUG_2_Pin, 0);
+			HAL_GPIO_WritePin(DEBUG_3_GPIO_Port, DEBUG_3_Pin, 0);
+			break;
+
+		case CW:
+			HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, DEBUG_2_Pin, 1);
+			HAL_GPIO_WritePin(DEBUG_3_GPIO_Port, DEBUG_3_Pin, 0);
+			break;
+
+		case CCW:
+			HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, DEBUG_2_Pin, 0);
+			HAL_GPIO_WritePin(DEBUG_3_GPIO_Port, DEBUG_3_Pin, 1);
+			break;
+
+		default:
+			HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, DEBUG_2_Pin, 1);
+			HAL_GPIO_WritePin(DEBUG_3_GPIO_Port, DEBUG_3_Pin, 1);
+			break;
+
+		};
+
 
 		brake_by_setpoint(direction, error);
 		break;
@@ -239,7 +268,7 @@ void steer_by_setpoint(uint8_t direction, float error)
 			if (steering_stepper.direction != direction)
 			{
 				steering_stepper.direction = direction;
-				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
+///				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
 			}
 
 			if (fabsf(error) > steering_stepper.STEP_ANGLE)
@@ -271,7 +300,7 @@ void brake_by_setpoint(uint8_t direction, float error)
 			if (braking_stepper.direction != direction)
 			{
 				braking_stepper.direction = direction;
-				HAL_GPIO_WritePin(GPIOB, STPR_DIR_1_Pin, direction); // Temp Steering
+				HAL_GPIO_WritePin(STPR_DIR_1_GPIO_Port, STPR_DIR_1_Pin, direction); // Temp Steering
 				// HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
 			}
 

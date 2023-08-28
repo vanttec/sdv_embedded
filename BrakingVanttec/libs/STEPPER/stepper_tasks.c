@@ -132,6 +132,7 @@ void braking_task()
 				if(desired_pos != 0){
 					test = 2;
 				}
+
 				// Auto mode
 				set_setpoint(BRAKING, desired_pos);
 				HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);

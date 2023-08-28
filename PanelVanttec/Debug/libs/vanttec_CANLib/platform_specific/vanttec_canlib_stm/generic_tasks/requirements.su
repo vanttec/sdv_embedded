@@ -1,8 +1,0 @@
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.c:43:6:emergencystop_task	40	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.c:64:6:hb_task	24	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.c:75:6:drivemode_task	40	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.c:107:6:driverpresent_task	16	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.c:114:6:reverse_task	40	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.c:136:6:frenomanual_task	40	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.c:157:6:driverfault_task	40	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/requirements.c:181:6:init_requirements_task	8	static
