@@ -1,4 +1,0 @@
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/ping_task.c:9:6:ping_task	32	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/ping_task.c:20:6:toggle_led	16	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/ping_task.c:39:6:hb_rx_task	40	static
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/ping_task.c:67:6:init_ping_task	8	static

@@ -1,0 +1,13 @@
+../libs/stepper_lib/stepper.c:15:6:configure_steering	1
+../libs/stepper_lib/stepper.c:30:6:configure_braking	1
+../libs/stepper_lib/stepper.c:44:6:start	3
+../libs/stepper_lib/stepper.c:66:6:pause	3
+../libs/stepper_lib/stepper.c:86:6:stop	3
+../libs/stepper_lib/stepper.c:117:6:em_stop	5
+../libs/stepper_lib/stepper.c:151:6:steer	9
+../libs/stepper_lib/stepper.c:197:10:obtain_current_angle	2
+../libs/stepper_lib/stepper.c:207:7:get_current_pos	2
+../libs/stepper_lib/stepper.c:214:6:set_setpoint	6
+../libs/stepper_lib/stepper.c:246:6:steer_by_setpoint	6
+../libs/stepper_lib/stepper.c:270:6:brake_by_setpoint	6
+../libs/stepper_lib/stepper.c:304:6:update_stepper_pos	3

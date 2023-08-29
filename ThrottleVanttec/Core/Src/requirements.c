@@ -40,6 +40,10 @@ osThreadId_t driverfaultTaskHandle;
 const osThreadAttr_t driverfaultTaskAttributes = {
     .name = "driverfault",
     .stack_size = 128 * 4};
+osThreadId_t xboxTaskHandle;
+const osThreadAttr_t xboxTaskAttributes = {
+    .name = "xbox",
+    .stack_size = 128 * 4};
 
 void emergencystop_task(void *args)
 {
@@ -201,6 +205,39 @@ void driverfault_task(void *args)
         osDelay(10);
     }
 }
+void xbox_task(void *args)
+{
+    uint8_t buf[8];
+    uint8_t xbox_data = 0;
+    register_canlib_rx(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_XBOX, VANTTEC_CANLIB_BYTE, &xbox_data, 1);
+    for (;;)
+    {
+
+        if (xbox_data == 1)
+        {
+            // Return Velocity to 0 if auto mode is changed to Setpoint_Controller
+            buf[0] = 0x05;
+            buf[1] = 0x2;
+            update_table(VANTTEC_CAN_ID_THROTTLE_RX, 0x05, buf, 2);
+
+            buf[0] = VANTTEC_CAN_ID_XBOX;
+            buf[1] = 0x3;
+            update_table(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_XBOX, buf, 2);
+
+        }
+        else if (xbox_data==0){
+            // Return Velocity to 0 if auto mode is changed to Xbox_Controller
+            buf[0] = 0x05;
+            buf[1] = 0x2;
+            update_table(VANTTEC_CAN_ID_THROTTLE_RX, 0x05, buf, 2);
+
+            buf[0] = VANTTEC_CAN_ID_XBOX;
+            buf[1] = 0x3;
+            update_table(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_XBOX, buf, 2);
+        }
+        osDelay(10);
+    }
+}
 
 void init_requirements_task()
 {
@@ -211,4 +248,6 @@ void init_requirements_task()
     reverseTaskHandle = osThreadNew(reverse_task, NULL, &reverseTaskAttributes);
     frenomanualTaskHandle = osThreadNew(frenomanual_task, NULL, &frenomanualTaskAttributes);
     driverfaultTaskHandle = osThreadNew(driverfault_task, NULL, &driverfaultTaskAttributes);
+    xboxTaskHandle = osThreadNew(xbox_task, NULL, &xboxTaskAttributes);
+
 }

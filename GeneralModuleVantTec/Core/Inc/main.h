@@ -57,36 +57,20 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define DEBUG_1_Pin GPIO_PIN_0
-#define DEBUG_1_GPIO_Port GPIOC
-#define DEBUG_2_Pin GPIO_PIN_1
-#define DEBUG_2_GPIO_Port GPIOC
-#define DEBUG_3_Pin GPIO_PIN_2
-#define DEBUG_3_GPIO_Port GPIOC
-#define DEBUG_4_Pin GPIO_PIN_3
-#define DEBUG_4_GPIO_Port GPIOC
-#define DEBUG_5_Pin GPIO_PIN_4
-#define DEBUG_5_GPIO_Port GPIOC
-#define DEBUG_6_Pin GPIO_PIN_5
-#define DEBUG_6_GPIO_Port GPIOC
-#define I_AsientoSensor_Pin GPIO_PIN_0
-#define I_AsientoSensor_GPIO_Port GPIOB
-#define DEBUG_7_Pin GPIO_PIN_6
-#define DEBUG_7_GPIO_Port GPIOC
-#define DEBUG_8_Pin GPIO_PIN_7
-#define DEBUG_8_GPIO_Port GPIOC
-#define CAN_Heartbit_Pin GPIO_PIN_10
-#define CAN_Heartbit_GPIO_Port GPIOA
+#define DEBUG_1_Pin GPIO_PIN_12
+#define DEBUG_1_GPIO_Port GPIOB
+#define DEBUG_2_Pin GPIO_PIN_13
+#define DEBUG_2_GPIO_Port GPIOB
+#define DEBUG_3_Pin GPIO_PIN_14
+#define DEBUG_3_GPIO_Port GPIOB
 #define I_BotonDeReversa_Pin GPIO_PIN_15
-#define I_BotonDeReversa_GPIO_Port GPIOA
-#define I_BotonEmergenciaAux_Pin GPIO_PIN_10
-#define I_BotonEmergenciaAux_GPIO_Port GPIOC
-#define I_BotonAutonomo_Manual2_Pin GPIO_PIN_11
-#define I_BotonAutonomo_Manual2_GPIO_Port GPIOC
+#define I_BotonDeReversa_GPIO_Port GPIOB
 #define I_BotonEmergencia_Pin GPIO_PIN_6
-#define I_BotonEmergencia_GPIO_Port GPIOB
+#define I_BotonEmergencia_GPIO_Port GPIOC
 #define I_BotonAutonomo_Manual_Pin GPIO_PIN_7
-#define I_BotonAutonomo_Manual_GPIO_Port GPIOB
+#define I_BotonAutonomo_Manual_GPIO_Port GPIOC
+#define I_AsientoSensor_Pin GPIO_PIN_8
+#define I_AsientoSensor_GPIO_Port GPIOC
 
 /* USER CODE BEGIN Private defines */
 

@@ -60,9 +60,9 @@ void hb_task(void *args)
     uint8_t data = 0;
     for (;;)
     {
-        canlib_send_debug_string("Hello");
         canlib_send_byte(VANTTEC_CAN_ID_HB, data);
         data++;
+        HAL_GPIO_TogglePin(DEBUG_1_GPIO_Port, DEBUG_1_Pin);
         osDelay(1000);
     }
 }
@@ -147,8 +147,6 @@ void init_requirements_task()
 {
     emergencystopTaskHandle = osThreadNew(emergencystop_task, NULL, &emergencystopTaskAttributes);
     hbTaskHandle = osThreadNew(hb_task, NULL, &hbTaskAttributes);
-    drivemodeTaskHandle = osThreadNew(drivemode_task, NULL, &drivemodeTaskAttributes);
-    driverpresentTaskHandle = osThreadNew(driverpresent_task, NULL, &driverpresentTaskAttributes);
     frenomanualTaskHandle = osThreadNew(frenomanual_task, NULL, &frenomanualTaskAttributes);
     driverfaultTaskHandle = osThreadNew(driverfault_task, NULL, &driverfaultTaskAttributes);
 }

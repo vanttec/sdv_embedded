@@ -27,6 +27,7 @@
 #define VANTTEC_CAN_ID_FRENO_MANUAL 0x05
 #define VANTTEC_CAN_ID_DRIVER_FAULT 0x06
 #define VANTTEC_CAN_ID_PEDAL_BRAKE 0x07
+#define VANTTEC_CAN_ID_XBOX 0x08
 #define VANTTEC_CAN_ID_DEBUG 0xFA
 
 void init_requirements_task();

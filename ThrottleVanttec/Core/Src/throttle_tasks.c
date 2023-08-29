@@ -26,7 +26,7 @@ osThreadId_t brakeTaskHandle;
 const osThreadAttr_t brakeTaskAttributes = {
     .name = "brake",
     .stack_size = 128 * 4};
-#define MAX_VELOCITY 150 //10km/h (255-35km/h)
+#define MAX_VELOCITY 180 //10km/h (255-35km/h)
 void pot_task(void *args)
 {
     uint8_t pot_data = 0;
