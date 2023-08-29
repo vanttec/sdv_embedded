@@ -291,7 +291,7 @@ void panelDet_task(void *args)
 				}
 				panelDet_data = 0x05;
 			}
-			else if (panelDet_data == 0x14)
+			else if (panelDet_data == 0x15)
 			{
 				// Giro repentino izquierda
 				for (int i = 0; i < 2; i++)
@@ -300,7 +300,7 @@ void panelDet_task(void *args)
 					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
 					osDelay(corto);
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
-					HAL_GPIO_WritePin(L3D_GPIO_Port, L2D_Pin, RESET);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
 					osDelay(largo);
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
 					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
@@ -357,9 +357,14 @@ void driverPresentFlag_task(void *args)
 {
 	// Si hay una persona sentada en el sensor(10) se prendera el led indicador 2, si no hay nadie, se apagará.
 	uint8_t driverPresentFlag_data = 0;
+	uint8_t last_driverPresentFlag_data = 0;
+
+
 	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x16, VANTTEC_CANLIB_BYTE, &driverPresentFlag_data, 1);
 	for (;;)
 	{
+		if (driverPresentFlag_data != last_driverPresentFlag_data)
+		{
 		if (driverPresentFlag_data == 0x01)
 		{
 			HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, SET);
@@ -369,7 +374,10 @@ void driverPresentFlag_task(void *args)
 			HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, RESET);
 			driverPresentFlag_data = 0x05;
 		}
+		driverPresentFlag_data = last_driverPresentFlag_data;
+	}
 		osDelay(10);
+
 	}
 }
 
@@ -556,23 +564,27 @@ void show_task(void *args)
 			if (show_data == 0x10)
 			{
 				// Show con luces indicadoras
+				for (int i = 0; i < 3; i++)
+				{
 				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, GPIO_PIN_SET);
-				osDelay(corto);
+				osDelay(corto/5);
 				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, GPIO_PIN_RESET);
 				HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, GPIO_PIN_SET);
-				osDelay(corto);
+				osDelay(corto/5);
 				HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, GPIO_PIN_RESET);
 				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, GPIO_PIN_SET);
-				osDelay(corto);
+				osDelay(corto/5);
 				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, GPIO_PIN_RESET);
 				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, GPIO_PIN_SET);
-				osDelay(corto);
+				osDelay(corto/5);
 				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, GPIO_PIN_RESET);
 				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, GPIO_PIN_SET);
-				osDelay(corto);
+				osDelay(corto/5);
 				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, GPIO_PIN_RESET);
-				osDelay(corto);
+				osDelay(corto/5);
+				}
 				show_data = 0x05;
+
 			}
 			else if (show_data == 0x11)
 			{
