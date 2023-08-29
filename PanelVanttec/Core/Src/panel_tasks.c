@@ -607,6 +607,16 @@ void show_task(void *args)
 				}
 				show_data = 0x05;
 			}
+			else if (show_data == 0x0A)
+			{
+				HAL_GPIO_WritePin(STMTB1_GPIO_Port, STMTB1_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, GPIO_PIN_RESET);
+				show_data = 0x05;
+
+			}
 		osDelay(10);
 	}
 }
