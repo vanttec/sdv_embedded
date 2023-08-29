@@ -1,0 +1,12 @@
+../Core/Src/panel_tasks.c:72:6:debug_task	1
+../Core/Src/panel_tasks.c:95:6:panelMov_task	12
+../Core/Src/panel_tasks.c:217:6:panelDet_task	11
+../Core/Src/panel_tasks.c:330:6:driveModeStatusFlag_task	3
+../Core/Src/panel_tasks.c:356:6:driverPresentFlag_task	3
+../Core/Src/panel_tasks.c:406:6:safetyModeAlertFlag_task	3
+../Core/Src/panel_tasks.c:460:6:objectNotificationFlag_task	4
+../Core/Src/panel_tasks.c:493:6:recognizeTrafficSignFlag_task	4
+../Core/Src/panel_tasks.c:521:6:detectLaneFlag_task	4
+../Core/Src/panel_tasks.c:550:6:show_task	4
+../Core/Src/panel_tasks.c:630:6:send_tx_task	3
+../Core/Src/panel_tasks.c:647:6:init_panel_task	1

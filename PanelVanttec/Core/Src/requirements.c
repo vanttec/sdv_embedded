@@ -18,7 +18,7 @@ const osThreadAttr_t emergencystopTaskAttributes = {
 osThreadId_t hbTaskHandle;
 const osThreadAttr_t hbTaskAttributes = {
     .name = "canlib_hb",
-    .stack_size = 128 * 1};
+    .stack_size = 128 * 4};
 osThreadId_t drivemodeTaskHandle;
 const osThreadAttr_t drivemodeTaskAttributes = {
     .name = "drivemode",
@@ -55,7 +55,19 @@ void emergencystop_task(void *args)
         	update_table(VANTTEC_CAN_ID_PANEL_RX, 0x09, buf, 2);
             // Return emergency signal back to 0
             buf[0] = VANTTEC_CAN_ID_ESTOP;
-            buf[1] = 0x0;
+            buf[1] = 0x03;
+            update_table(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_ESTOP, buf, 2);
+        }
+
+        else if (emergencystop_data == 0)
+        {
+            // Do something with panel
+        	buf[0] = 0x09;
+        	buf[1] = 0x0A;
+        	update_table(VANTTEC_CAN_ID_PANEL_RX, 0x09, buf, 2);
+            // Return drivemode signal back to 3
+            buf[0] = VANTTEC_CAN_ID_ESTOP;
+            buf[1] = 0x3;
             update_table(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_ESTOP, buf, 2);
         }
         osDelay(10);
@@ -66,8 +78,8 @@ void hb_task(void *args)
     uint8_t data = 0;
     for (;;)
     {
-        canlib_send_debug_string("Hello");
         canlib_send_byte(VANTTEC_CAN_ID_HB, data);
+        HAL_GPIO_TogglePin(DEBUG_2_GPIO_Port,DEBUG_2_Pin);
         data++;
         osDelay(1000);
     }
@@ -106,8 +118,34 @@ void drivemode_task(void *args)
 }
 void driverpresent_task(void *args)
 {
+    uint8_t buf[8];
+    uint8_t driverpresent_data = 0;
+    register_canlib_rx(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_DRIVER_PRESENT, VANTTEC_CANLIB_BYTE, &driverpresent_data, 1);
     for (;;)
     {
+        if (driverpresent_data == 1)
+        {
+            // Do something with panel
+        	buf[0] = 0x16;
+        	buf[1] = 0x01;
+        	update_table(VANTTEC_CAN_ID_PANEL_RX, 0x16, buf, 2);
+            // Return drivemode signal back to 0
+            buf[0] = VANTTEC_CAN_ID_DRIVER_PRESENT;
+            buf[1] = 0x3;
+            update_table(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_DRIVER_PRESENT, buf, 2);
+        }
+        else if (driverpresent_data == 0)
+        {
+            // Do something with panel
+        	buf[0] = 0x16;
+        	buf[1] = 0x00;
+        	update_table(VANTTEC_CAN_ID_PANEL_RX, 0x16, buf, 2);
+            // Return drivemode signal back to 3
+            buf[0] = VANTTEC_CAN_ID_DRIVE_MODE;
+            buf[1] = 0x3;
+            update_table(VANTTEC_CAN_ID_GENERAL_TX, VANTTEC_CAN_ID_DRIVER_PRESENT, buf, 2);
+        }
+
         osDelay(10);
     }
 }
@@ -183,7 +221,7 @@ void init_requirements_task()
     emergencystopTaskHandle = osThreadNew(emergencystop_task, NULL, &emergencystopTaskAttributes);
     hbTaskHandle = osThreadNew(hb_task, NULL, &hbTaskAttributes);
     drivemodeTaskHandle = osThreadNew(drivemode_task, NULL, &drivemodeTaskAttributes);
-    // driverpresentTaskHandle = osThreadNew(driverpresent_task, NULL, &driverpresentTaskAttributes);
+    driverpresentTaskHandle = osThreadNew(driverpresent_task, NULL, &driverpresentTaskAttributes);
     reverseTaskHandle = osThreadNew(reverse_task, NULL, &reverseTaskAttributes);
     frenomanualTaskHandle = osThreadNew(frenomanual_task, NULL, &frenomanualTaskAttributes);
     driverfaultTaskHandle = osThreadNew(driverfault_task, NULL, &driverfaultTaskAttributes);

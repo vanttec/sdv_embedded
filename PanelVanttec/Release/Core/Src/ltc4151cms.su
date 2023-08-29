@@ -1,0 +1,16 @@
+../Core/Src/ltc4151cms.c:20:6:initialize_devices	8	static
+../Core/Src/ltc4151cms.c:30:6:I2C_ScanBus	32	static
+../Core/Src/ltc4151cms.c:48:6:send_command	40	static
+../Core/Src/ltc4151cms.c:66:6:write_register	0	static
+../Core/Src/ltc4151cms.c:71:6:begin_multimeter	24	static
+../Core/Src/ltc4151cms.c:114:6:readADC	40	static
+../Core/Src/ltc4151cms.c:145:6:readADCSnapshot	56	static
+../Core/Src/ltc4151cms.c:172:6:setControlRegister	32	static
+../Core/Src/ltc4151cms.c:187:9:getControlRegister	8	static
+../Core/Src/ltc4151cms.c:202:8:getLoadCurrent	16	static
+../Core/Src/ltc4151cms.c:215:8:getInputVoltage	8	static
+../Core/Src/ltc4151cms.c:228:8:getADCInVoltage	8	static
+../Core/Src/ltc4151cms.c:241:6:disableSnapshotMode	0	static
+../Core/Src/ltc4151cms.c:264:8:getSnapshotLoadCurrent	32	static
+../Core/Src/ltc4151cms.c:283:8:getSnapshotInputVoltage	16	static
+../Core/Src/ltc4151cms.c:302:8:getSnapshotADCInVoltage	16	static

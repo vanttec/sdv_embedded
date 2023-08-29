@@ -46,6 +46,10 @@ osThreadId_t detectLaneFlagTaskHandle;
 const osThreadAttr_t detectLaneFlagTaskAttributes = {
 	.name = "detectLaneFlag",
 	.stack_size = 128 * 4};
+osThreadId_t driverPresentFlagTaskHandle;//driverPresentFlag
+const osThreadAttr_t driverPresentFlagTaskAttributes = {
+	.name = "driverPresentFlag",
+	.stack_size = 128 * 4};//
 osThreadId_t showTaskHandle;
 const osThreadAttr_t showTaskAttributes = {
 	.name = "show",
@@ -72,6 +76,7 @@ void debug_task(void *args)
 	for (;;)
 	{
 		HAL_GPIO_WritePin(DEBUG_1_GPIO_Port, DEBUG_1_Pin, GPIO_PIN_SET);
+//		HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, SET);
 		/*HAL_GPIO_WritePin(DEBUG_3_GPIO_Port, DEBUG_3_Pin, GPIO_PIN_SET);
 		 HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_SET);
@@ -101,9 +106,7 @@ void panelMov_task(void *args)
 				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, GPIO_PIN_SET);
 				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, GPIO_PIN_SET);
 			 	HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, GPIO_PIN_SET);
-				buf[0] = 0x05;
-            	buf[1] = 0x0;
-            	update_table(VANTTEC_CAN_ID_PANEL_RX, 0x05, buf, 2); 
+
 			}
 			// Carro encendido
 			else if (panelMov_data == 0x11)
@@ -349,35 +352,57 @@ void driveModeStatusFlag_task(void *args)
 		osDelay(10);
 	}
 }
-void reverseSwitchStatusFlag_task(void *args)
+
+void driverPresentFlag_task(void *args)
 {
-	// Si el carro va de reversa(10) se prendera el led indicador 2, si va de frente, se apagara
-	uint8_t reverseSwitchStatusFlag_data = 0;
-	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x08, VANTTEC_CANLIB_BYTE, &reverseSwitchStatusFlag_data, 1);
+	// Si hay una persona sentada en el sensor(10) se prendera el led indicador 2, si no hay nadie, se apagará.
+	uint8_t driverPresentFlag_data = 0;
+	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x16, VANTTEC_CANLIB_BYTE, &driverPresentFlag_data, 1);
 	for (;;)
 	{
-		if (reverseSwitchStatusFlag_data == 0x10)
+		if (driverPresentFlag_data == 0x01)
 		{
-			// Reversa
 			HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, SET);
-			HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
-			HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
-			HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
-			osDelay(corto);
-			HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
-			HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
-			HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
-			osDelay(largo);
 		}
-		// De frente
-		else if (reverseSwitchStatusFlag_data == 0x0A)
+		else if (driverPresentFlag_data == 0x00)
 		{
 			HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, RESET);
-			reverseSwitchStatusFlag_data == 0x05;
+			driverPresentFlag_data = 0x05;
 		}
 		osDelay(10);
 	}
 }
+
+//void reverseSwitchStatusFlag_task(void *args)
+//{
+//	// Si el carro va de reversa(10) se prendera el led indicador 2, si va de frente, se apagara
+//	uint8_t reverseSwitchStatusFlag_data = 0;
+//	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x08, VANTTEC_CANLIB_BYTE, &reverseSwitchStatusFlag_data, 1);
+//	for (;;)
+//	{
+//		if (reverseSwitchStatusFlag_data == 0x10)
+//		{
+//			// Reversa
+//			HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, SET);
+//			HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
+//			HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
+//			HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
+//			osDelay(corto);
+//			HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
+//			HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
+//			HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
+//			osDelay(largo);
+//		}
+//		// De frente
+//		else if (reverseSwitchStatusFlag_data == 0x0A)
+//		{
+//			HAL_GPIO_WritePin(STMTB2_GPIO_Port, STMTB2_Pin, RESET);
+//			reverseSwitchStatusFlag_data == 0x05;
+//		}
+//		osDelay(10);
+//	}
+//}
+
 void safetyModeAlertFlag_task(void *args)
 {
 	uint8_t safetyModeAlertFlag_data = 0;
@@ -427,7 +452,7 @@ void safetyModeAlertFlag_task(void *args)
 				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, GPIO_PIN_RESET);
 				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, GPIO_PIN_RESET);
 				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_RESET);
-				safetyModeAlertFlag_data == 0x05;
+				safetyModeAlertFlag_data = 0x05;
 			}
 		osDelay(10);
 	}
@@ -460,7 +485,7 @@ void objectNotificationFlag_task(void *args)
 				//Si no detecta nada, reset
 				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
 				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
-				objectNotificationFlag_data == 0x05;
+				objectNotificationFlag_data = 0x05;
 			}
 		osDelay(10);
 	}
@@ -474,21 +499,21 @@ void recognizeTrafficSignFlag_task(void *args)
 			if (recognizeTrafficSignFlag_data == 0x10)
 			{
 				// Si es un STOP Sign se prende
-				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, SET);
+				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, SET);
 			}
 			else if (recognizeTrafficSignFlag_data == 0x11)
 			{
 				// Si es un Pedestrian Crossing Sign, parpadea
-				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, SET);
+				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, SET);
 				osDelay(corto);
-				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
+				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, RESET);
 				osDelay(largo);
 			}
 			else if (recognizeTrafficSignFlag_data == 0x0A)
 			{
 				//Reset
-				HAL_GPIO_WritePin(STMTB3_GPIO_Port, STMTB3_Pin, RESET);
-				recognizeTrafficSignFlag_data == 0x05;
+				HAL_GPIO_WritePin(STMTB4_GPIO_Port, STMTB4_Pin, RESET);
+				recognizeTrafficSignFlag_data = 0x05;
 			}
 		osDelay(10);
 	}
@@ -517,7 +542,7 @@ void detectLaneFlag_task(void *args)
 			else if (detectLaneFlag_data == 0x12)
 			{
 				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, RESET);
-				detectLaneFlag_data == 0x05;
+				detectLaneFlag_data = 0x05;
 			}
 		osDelay(10);
 	}
@@ -547,7 +572,7 @@ void show_task(void *args)
 				osDelay(corto);
 				HAL_GPIO_WritePin(STMTB5_GPIO_Port, STMTB5_Pin, GPIO_PIN_RESET);
 				osDelay(corto);
-				show_data == 0x05;
+				show_data = 0x05;
 			}
 			else if (show_data == 0x11)
 			{
@@ -580,28 +605,28 @@ void show_task(void *args)
 					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, GPIO_PIN_RESET);
 					osDelay(corto);
 				}
-				show_data == 0x05;
+				show_data = 0x05;
 			}
 		osDelay(10);
 	}
 }
-void multimeter_task(void *args)
-{
-	uint8_t multimeter_data = 0;
-	uint8_t buf[8];
-	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x13, VANTTEC_CANLIB_BYTE, &multimeter_data, 1);
-	for (;;)
-	{
-		if (multimeter_data == 0x1)
-		{
-			voltage_flag = 1;
-			buf[0] = 0x13;
-			buf[1] = 3;
-			update_table(VANTTEC_CAN_ID_PANEL_RX, 0x13, buf, 2);
-		}
-		osDelay(10);
-	}
-}
+//void multimeter_task(void *args)
+//{
+//	uint8_t multimeter_data = 0;
+//	uint8_t buf[8];
+//	register_canlib_rx(VANTTEC_CAN_ID_PANEL_RX, 0x13, VANTTEC_CANLIB_BYTE, &multimeter_data, 1);
+//	for (;;)
+//	{
+//		if (multimeter_data == 0x1)
+//		{
+//			voltage_flag = 1;
+//			buf[0] = 0x13;
+//			buf[1] = 3;
+//			update_table(VANTTEC_CAN_ID_PANEL_RX, 0x13, buf, 2);
+//		}
+//		osDelay(10);
+//	}
+//}
 void send_tx_task(void *args)
 {
 	for (;;)
@@ -625,11 +650,13 @@ void init_panel_task()
 	debugTaskHandle = osThreadNew(debug_task, NULL, &debugTaskAttributes);
 	panelDetTaskHandle = osThreadNew(panelDet_task, NULL, &panelDetTaskAttributes);
 	driveModeStatusFlagTaskHandle = osThreadNew(driveModeStatusFlag_task, NULL, &driveModeStatusFlagTaskAttributes);
-	reverseSwitchStatusFlagTaskHandle = osThreadNew(reverseSwitchStatusFlag_task, NULL, &reverseSwitchStatusFlagTaskAttributes);
+//	reverseSwitchStatusFlagTaskHandle = osThreadNew(reverseSwitchStatusFlag_task, NULL, &reverseSwitchStatusFlagTaskAttributes);
+	driverPresentFlagTaskHandle = osThreadNew(driverPresentFlag_task, NULL, &driverPresentFlagTaskAttributes);
+	detectLaneFlagTaskHandle = osThreadNew(detectLaneFlag_task, NULL, &detectLaneFlagTaskAttributes);
 	safetyModeAlertFlagTaskHandle = osThreadNew(safetyModeAlertFlag_task, NULL, &safetyModeAlertFlagTaskAttributes);
 	recognizeTrafficSignFlagTaskHandle = osThreadNew(recognizeTrafficSignFlag_task, NULL, &recognizeTrafficSignFlagTaskAttributes);
 	objectNotificationFlagTaskHandle = osThreadNew(objectNotificationFlag_task, NULL, &objectNotificationFlagTaskAttributes);
 	showTaskHandle = osThreadNew(show_task, NULL, &showTaskAttributes);
-	multimeterTaskHandle = osThreadNew(multimeter_task, NULL, &multimeterAttributes);
+//	multimeterTaskHandle = osThreadNew(multimeter_task, NULL, &multimeterAttributes);
 	sendtxTaskHandle = osThreadNew(send_tx_task, NULL, &sendtxAttributes);
 }
