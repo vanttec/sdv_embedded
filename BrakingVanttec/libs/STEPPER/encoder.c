@@ -1,7 +1,7 @@
 #include "encoder.h"
 
 encoder ifm_encoder = {.steps = 4096, .revolutions = 4096, .bit_resolution = 16777216};
-encoder briter_encoder  = {.steps = 1024/*steps p rev*/, .revolutions = 24, .bit_resolution = 1024*24};
+encoder briter_encoder  = {.steps = 4096/*steps p rev*/, .revolutions = 24, .bit_resolution = 4096*24};
 
 void parse_ifm_encoder(uint32_t pos){
 	// Absolute position with positive and negative angle values
@@ -23,6 +23,6 @@ void parse_briter_encoder(uint32_t pos){
 	uint32_t step = pos%briter_encoder.steps;
 
 	briter_encoder.turn = (int16_t) pos/briter_encoder.steps;
-	briter_encoder.absolute_angle = (float) 360*pos/briter_encoder.revolutions;
+	briter_encoder.absolute_angle =  (float) 360*step/briter_encoder.revolutions;
 	briter_encoder.angle = (float) 360*step/briter_encoder.steps;
 }
