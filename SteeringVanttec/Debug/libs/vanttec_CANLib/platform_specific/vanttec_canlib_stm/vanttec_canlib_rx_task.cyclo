@@ -4,5 +4,5 @@
 ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:99:6:update_table	7
 ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:123:6:register_canlib_rx	3
 ../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:144:6:register_canlib_rx_queue	4
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:172:6:can_rx_task	5
-../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:208:6:can_rx_queue_task	2
+../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:172:6:can_rx_task	7
+../libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c:219:6:can_rx_queue_task	2

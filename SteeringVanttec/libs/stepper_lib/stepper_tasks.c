@@ -105,7 +105,8 @@ void steering_task()
 			{
 				HAL_GPIO_WritePin(DEBUG_2_GPIO_Port, DEBUG_2_Pin, GPIO_PIN_RESET);
 				// Manual Mode
-				pause(STEERING);
+				//pause(STEERING);
+				stop(STEERING);
 				init = 0;
 			}
 		}
