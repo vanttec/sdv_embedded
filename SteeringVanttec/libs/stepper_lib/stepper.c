@@ -94,8 +94,7 @@ void stop(const stepper_type stepper)
 		steering_stepper.is_active = 0;
 		steering_stepper.direction = IDLE;
 		steering_stepper.is_exec_started = 0;
-		HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_RESET);
 		break;
 	case BRAKING:
 		// HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_SET);
