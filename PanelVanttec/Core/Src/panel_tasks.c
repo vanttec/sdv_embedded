@@ -268,54 +268,22 @@ void panelDet_task(void *args)
 			else if (panelDet_data == 0x13)
 			{
 				// Giro repentino derecha
-				for (int i = 0; i < 2; i++)
-				{
-					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
-					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
-					osDelay(corto);
-					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
-					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
-					osDelay(largo);
-					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
-					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
-					osDelay(corto);
-					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
-					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
-					osDelay(largo);
-					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
-					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
-					osDelay(largo);
-					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
-					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
-					osDelay(largo);
-				}
-				panelDet_data = 0x05;
+				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
+				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, SET);
+				osDelay(corto);
+				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
+				HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, RESET);
+				osDelay(corto);
 			}
 			else if (panelDet_data == 0x15)
 			{
 				// Giro repentino izquierda
-				for (int i = 0; i < 2; i++)
-				{
-					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
-					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
-					osDelay(corto);
-					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
-					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
-					osDelay(largo);
-					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
-					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
-					osDelay(corto);
-					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
-					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
-					osDelay(largo);
-					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
-					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
-					osDelay(largo);
-					HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
-					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
-					osDelay(largo);
-				}
-				panelDet_data = 0x05;
+				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, SET);
+				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, SET);
+				osDelay(corto);
+				HAL_GPIO_WritePin(EXTRA_5_GPIO_Port, EXTRA_5_Pin, RESET);
+				HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, RESET);
+				osDelay(corto);
 			}
 			//Reset
 			else if (panelDet_data == 0x0A)

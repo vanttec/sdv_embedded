@@ -1,6 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (11.3.rel1)
+# Toolchain: GNU Tools for STM32 (10.3-2021.10)
 ################################################################################
 
 -include ../makefile.init
@@ -9,11 +9,6 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/subdir.mk
--include libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/subdir.mk
--include libs/vanttec_CANLib/src/Vanttec_CANLib/subdir.mk
--include libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/subdir.mk
--include libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/subdir.mk
 -include libs/stepper_lib/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
@@ -85,8 +80,8 @@ all: main-build
 main-build: SteeringVanttec.elf secondary-outputs
 
 # Tool invocations
-SteeringVanttec.elf SteeringVanttec.map: $(OBJS) $(USER_OBJS) /home/saveasmtz/Documents/embedded/sdv_embedded/SteeringVanttec/STM32L431RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "SteeringVanttec.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/saveasmtz/Documents/embedded/sdv_embedded/SteeringVanttec/STM32L431RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SteeringVanttec.map" -Wl,--gc-sections -static -Wl,--undefined=uxTopUsedPriority --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+SteeringVanttec.elf SteeringVanttec.map: $(OBJS) $(USER_OBJS) C:\DocumentsGithub\sdv_embedded\SteeringVanttec\STM32L431RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "SteeringVanttec.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\DocumentsGithub\sdv_embedded\SteeringVanttec\STM32L431RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SteeringVanttec.map" -Wl,--gc-sections -static -Wl,--undefined=uxTopUsedPriority --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

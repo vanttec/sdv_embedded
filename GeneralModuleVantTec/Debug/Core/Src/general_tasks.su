@@ -1,5 +1,0 @@
-../Core/Src/general_tasks.c:36:6:estop_task	24	static
-../Core/Src/general_tasks.c:64:6:reverse_task	24	static
-../Core/Src/general_tasks.c:91:6:drive_mode_task	24	static
-../Core/Src/general_tasks.c:119:6:asientoSensor_general_task	24	static
-../Core/Src/general_tasks.c:145:6:init_general_task	8	static

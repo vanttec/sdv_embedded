@@ -1,9 +1,0 @@
-../Core/Src/requirements.c:48:6:emergencystop_task	40	static
-../Core/Src/requirements.c:76:6:hb_task	24	static
-../Core/Src/requirements.c:87:6:drivemode_task	40	static
-../Core/Src/requirements.c:131:6:driverpresent_task	16	static
-../Core/Src/requirements.c:138:6:reverse_task	40	static
-../Core/Src/requirements.c:167:6:frenomanual_task	40	static
-../Core/Src/requirements.c:178:6:driverfault_task	40	static
-../Core/Src/requirements.c:208:6:xbox_task	40	static
-../Core/Src/requirements.c:242:6:init_requirements_task	8	static

@@ -9,11 +9,6 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/subdir.mk
--include libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/subdir.mk
--include libs/vanttec_CANLib/src/Vanttec_CANLib/subdir.mk
--include libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/subdir.mk
--include libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/subdir.mk
 -include libs/STEPPER/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
@@ -85,8 +80,8 @@ all: main-build
 main-build: BrakingVanttec.elf secondary-outputs
 
 # Tool invocations
-BrakingVanttec.elf BrakingVanttec.map: $(OBJS) $(USER_OBJS) C:\Users\riky_\STM32CubeIDE\workspace_1.11.2\sdv_embedded\BrakingVanttec\STM32L431RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "BrakingVanttec.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\riky_\STM32CubeIDE\workspace_1.11.2\sdv_embedded\BrakingVanttec\STM32L431RCTX_FLASH.ld" -Wl,-Map="BrakingVanttec.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+BrakingVanttec.elf BrakingVanttec.map: $(OBJS) $(USER_OBJS) C:\DocumentsGithub\sdv_embedded\BrakingVanttec\STM32L431RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "BrakingVanttec.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\DocumentsGithub\sdv_embedded\BrakingVanttec\STM32L431RCTX_FLASH.ld" -Wl,-Map="BrakingVanttec.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

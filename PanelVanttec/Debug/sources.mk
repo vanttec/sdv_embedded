@@ -1,6 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (11.3.rel1)
+# Toolchain: GNU Tools for STM32 (10.3-2021.10)
 ################################################################################
 
 ELF_SRCS := 
@@ -14,7 +14,6 @@ C_SRCS :=
 CPP_SRCS := 
 S_UPPER_SRCS := 
 O_SRCS := 
-CYCLO_FILES := 
 OBJDUMP_LIST := 
 C_UPPER_DEPS := 
 S_DEPS := 
@@ -39,9 +38,4 @@ Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 \
 Middlewares/Third_Party/FreeRTOS/Source \
 Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F \
 Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang \
-libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks \
-libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm \
-libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder \
-libs/vanttec_CANLib/src/Vanttec_CANLib \
-libs/vanttec_CANLib/src/Vanttec_CANLib/Utils \
 

@@ -1,7 +1,0 @@
-requirements.c:39:6:emergencystop_task	2
-requirements.c:58:6:hb_task	1
-requirements.c:69:6:drivemode_task	3
-requirements.c:97:6:driverpresent_task	1
-requirements.c:105:6:frenomanual_task	2
-requirements.c:124:6:driverfault_task	2
-requirements.c:146:6:init_requirements_task	1

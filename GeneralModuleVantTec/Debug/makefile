@@ -9,11 +9,6 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/subdir.mk
--include libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/subdir.mk
--include libs/vanttec_CANLib/src/Vanttec_CANLib/subdir.mk
--include libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/subdir.mk
--include libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/subdir.mk
@@ -84,8 +79,8 @@ all: main-build
 main-build: GeneralModuleVantTec.elf secondary-outputs
 
 # Tool invocations
-GeneralModuleVantTec.elf GeneralModuleVantTec.map: $(OBJS) $(USER_OBJS) C:\VantTec\sdv_embedded\sdv_embedded\GeneralModuleVantTec\STM32L431RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "GeneralModuleVantTec.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\VantTec\sdv_embedded\sdv_embedded\GeneralModuleVantTec\STM32L431RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="GeneralModuleVantTec.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+GeneralModuleVantTec.elf GeneralModuleVantTec.map: $(OBJS) $(USER_OBJS) C:\DocumentsGithub\sdv_embedded\GeneralModuleVantTec\STM32L431RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "GeneralModuleVantTec.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\DocumentsGithub\sdv_embedded\GeneralModuleVantTec\STM32L431RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="GeneralModuleVantTec.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

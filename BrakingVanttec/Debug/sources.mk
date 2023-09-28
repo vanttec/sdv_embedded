@@ -39,9 +39,4 @@ Middlewares/Third_Party/FreeRTOS/Source \
 Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F \
 Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang \
 libs/STEPPER \
-libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks \
-libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm \
-libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder \
-libs/vanttec_CANLib/src/Vanttec_CANLib \
-libs/vanttec_CANLib/src/Vanttec_CANLib/Utils \
 

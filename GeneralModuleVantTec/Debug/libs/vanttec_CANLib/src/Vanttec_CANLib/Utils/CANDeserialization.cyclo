@@ -1,4 +1,0 @@
-cmath:319:3:constexpr float std::ldexp(float, int)	1
-CANDeserialization.cpp:12:7:float deserialize_float(uint32_t)	2
-CANDeserialization.cpp:22:10:uint16_t deserialize_short(const uint8_t*)	1
-CANDeserialization.cpp:30:10:uint32_t deserialize_long(const uint8_t*)	1
