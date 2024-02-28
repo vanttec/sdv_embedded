@@ -104,8 +104,21 @@ target_link_options(
     "$<$<CONFIG:Debug>:SHELL:-Wl$<COMMA>--undefined=uxTopUsedPriority>"
 )
 
+set(
+    RELEASE_SOURCES
+    "libs/vanttec_CANLib/platform_specific/vanttec_canlib_linux/CANHandler.cpp"
+    "libs/vanttec_CANLib/platform_specific/vanttec_canlib_linux/main.cpp"
+    "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/hb_task.c"
+    "libs/vanttec_CANLib/tests/canmessage.cpp"
+    "libs/vanttec_CANLib/tests/inet.cpp"
+    "libs/vanttec_CANLib/tests/serialize.cpp"
+)
+
+list(TRANSFORM RELEASE_SOURCES REPLACE "(.+)" "$<$<NOT:$<CONFIG:Debug>>:\\1>")
+
 target_sources(
     ${TARGET_NAME} PRIVATE
+    "${RELEASE_SOURCES}"
     "Core/Src/FreeRTOS-openocd.c"
     "Core/Src/freertos.c"
     "Core/Src/main.c"
@@ -152,6 +165,17 @@ target_sources(
     "libs/stepper_lib/encoder.c"
     "libs/stepper_lib/stepper_tasks.c"
     "libs/stepper_lib/stepper.c"
+    "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/can_reset_task.c"
+    "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/generic_tasks/generic_tasks.c"
+    "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/ping_task.c"
+    "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/utils.c"
+    "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_rx_task.c"
+    "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib_tx_task.c"
+    "libs/vanttec_CANLib/platform_specific/vanttec_canlib_stm/vanttec_canlib.c"
+    "libs/vanttec_CANLib/src/Vanttec_CANLib/ByteOrder/inet.cpp"
+    "libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.cpp"
+    "libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.cpp"
+    "libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANSerialization.cpp"
 )
 
 add_custom_command(
