@@ -23,7 +23,7 @@ void configure_steering()
 	steering_stepper.current_angle = 0;
 	steering_stepper.STEPPER_OFFSET = 10;//1.8;
 
-	htim2.Instance->CCR1 = 2500;	// For duty cycle of 50%
+	htim2.Instance->CCR1 = (htim2.Init.Period+1)/2;	// For duty cycle of 50%
 	HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_SET);
 }
 
@@ -150,6 +150,7 @@ stepper_direction unsafe_direction;
 void steer(uint8_t direction){
 	//steering_stepper.mode = CONTROLLER;
 	float SAT_ANGLE;
+	uint8_t direction2 = IDLE;
 
 	if(steering_stepper.is_active)
 	{
@@ -157,7 +158,13 @@ void steer(uint8_t direction){
 		{
 			if(direction != steering_stepper.direction)
 			{
-				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
+				if (direction==0){
+					direction2=1;
+				}
+				else if (direction == 1){
+					direction2 = 0;
+				}
+				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction2);
 			}
 
 			// Check max steering angle is not exceded
@@ -181,7 +188,13 @@ void steer(uint8_t direction){
 				// Only can continue if direction is changed
 				if(direction != unsafe_direction)
 				{
-					HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
+					if (direction==0){
+						direction2=1;
+					}
+					else if (direction == 1){
+						direction2 = 0;
+					}
+					HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction2);
 					if(!steering_stepper.is_exec_started)
 					{
 						HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
@@ -246,12 +259,19 @@ void steer_by_setpoint(uint8_t direction, float error)
 {
 	if(steering_stepper.is_active)
 	{
+		uint8_t direction2 = IDLE;
 		if(direction != IDLE)
 		{
-			if(steering_stepper.direction != direction)
+			if (direction==0){
+				direction2=1;
+			}
+			else if (direction == 1){
+				direction2 = 0;
+			}
+			if(steering_stepper.direction != direction2)
 			{
-				steering_stepper.direction = direction;
-				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
+				steering_stepper.direction = direction2;
+				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction2);
 			}
 			if(fabsf(error) > steering_stepper.STEPPER_OFFSET)
 			{
