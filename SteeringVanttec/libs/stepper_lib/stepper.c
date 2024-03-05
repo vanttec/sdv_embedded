@@ -6,9 +6,9 @@
 volatile stepper braking_stepper;
 volatile stepper steering_stepper;
 
-const static float STEER_RATIO = 1.5; // Stepper to steering wheel ratio
-const static uint16_t MAX_STEERING_ANGLE = 600;
-const static uint16_t MIN_STEERING_ANGLE = 400;
+const static float STEER_RATIO = 2.75; // Stepper to steering wheel ratio //2.75 real
+const static uint16_t MAX_STEERING_ANGLE = 360;
+const static uint16_t MIN_STEERING_ANGLE = 550;
 const static uint16_t PEDAL_LENGTH = 0.18;
 const static uint16_t PULLEY_RADIUS = 0.0353;
 
@@ -151,7 +151,6 @@ void steer(uint8_t direction){
 	//steering_stepper.mode = CONTROLLER;
 	float SAT_ANGLE;
 	uint8_t direction2 = IDLE;
-
 	if(steering_stepper.is_active)
 	{
 		if(direction != IDLE)
@@ -168,7 +167,7 @@ void steer(uint8_t direction){
 			}
 
 			// Check max steering angle is not exceded
-			if(direction == CCW)
+			if(direction == CW)
 				SAT_ANGLE = steering_stepper.MAX_ANGLE;
 			else
 				SAT_ANGLE = steering_stepper.MIN_ANGLE;
@@ -259,19 +258,13 @@ void steer_by_setpoint(uint8_t direction, float error)
 {
 	if(steering_stepper.is_active)
 	{
-		uint8_t direction2 = IDLE;
 		if(direction != IDLE)
 		{
-			if (direction==0){
-				direction2=1;
-			}
-			else if (direction == 1){
-				direction2 = 0;
-			}
-			if(steering_stepper.direction != direction2)
+			direction=!direction;
+			if(steering_stepper.direction != direction)
 			{
-				steering_stepper.direction = direction2;
-				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction2);
+				steering_stepper.direction = direction;
+				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
 			}
 			if(fabsf(error) > steering_stepper.STEPPER_OFFSET)
 			{

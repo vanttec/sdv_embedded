@@ -51,6 +51,10 @@ void steering_task()
 	uint8_t drivemode_data = 0U;
 	uint8_t xbox_mode_data = 0U;
 	uint8_t init = 0U;
+//	uint8_t es_steering = 0;   		//Debug
+//	uint8_t drivemode_data = 1;		//Debug
+//	uint8_t xbox_mode_data = 1;		//Debug
+//	uint8_t init = 0;				//Debug
 	uint8_t dir = IDLE; // For safety do not modify this initial value
 
 	uint32_t encoder_pos = 0U;
@@ -91,6 +95,7 @@ void steering_task()
 				if (xbox_mode_data)
 				{
 					// Steer by setpoint
+//					desired_pos=0.3;		//Debug
 					set_setpoint(STEERING, desired_pos);
 				}
 				else
