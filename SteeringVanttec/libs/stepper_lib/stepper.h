@@ -44,6 +44,8 @@ typedef struct {
 	float current_angle; 		// Degrees
 	float desired_angle;		// Degrees
 
+	float SAT_ANGLES[2];
+
 	float STEPPER_OFFSET;				// Offset to stop spinning
 
 } stepper;

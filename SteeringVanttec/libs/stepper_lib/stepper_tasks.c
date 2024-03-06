@@ -74,7 +74,7 @@ void steering_task()
 		update_stepper_pos(STEERING);
 		if (es_steering)
 		{
-			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_RESET);
+			//HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_RESET);
 			stop(STEERING);
 			init = 0;
 		}
@@ -104,7 +104,7 @@ void steering_task()
 					steer(dir);
 					desired_pos = get_current_pos();
 				}
-				HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
+				//HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
 			}
 			else
 			{
@@ -138,7 +138,7 @@ void braking_task()
 		update_stepper_pos(BRAKING);
 		if (es_braking)
 		{
-			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_RESET);
+			//HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_RESET);
 			// em_stop(BRAKING);
 			init = 0;
 		}
@@ -157,7 +157,7 @@ void braking_task()
 				}
 				// Auto mode
 				set_setpoint(BRAKING, desired_pos_brake);
-				HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
+				//HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
 			}
 			else
 			{
@@ -197,14 +197,14 @@ void gpios_task()
 
 		if (brake_input)
 		{
-			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
+//			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
 			canlib_send_byte(VANTTEC_CAN_ID_PEDAL_BRAKE, (uint8_t)0);
 			canlib_send_byte(VANTTEC_CAN_ID_ESTOP, (uint8_t)0);
 			// em_stop = 1;
 		}
 		else
 		{
-			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_RESET);
+//			HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_RESET);
 		}
 
 		osDelay(10);

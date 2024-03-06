@@ -7,8 +7,8 @@ volatile stepper braking_stepper;
 volatile stepper steering_stepper;
 
 const static float STEER_RATIO = 2.75; // Stepper to steering wheel ratio //2.75 real
-const static uint16_t MAX_STEERING_ANGLE = 360;
-const static uint16_t MIN_STEERING_ANGLE = 550;
+const static uint16_t MAX_STEERING_ANGLE = 550;
+const static uint16_t MIN_STEERING_ANGLE = -360;
 const static uint16_t PEDAL_LENGTH = 0.18;
 const static uint16_t PULLEY_RADIUS = 0.0353;
 
@@ -20,6 +20,8 @@ void configure_steering()
 	steering_stepper.direction = IDLE;
 	steering_stepper.MAX_ANGLE = MAX_STEERING_ANGLE*STEER_RATIO;	//Degrees
 	steering_stepper.MIN_ANGLE = MIN_STEERING_ANGLE*STEER_RATIO;	//Degrees
+	steering_stepper.SAT_ANGLES[0] = steering_stepper.MAX_ANGLE;
+	steering_stepper.SAT_ANGLES[1] = steering_stepper.MIN_ANGLE;
 	steering_stepper.current_angle = 0;
 	steering_stepper.STEPPER_OFFSET = 10;//1.8;
 
@@ -151,56 +153,42 @@ void steer(uint8_t direction){
 	//steering_stepper.mode = CONTROLLER;
 	float SAT_ANGLE;
 	uint8_t direction2 = IDLE;
-	if(steering_stepper.is_active)
-	{
-		if(direction != IDLE)
-		{
-			if(direction != steering_stepper.direction)
-			{
-				if (direction==0){
-					direction2=1;
-				}
-				else if (direction == 1){
-					direction2 = 0;
-				}
-				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction2);
+	if(steering_stepper.is_active){
+		if(direction != IDLE){
+			if(direction != steering_stepper.direction){
+				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
 			}
 
 			// Check max steering angle is not exceded
-			if(direction == CW)
-				SAT_ANGLE = steering_stepper.MAX_ANGLE;
-			else
-				SAT_ANGLE = steering_stepper.MIN_ANGLE;
+			SAT_ANGLE = steering_stepper.SAT_ANGLES[direction];
 
-
-			if(fabsf(steering_stepper.current_angle) < SAT_ANGLE)
-			{
-				if(!steering_stepper.is_exec_started)
-				{
+			if(fabsf(steering_stepper.current_angle) < fabsf(SAT_ANGLE)){
+				if(!steering_stepper.is_exec_started){
 					HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 					steering_stepper.is_exec_started = 1;
 				}
 				steering_stepper.direction = direction;
+
 			} else {
 				unsafe_direction = steering_stepper.direction;
 
-				// Only can continue if direction is changed
-				if(direction != unsafe_direction)
-				{
-					if (direction==0){
-						direction2=1;
-					}
-					else if (direction == 1){
-						direction2 = 0;
-					}
-					HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction2);
-					if(!steering_stepper.is_exec_started)
-					{
+//				 Only can continue if direction is changed
+				if(direction != unsafe_direction){
+					HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_SET);
+
+					HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
+
+					if(!steering_stepper.is_exec_started){
 						HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 						steering_stepper.is_exec_started = 1;
 					}
-				} else pause(STEERING);
+				} else{
+					HAL_GPIO_WritePin(DEBUG_4_GPIO_Port, DEBUG_4_Pin, GPIO_PIN_RESET);
+
+					pause(STEERING);
+				}
 			}
+
 		} else pause(STEERING);
 	} else stop(STEERING);
 }
