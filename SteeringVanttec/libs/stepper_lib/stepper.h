@@ -6,6 +6,8 @@
 #define INC_STEPPER_H
 
 #include "stm32l4xx_hal.h"
+#include <stdbool.h>
+#include <stdint.h>
 
 /*
 A timer channel is configured in PWM mode, where a pulse of arbitrary length is
@@ -51,7 +53,7 @@ typedef struct {
   // If true, motor pulses will increase step count.
   bool direction;
 
-  stepper_configuration config;
+  StepperConfiguration config;
 } Stepper;
 
 void create_default_stepper_config(StepperConfiguration *config);

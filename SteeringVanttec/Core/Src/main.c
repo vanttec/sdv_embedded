@@ -22,7 +22,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "stepper_tasks.h"
+#include "requirements.h"
+#include "vanttec_canlib.h"
+#include "vanttec_canlib_tx_task.h"
+#include "vanttec_canlib_rx_task.h"
 #include "vanttec_sdv_ids.h"
 /* USER CODE END Includes */
 
@@ -119,7 +122,6 @@ int main(void)
   init_canlib_rx();
   canlib_init_generic_tasks();
   init_requirements_task();
-  init_stepper_tasks();
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -143,7 +145,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* creation of defaultTask */
-  //defaultTaskHandle = osThreadNew(default_task, NULL, &defaultTask_attributes);
+  defaultTaskHandle = osThreadNew(default_task, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -412,7 +414,7 @@ static void MX_TIM2_Init(void)
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 80-1;
-  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_DOWN;
   htim2.Init.Period = 5000-1 ;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -497,31 +499,29 @@ static void MX_USART1_UART_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
+/* USER CODE BEGIN MX_GPIO_Init_1 */
+/* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
-  __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, DEBUG_6_Pin|DEBUG_5_Pin|DEBUG_4_Pin|DEBUG_3_Pin
-                          |STPR_EN_1_Pin|STPR_DIR_1_Pin, GPIO_PIN_RESET);
+                          |STP1_EN_Pin|STP1_DIR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, DEBUG_2_Pin|DEBUG_1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin|STPR_DIR_2_Pin|STPR_EN_2_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, STP2_DIR_Pin|STP2_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : DEBUG_6_Pin DEBUG_5_Pin DEBUG_4_Pin DEBUG_3_Pin
-                           STPR_EN_1_Pin STPR_DIR_1_Pin */
+                           STP1_EN_Pin STP1_DIR_Pin */
   GPIO_InitStruct.Pin = DEBUG_6_Pin|DEBUG_5_Pin|DEBUG_4_Pin|DEBUG_3_Pin
-                          |STPR_EN_1_Pin|STPR_DIR_1_Pin;
+                          |STP1_EN_Pin|STP1_DIR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -534,34 +534,29 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LVL_SFTR_OE_2_Pin STPR_DIR_2_Pin STPR_EN_2_Pin */
-  GPIO_InitStruct.Pin = LVL_SFTR_OE_2_Pin|STPR_DIR_2_Pin|STPR_EN_2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : STPR_FLT_2_Pin ID_0_Pin ID_1_Pin ID_2_Pin
+  /*Configure GPIO pins : STP2_FLT_Pin ID_0_Pin ID_1_Pin ID_2_Pin
                            ID_3_Pin BRAKE_IN_Pin */
-  GPIO_InitStruct.Pin = STPR_FLT_2_Pin|ID_0_Pin|ID_1_Pin|ID_2_Pin
+  GPIO_InitStruct.Pin = STP2_FLT_Pin|ID_0_Pin|ID_1_Pin|ID_2_Pin
                           |ID_3_Pin|BRAKE_IN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : E_STOP_Pin STPR_FLT_1_Pin */
-  GPIO_InitStruct.Pin = E_STOP_Pin|STPR_FLT_1_Pin;
+  /*Configure GPIO pins : STP2_DIR_Pin STP2_EN_Pin */
+  GPIO_InitStruct.Pin = STP2_DIR_Pin|STP2_EN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : E_STOP_Pin STP1_FLT_Pin */
+  GPIO_InitStruct.Pin = E_STOP_Pin|STP1_FLT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : LVL_SFTR_OE_1_Pin */
-  GPIO_InitStruct.Pin = LVL_SFTR_OE_1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LVL_SFTR_OE_1_GPIO_Port, &GPIO_InitStruct);
-
+/* USER CODE BEGIN MX_GPIO_Init_2 */
+/* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
@@ -588,7 +583,7 @@ void default_task(void *argument)
 
 /**
   * @brief  Period elapsed callback in non blocking mode
-  * @note   This function is called  when TIM6 interrupt took place, inside
+  * @note   This function is called  when TIM16 interrupt took place, inside
   * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
   * a global variable "uwTick" used as application time base.
   * @param  htim : TIM handle
@@ -599,7 +594,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 
   /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM6) {
+  if (htim->Instance == TIM16) {
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */

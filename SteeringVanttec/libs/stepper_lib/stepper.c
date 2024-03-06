@@ -1,6 +1,6 @@
 #include "stepper.h"
-#include <math.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 HAL_StatusTypeDef configure_stepper_timer_channel(Stepper *stepper,
                                                   TIM_HandleTypeDef *timer,
@@ -14,7 +14,7 @@ HAL_StatusTypeDef configure_stepper_timer_channel(Stepper *stepper,
   configOC.OCMode = TIM_OCMODE_PWM1;
   configOC.Pulse = stepper->config.pulse_length - 1;
   configOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  config.OCFastMode = TIM_OCFAST_ENABLE;
+  configOC.OCFastMode = TIM_OCFAST_ENABLE;
 
   if (HAL_TIM_PWM_ConfigChannel(timer, &configOC, timer_channel) != HAL_OK) {
     return HAL_ERROR;
@@ -41,7 +41,7 @@ HAL_StatusTypeDef stepper_initialize(Stepper *stepper,
 
   if (stepper->config.enable_soft_limit) {
     if (initial_position > stepper->config.max_steps ||
-        intial_position < stepper->config.min_steps) {
+        initial_position < stepper->config.min_steps) {
       return HAL_ERROR;
     }
   }
@@ -51,10 +51,12 @@ HAL_StatusTypeDef stepper_initialize(Stepper *stepper,
   stepper_disable(stepper);
 
   // Set step variables to default.
-  stepper->steps_remaining = 0;
+  stepper->setpoint = stepper->position;
   stepper->direction = false;
 
-  if(configure_stepper_timer_channel(stepper->step_timer, step_timer_channel) == HAL_ERROR{
+  if (configure_stepper_timer_channel(stepper, stepper->config.step_timer,
+                                      stepper->config.step_timer_channel) ==
+      HAL_ERROR) {
     return HAL_ERROR;
   }
 }
@@ -75,8 +77,7 @@ HAL_TIM_ActiveChannel get_tim_active_channel(uint32_t channel) {
   }
 }
 
-void stepper_irq_callback(Stepper *stepper, TIM_HandleTypeDef *htim);
-{
+void stepper_irq_callback(Stepper *stepper, TIM_HandleTypeDef *htim) {
   // We assume that this has been called from stepper->step_timer interrupt.
   // We only need to check if interrupt has been fired for the correct channel.
 
@@ -118,7 +119,7 @@ void stepper_disable(Stepper *stepper) {
 
 void stepper_update(Stepper *stepper, int32_t encoder_step_value) {
   if (stepper->config.enable_encoder_correction) {
-    stepper->position = encoder_set_value;
+    stepper->position = encoder_step_value;
   }
 
   if (stepper_at_setpoint(stepper)) {
@@ -127,7 +128,7 @@ void stepper_update(Stepper *stepper, int32_t encoder_step_value) {
   }
 
   // We need to move stepper, set and determine direction pin.
-  if (position - setpoint < 0) {
+  if (stepper->position - stepper->setpoint < 0) {
     HAL_GPIO_WritePin(stepper->config.direction_port,
                       stepper->config.direction_pin,
                       stepper->config.invert ? GPIO_PIN_SET : GPIO_PIN_RESET);
