@@ -27,6 +27,7 @@
 #include "vanttec_canlib_tx_task.h"
 #include "vanttec_canlib_rx_task.h"
 #include "vanttec_sdv_ids.h"
+#include "encoder_task.h"
 #include "stepper.h"
 /* USER CODE END Includes */
 
@@ -63,9 +64,18 @@ const osThreadAttr_t defaultTask_attributes = {
 };
 /* USER CODE BEGIN PV */
 Stepper steering_stepper;
+Stepper breaking_stepper;
+
 osThreadId_t test_stepper_task;
 const osThreadAttr_t test_stepper_task_attrs = {
-  .name = "defaultTask",
+  .name = "stepperTestTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal,
+};
+
+osThreadId_t encoder_task_handle;
+const osThreadAttr_t encoder_task_attrs = {
+  .name = "encoderTask",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityAboveNormal,
 };
@@ -138,12 +148,27 @@ int main(void)
   steering_stepper.config.direction_pin = STP1_DIR_Pin;
   steering_stepper.config.direction_port = STP1_DIR_GPIO_Port;
   steering_stepper.config.invert = false;
-  steering_stepper.config.enable_encoder_correction = false;
+  steering_stepper.config.enable_encoder_correction = true;
   steering_stepper.config.enable_soft_limit = false;
   __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC1);
   if(stepper_initialize(&steering_stepper, 0) != HAL_OK){
     Error_Handler();
   }
+
+  create_default_stepper_config(&breaking_stepper.config);
+  breaking_stepper.config.step_timer = &htim2;
+  breaking_stepper.config.step_timer_channel = TIM_CHANNEL_4;
+  breaking_stepper.config.enable_pin = STP2_EN_Pin;
+  breaking_stepper.config.enable_port = STP2_EN_GPIO_Port;
+  breaking_stepper.config.direction_pin = STP2_DIR_Pin;
+  breaking_stepper.config.direction_port = STP2_DIR_GPIO_Port;
+  breaking_stepper.config.invert = false;
+  breaking_stepper.config.enable_encoder_correction = false;
+  breaking_stepper.config.enable_soft_limit = false;
+  __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC4);
+  // if(stepper_initialize(&breaking_stepper, 0) != HAL_OK){
+  //   Error_Handler();
+  // }
 
   /* USER CODE END 2 */
 
@@ -172,6 +197,7 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
   test_stepper_task = osThreadNew(test_stepper, NULL, &test_stepper_task_attrs);
+  encoder_task_handle = osThreadNew(encoder_task, (void*) &hcan1, &encoder_task_attrs);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */

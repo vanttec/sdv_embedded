@@ -131,6 +131,7 @@ target_sources(
     "libs/vanttec_CANLib/src/Vanttec_CANLib/CANMessage.cpp"
     "libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANDeserialization.cpp"
     "libs/vanttec_CANLib/src/Vanttec_CANLib/Utils/CANSerialization.cpp"
+    "Core/Src/encoder_task.c"
     "Core/Src/FreeRTOS-openocd.c"
     "Core/Src/freertos.c"
     "Core/Src/main.c"
