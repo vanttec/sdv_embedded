@@ -27,6 +27,7 @@
 #include "vanttec_canlib_tx_task.h"
 #include "vanttec_canlib_rx_task.h"
 #include "vanttec_sdv_ids.h"
+#include "stepper.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,7 +62,13 @@ const osThreadAttr_t defaultTask_attributes = {
   .priority = (osPriority_t) osPriorityAboveNormal,
 };
 /* USER CODE BEGIN PV */
-
+Stepper steering_stepper;
+osThreadId_t test_stepper_task;
+const osThreadAttr_t test_stepper_task_attrs = {
+  .name = "defaultTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal,
+};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -75,7 +82,7 @@ static void MX_CAN1_Init(void);
 void default_task(void *argument);
 
 /* USER CODE BEGIN PFP */
-
+void test_stepper(void *argument);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -122,6 +129,22 @@ int main(void)
   init_canlib_rx();
   canlib_init_generic_tasks();
   init_requirements_task();
+
+  create_default_stepper_config(&steering_stepper.config);
+  steering_stepper.config.step_timer = &htim2;
+  steering_stepper.config.step_timer_channel = TIM_CHANNEL_1;
+  steering_stepper.config.enable_pin = STP1_EN_Pin;
+  steering_stepper.config.enable_port = STP1_EN_GPIO_Port;
+  steering_stepper.config.direction_pin = STP1_DIR_Pin;
+  steering_stepper.config.direction_port = STP1_DIR_GPIO_Port;
+  steering_stepper.config.invert = false;
+  steering_stepper.config.enable_encoder_correction = false;
+  steering_stepper.config.enable_soft_limit = false;
+  __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC1);
+  if(stepper_initialize(&steering_stepper, 0) != HAL_OK){
+    Error_Handler();
+  }
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -148,7 +171,7 @@ int main(void)
   defaultTaskHandle = osThreadNew(default_task, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
+  test_stepper_task = osThreadNew(test_stepper, NULL, &test_stepper_task_attrs);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -560,7 +583,13 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void test_stepper(void *args){
+  steering_stepper.setpoint = -20;
+  for(;;){
+    stepper_update(&steering_stepper, 0);
+    osDelay(1000);
+  }
+}
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_default_task */
@@ -600,6 +629,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 1 */
 
   /* USER CODE END Callback 1 */
+}
+
+void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
+  stepper_irq_callback(&steering_stepper, htim);
 }
 
 /**

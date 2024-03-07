@@ -135,6 +135,7 @@ target_sources(
     "Core/Src/freertos.c"
     "Core/Src/main.c"
     "Core/Src/requirements.c"
+    "Core/Src/stepper_task.c"
     "Core/Src/stm32l4xx_hal_msp.c"
     "Core/Src/stm32l4xx_hal_timebase_tim.c"
     "Core/Src/stm32l4xx_it.c"

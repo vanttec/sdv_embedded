@@ -1,6 +1,7 @@
 #include "stepper.h"
 #include <stdint.h>
 #include <stdlib.h>
+#include "cmsis_os.h"
 
 HAL_StatusTypeDef configure_stepper_timer_channel(Stepper *stepper,
                                                   TIM_HandleTypeDef *timer,
@@ -28,7 +29,8 @@ HAL_StatusTypeDef configure_stepper_timer_channel(Stepper *stepper,
 void create_default_stepper_config(StepperConfiguration *config) {
   // TODO Create sensible defaults.
   config->enable_soft_limit = false;
-  config->step_deadband = 10;
+  config->step_deadband = 0;
+  config->pulse_length = 1000;
 }
 
 HAL_StatusTypeDef stepper_initialize(Stepper *stepper,
@@ -118,6 +120,7 @@ void stepper_disable(Stepper *stepper) {
 }
 
 void stepper_update(Stepper *stepper, int32_t encoder_step_value) {
+  int32_t state = osKernelLock();
   if (stepper->config.enable_encoder_correction) {
     stepper->position = encoder_step_value;
   }
@@ -132,12 +135,15 @@ void stepper_update(Stepper *stepper, int32_t encoder_step_value) {
     HAL_GPIO_WritePin(stepper->config.direction_port,
                       stepper->config.direction_pin,
                       stepper->config.invert ? GPIO_PIN_SET : GPIO_PIN_RESET);
+    stepper->direction = true;
   } else {
     HAL_GPIO_WritePin(stepper->config.direction_port,
                       stepper->config.direction_pin,
                       stepper->config.invert ? GPIO_PIN_RESET : GPIO_PIN_SET);
+    stepper->direction = false;
   }
 
   HAL_TIM_PWM_Start(stepper->config.step_timer,
                     stepper->config.step_timer_channel);
+  osKernelRestoreLock(state);
 }
