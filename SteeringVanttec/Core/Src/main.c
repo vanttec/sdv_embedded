@@ -28,6 +28,7 @@
 #include "vanttec_canlib_rx_task.h"
 #include "vanttec_sdv_ids.h"
 #include "encoder_task.h"
+#include "stepper_task.h"
 #include "stepper.h"
 /* USER CODE END Includes */
 
@@ -66,9 +67,16 @@ const osThreadAttr_t defaultTask_attributes = {
 Stepper steering_stepper;
 Stepper breaking_stepper;
 
-osThreadId_t test_stepper_task;
-const osThreadAttr_t test_stepper_task_attrs = {
-  .name = "stepperTestTask",
+osThreadId_t steering_stepper_task;
+const osThreadAttr_t steering_stepper_task_attrs = {
+  .name = "steeringStepperTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal,
+};
+
+osThreadId_t breaking_stepper_task;
+const osThreadAttr_t breaking_stepper_task_attrs = {
+  .name = "breakingStepperTask",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityAboveNormal,
 };
@@ -92,7 +100,6 @@ static void MX_CAN1_Init(void);
 void default_task(void *argument);
 
 /* USER CODE BEGIN PFP */
-void test_stepper(void *argument);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -137,8 +144,8 @@ int main(void)
   init_canlib(hcan1, VANTTEC_CAN_ID_STEPPER_TX);
   init_canlib_tx();
   init_canlib_rx();
+  encoder_setup_can(&hcan1);
   canlib_init_generic_tasks();
-  init_requirements_task();
 
   create_default_stepper_config(&steering_stepper.config);
   steering_stepper.config.step_timer = &htim2;
@@ -196,8 +203,21 @@ int main(void)
   defaultTaskHandle = osThreadNew(default_task, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  test_stepper_task = osThreadNew(test_stepper, NULL, &test_stepper_task_attrs);
   encoder_task_handle = osThreadNew(encoder_task, (void*) &hcan1, &encoder_task_attrs);
+  
+  stepper_task_attrs steering_stepper_attrs;
+  steering_stepper_attrs.stepper_id = 0;
+  steering_stepper_attrs.stepper = &steering_stepper;
+  steering_stepper_attrs.encoder_value = &g_ifm_encoder_position;
+  steering_stepper_attrs.encoder_tick_value = &g_ifm_encoder_tick_last_update;
+  steering_stepper_task = osThreadNew(stepper_task, &steering_stepper_attrs, &steering_stepper_task_attrs);
+
+  stepper_task_attrs breaking_stepper_attrs;
+  breaking_stepper_attrs.stepper_id = 1;
+  breaking_stepper_attrs.stepper = &steering_stepper;
+  breaking_stepper_attrs.encoder_value = &g_briter_encoder_position;
+    steering_stepper_attrs.encoder_tick_value = &g_briter_encoder_tick_last_update;
+  //breaking_stepper_task = osThreadNew(stepper_task, &breaking_stepper_attrs, &breaking_stepper_task_attrs);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -609,13 +629,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void test_stepper(void *args){
-  steering_stepper.setpoint = -20;
-  for(;;){
-    stepper_update(&steering_stepper, 0);
-    osDelay(1000);
-  }
-}
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_default_task */

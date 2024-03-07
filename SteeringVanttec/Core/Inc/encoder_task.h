@@ -9,3 +9,8 @@ HAL_StatusTypeDef encoder_initialize_op_mode(CAN_HandleTypeDef *hcan);
 HAL_StatusTypeDef encoder_initialize_briter(CAN_HandleTypeDef *hcan);
 
 void encoder_task(void *attrs_hcan);
+
+extern float g_ifm_encoder_position;
+extern float g_briter_encoder_position;
+extern uint32_t g_ifm_encoder_tick_last_update;
+extern uint32_t g_briter_encoder_tick_last_update;

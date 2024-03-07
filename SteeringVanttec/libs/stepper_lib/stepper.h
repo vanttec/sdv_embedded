@@ -36,17 +36,25 @@ typedef struct {
   GPIO_TypeDef *enable_port;
   uint16_t enable_pin;
 
+  GPIO_TypeDef *fault_port;
+  uint16_t fault_pin;
+
   GPIO_TypeDef *direction_port;
   uint16_t direction_pin;
   bool invert;
 
   // For now, we only support a fixed pulse length.
   uint32_t pulse_length;
+
+  float degs_per_step;
+  float gear_reduction;
 } StepperConfiguration;
 
 typedef struct {
   bool enabled;
+  bool has_fault;
 
+  float mechanisim_angle;
   int32_t position;
   int32_t setpoint;
 
@@ -66,12 +74,21 @@ void stepper_disable(Stepper *stepper);
 
 // Must be called in a task, this handles timers, updating from encoder values
 // (if enabled). Setpoint must be given on update.
-void stepper_update(Stepper *stepper, int32_t encoder_step_value);
+void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick_time);
 
 bool stepper_at_setpoint(Stepper *stepper);
 
 // This must be called from HAL_TIM_PWM_PulseFinishedCallback such that we can
 // determine if stepper should be pulsed.
 void stepper_irq_callback(Stepper *stepper, TIM_HandleTypeDef *htim);
+
+// Angle is defined in radians. 
+// Degs per step is defined in degrees, as this is the commonly used unit in stepper datasheets.
+// Gear reduction should be writen in motor turns/mechanisim turns.
+// Eg: in case of a reduction, value should be larger than 1.
+int32_t mechanisim_angle_to_steps(float gear_reduction, float degs_per_step, float rads);
+
+// Angle is returned in radians.
+float steps_to_mechanisim_angle(float gear_reduction, float degs_per_step, int32_t stepper_steps);
 
 #endif /* INC_STEPPER_H */

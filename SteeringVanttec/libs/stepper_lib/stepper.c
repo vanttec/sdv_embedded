@@ -1,7 +1,11 @@
 #include "stepper.h"
 #include <stdint.h>
 #include <stdlib.h>
+#include <math.h>
 #include "cmsis_os.h"
+
+// If we have not received a new encoder value within ms, disable stepper and trigger fault
+#define STEPPER_ENCODER_TIME_TOLERANCE 1000
 
 HAL_StatusTypeDef configure_stepper_timer_channel(Stepper *stepper,
                                                   TIM_HandleTypeDef *timer,
@@ -55,6 +59,8 @@ HAL_StatusTypeDef stepper_initialize(Stepper *stepper,
   // Set step variables to default.
   stepper->setpoint = stepper->position;
   stepper->direction = false;
+
+  stepper->has_fault = false;
 
   if (configure_stepper_timer_channel(stepper, stepper->config.step_timer,
                                       stepper->config.step_timer_channel) ==
@@ -110,6 +116,10 @@ bool stepper_at_setpoint(Stepper *stepper) {
 }
 
 void stepper_enable(Stepper *stepper) {
+  if(stepper->has_fault){
+    // Do not enable stepper if we have a fault.
+    return;
+  }
   HAL_GPIO_WritePin(stepper->config.enable_port, stepper->config.enable_pin,
                     GPIO_PIN_SET);
 }
@@ -119,11 +129,27 @@ void stepper_disable(Stepper *stepper) {
                     GPIO_PIN_RESET);
 }
 
-void stepper_update(Stepper *stepper, int32_t encoder_step_value) {
+void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick_time) {
   int32_t state = osKernelLock();
   if (stepper->config.enable_encoder_correction) {
-    stepper->position = encoder_step_value;
+    if(HAL_GetTick() - encoder_tick_time > STEPPER_ENCODER_TIME_TOLERANCE){
+      // We have not received encoder value, disable stepper.
+      stepper_disable(stepper);
+      stepper->has_fault = true;
+      return;
+    }
+
+    stepper->position = mechanisim_angle_to_steps(stepper->config.gear_reduction, stepper->config.degs_per_step, encoder_value);
   }
+
+  GPIO_PinState fault_status = HAL_GPIO_ReadPin(stepper->config.fault_port, stepper->config.fault_pin);
+  stepper->has_fault = fault_status == GPIO_PIN_SET;
+
+  // TODO: should we disable stepper if we detected fault from motor controller?
+
+  // Calculate mechanisim positions.
+  stepper->mechanisim_angle = 
+        steps_to_mechanisim_angle(stepper->config.gear_reduction, stepper->config.degs_per_step, stepper->position);
 
   if (stepper_at_setpoint(stepper)) {
     // Stepper is already at setpoint, nothing to do here.
@@ -146,4 +172,17 @@ void stepper_update(Stepper *stepper, int32_t encoder_step_value) {
   HAL_TIM_PWM_Start(stepper->config.step_timer,
                     stepper->config.step_timer_channel);
   osKernelRestoreLock(state);
+}
+
+#define MECHANISIM_DEGS_TO_RAD (M_PI / 180.0f)
+int32_t mechanisim_angle_to_steps(float gear_reduction, float degs_per_step, float rads){
+  const float rads_per_step = degs_per_step * MECHANISIM_DEGS_TO_RAD;
+
+  return (rads * gear_reduction) / rads_per_step;
+}
+
+float steps_to_mechanisim_angle(float gear_reduction, float degs_per_step, int32_t stepper_steps){
+  const float rads_per_step = degs_per_step * MECHANISIM_DEGS_TO_RAD;
+
+  return ((float) stepper_steps * rads_per_step) / gear_reduction;
 }

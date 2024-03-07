@@ -14,8 +14,8 @@ uint32_t ifm_encoder_raw = 0;
 uint32_t briter_encoder_raw = 0;
 
 // When we got last encoder value.
-uint32_t ifm_encoder_tick_time = 0;
-uint32_t briter_encoder_tick_time = 0;
+uint32_t g_ifm_encoder_tick_last_update = 0;
+uint32_t g_briter_encoder_tick_last_update = 0;
 
 // Encoder position in turns
 float g_ifm_encoder_position = 0;
@@ -122,7 +122,7 @@ void encoder_task(void *attrs_hcan){
 
 				memcpy(&ifm_encoder_raw, buf, 4);
 				g_ifm_encoder_position = (float) ifm_encoder_raw / 4096.0f;
-				ifm_encoder_tick_time = 0;
+				g_ifm_encoder_tick_last_update = HAL_GetTick();
 			} else if(header.StdId == BRITER_CAN_ID){
 				// Briter encoder message.
 				// We have to parse an annoying data frame where -> [size, device id, data id, data(1..4)]
@@ -133,7 +133,7 @@ void encoder_task(void *attrs_hcan){
 					uint32_t encoder_position;
 					memcpy(&encoder_position, buf + 3, 4);
 					briter_encoder_raw = __builtin_bswap32(encoder_position);
-					briter_encoder_tick_time = 0;
+					g_briter_encoder_tick_last_update = HAL_GetTick();
 
 					// TODO Parse raw pulses into turns.
 				}
