@@ -157,13 +157,13 @@ int main(void)
   steering_stepper.config.enable_port = STP1_EN_GPIO_Port;
   steering_stepper.config.direction_pin = STP1_DIR_Pin;
   steering_stepper.config.direction_port = STP1_DIR_GPIO_Port;
-  steering_stepper.config.invert = false;
+  steering_stepper.config.invert = true;
   steering_stepper.config.enable_encoder_correction = true;
   steering_stepper.config.enable_soft_limit = false;
   steering_stepper.config.gear_reduction = 44.0f/16.0f;
   steering_stepper.config.degs_per_step = 1.8f;
-  steering_stepper.config.step_deadband = 100;
-  steering_stepper.config.pulse_length = 1500;
+  steering_stepper.config.step_deadband = 10;
+  steering_stepper.config.pulse_length = 100;
   steering_stepper.config.enable_soft_limit = true;
   steering_stepper.config.max_angle = 6;
   steering_stepper.config.min_angle = -6;
@@ -655,7 +655,12 @@ void default_task(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1000);
+    osDelay(5000);
+    steering_stepper.setpoint = mechanisim_angle_to_steps(steering_stepper.config.gear_reduction, steering_stepper.config.degs_per_step, 3);
+    osDelay(5000);
+    steering_stepper.setpoint = mechanisim_angle_to_steps(steering_stepper.config.gear_reduction, steering_stepper.config.degs_per_step, 0);
+    osDelay(5000);
+    steering_stepper.setpoint = mechanisim_angle_to_steps(steering_stepper.config.gear_reduction, steering_stepper.config.degs_per_step, -3);
   }
   /* USER CODE END 5 */
 }

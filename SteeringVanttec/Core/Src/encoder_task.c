@@ -51,16 +51,22 @@ HAL_StatusTypeDef encoder_setup_can(CAN_HandleTypeDef *hcan) {
 HAL_StatusTypeDef encoder_initialize_op_mode(CAN_HandleTypeDef *hcan){
 	// TODO Should we send configuration data on boot?
 	static const uint8_t initialization_data[] = {0x01, 0x00};
+	HAL_StatusTypeDef ret;
+	uint32_t mailbox;
 
 	CAN_TxHeaderTypeDef header;
 	header.IDE = CAN_ID_STD;
-	header.StdId = 0x00;
 	header.RTR = CAN_RTR_DATA;
+
+	header.StdId = 0x620;
+	header.DLC = 8;
+	static const uint8_t set_midpoint[] = {0x23, 0x03, 0x60, 0x00, 0x00, 0x00, 0x00, 0x80};
+	
+	// ret = HAL_CAN_AddTxMessage(hcan, &header, set_midpoint, &mailbox);
+
+	header.StdId = 0x00;
 	header.DLC = 2;
-
-	uint32_t mailbox;
-	HAL_StatusTypeDef ret = HAL_CAN_AddTxMessage(hcan, &header, initialization_data, &mailbox);
-
+	ret = HAL_CAN_AddTxMessage(hcan, &header, initialization_data, &mailbox);
 
 	return ret;
 }

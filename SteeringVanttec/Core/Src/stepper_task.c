@@ -10,6 +10,8 @@
 #define DEVICE_ID 0x10
 #define STEPPER_TASK_DELAY 20
 
+int32_t g_test_setpoint;
+
 void stepper_task(void *task_attrs){
     stepper_task_attrs attrs =  *((stepper_task_attrs*) task_attrs);
     
@@ -31,16 +33,17 @@ void stepper_task(void *task_attrs){
 
     for(;;){
         attrs.stepper->setpoint = mechanisim_angle_to_steps(attrs.stepper->config.gear_reduction, attrs.stepper->config.degs_per_step, *mechanisim_setpoint);
+        g_test_setpoint = attrs.stepper->setpoint;
 
         stepper_update(attrs.stepper, *(attrs.encoder_value), *(attrs.encoder_tick_value));
 
         if(attrs.stepper->has_fault){
             // TODO: Show stepper fault in LED.
-            // canlib_send_byte(base_msg_id | VANTTEC_CAN_ID_STEPPER_FAULT_ID, attrs.stepper->has_fault);
+            canlib_send_byte(base_msg_id | VANTTEC_CAN_ID_STEPPER_FAULT_ID, attrs.stepper->has_fault);
         }
 
-        // canlib_send_long(base_msg_id | VANTTEC_CAN_ID_STEPPER_RAW_POSITION_ID, attrs.stepper->position);
-        // canlib_send_float(base_msg_id | VANTTEC_CAN_ID_STEPPER_POSITION_ID, attrs.stepper->mechanisim_angle);
+        canlib_send_long(base_msg_id | VANTTEC_CAN_ID_STEPPER_RAW_POSITION_ID, attrs.stepper->position);
+        canlib_send_float(base_msg_id | VANTTEC_CAN_ID_STEPPER_POSITION_ID, attrs.stepper->mechanisim_angle);
 
         osDelay(STEPPER_TASK_DELAY);
     }
