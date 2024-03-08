@@ -66,6 +66,9 @@ const osThreadAttr_t defaultTask_attributes = {
 /* USER CODE BEGIN PV */
 Stepper steering_stepper;
 Stepper breaking_stepper;
+stepper_task_attrs steering_stepper_attrs;
+stepper_task_attrs breaking_stepper_attrs;
+
 
 osThreadId_t steering_stepper_task;
 const osThreadAttr_t steering_stepper_task_attrs = {
@@ -157,6 +160,13 @@ int main(void)
   steering_stepper.config.invert = false;
   steering_stepper.config.enable_encoder_correction = true;
   steering_stepper.config.enable_soft_limit = false;
+  steering_stepper.config.gear_reduction = 44.0f/16.0f;
+  steering_stepper.config.degs_per_step = 1.8f;
+  steering_stepper.config.step_deadband = 100;
+  steering_stepper.config.pulse_length = 1500;
+  steering_stepper.config.enable_soft_limit = true;
+  steering_stepper.config.max_angle = 6;
+  steering_stepper.config.min_angle = -6;
   __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC1);
   if(stepper_initialize(&steering_stepper, 0) != HAL_OK){
     Error_Handler();
@@ -172,7 +182,7 @@ int main(void)
   breaking_stepper.config.invert = false;
   breaking_stepper.config.enable_encoder_correction = false;
   breaking_stepper.config.enable_soft_limit = false;
-  __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC4);
+  //__HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC4);
   // if(stepper_initialize(&breaking_stepper, 0) != HAL_OK){
   //   Error_Handler();
   // }
@@ -205,18 +215,16 @@ int main(void)
   /* USER CODE BEGIN RTOS_THREADS */
   encoder_task_handle = osThreadNew(encoder_task, (void*) &hcan1, &encoder_task_attrs);
   
-  stepper_task_attrs steering_stepper_attrs;
   steering_stepper_attrs.stepper_id = 0;
   steering_stepper_attrs.stepper = &steering_stepper;
   steering_stepper_attrs.encoder_value = &g_ifm_encoder_position;
   steering_stepper_attrs.encoder_tick_value = &g_ifm_encoder_tick_last_update;
   steering_stepper_task = osThreadNew(stepper_task, &steering_stepper_attrs, &steering_stepper_task_attrs);
 
-  stepper_task_attrs breaking_stepper_attrs;
   breaking_stepper_attrs.stepper_id = 1;
   breaking_stepper_attrs.stepper = &steering_stepper;
   breaking_stepper_attrs.encoder_value = &g_briter_encoder_position;
-    steering_stepper_attrs.encoder_tick_value = &g_briter_encoder_tick_last_update;
+  breaking_stepper_attrs.encoder_tick_value = &g_briter_encoder_tick_last_update;
   //breaking_stepper_task = osThreadNew(stepper_task, &breaking_stepper_attrs, &breaking_stepper_task_attrs);
   /* USER CODE END RTOS_THREADS */
 
@@ -629,6 +637,9 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
+  stepper_irq_callback(&steering_stepper, htim);
+}
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_default_task */
@@ -644,7 +655,7 @@ void default_task(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(1000);
   }
   /* USER CODE END 5 */
 }
@@ -668,10 +679,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 1 */
 
   /* USER CODE END Callback 1 */
-}
-
-void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
-  stepper_irq_callback(&steering_stepper, htim);
 }
 
 /**

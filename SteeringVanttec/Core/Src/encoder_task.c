@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <cmsis_os.h>
 #include <string.h>
+#include <math.h>
 
 #define IFM_NODE_ID 0x20
 #define BRITER_CAN_ID 0x13
@@ -10,7 +11,7 @@
 #define BRITER_RETURN_TIME_UPPER_BYTE ((BRITER_RETURN_TIME_MICROSECONDS & 0xff00) >> 16)
 
 // Temporary global variable to simplify debugging
-uint32_t ifm_encoder_raw = 0;
+int32_t ifm_encoder_raw = 0;
 uint32_t briter_encoder_raw = 0;
 
 // When we got last encoder value.
@@ -31,17 +32,17 @@ HAL_StatusTypeDef encoder_setup_can(CAN_HandleTypeDef *hcan) {
     CAN_FilterTypeDef filter;
 	filter.FilterBank = 0;
 	filter.FilterMode = CAN_FILTERMODE_IDLIST;
-	filter.FilterScale = CAN_FILTERSCALE_32BIT;
+	filter.FilterScale = CAN_FILTERSCALE_16BIT;
 	filter.FilterFIFOAssignment = CAN_RX_FIFO1;
 	filter.FilterActivation = CAN_FILTER_ENABLE;
     // First ID in list.
-	filter.FilterIdHigh = 0;
-	filter.FilterIdLow = 0x01A0; // IFM
+	filter.FilterIdLow = 0;
+	filter.FilterIdHigh = 0x01A0 << 5; // IFM
 
     // Mask is now second ID.
-	filter.FilterMaskIdHigh = 0;
-	filter.FilterMaskIdLow = 0x0013; // BRITER
-	
+	filter.FilterMaskIdLow = 0;
+	filter.FilterMaskIdHigh = 0x0013 << 5; // BRITER
+
 	HAL_StatusTypeDef ret = HAL_CAN_ConfigFilter(hcan, &filter);
 	return ret;
 }
@@ -53,7 +54,7 @@ HAL_StatusTypeDef encoder_initialize_op_mode(CAN_HandleTypeDef *hcan){
 
 	CAN_TxHeaderTypeDef header;
 	header.IDE = CAN_ID_STD;
-	header.StdId = BRITER_CAN_ID;
+	header.StdId = 0x00;
 	header.RTR = CAN_RTR_DATA;
 	header.DLC = 2;
 
@@ -86,7 +87,7 @@ HAL_StatusTypeDef encoder_initialize_briter(CAN_HandleTypeDef *hcan){
 
 	// Set return time.
 	static uint8_t return_time[] = {0x05, BRITER_CAN_ID, 0x05, BRITER_RETURN_TIME_LOWER_BYTE, BRITER_RETURN_TIME_UPPER_BYTE};
-	header.DLC = 4;
+	header.DLC = 5;
 	ret = HAL_CAN_AddTxMessage(hcan, &header, return_time, &mailbox);
 
 	// TODO We should probably check for encoder response
@@ -121,7 +122,8 @@ void encoder_task(void *attrs_hcan){
 				}
 
 				memcpy(&ifm_encoder_raw, buf, 4);
-				g_ifm_encoder_position = (float) ifm_encoder_raw / 4096.0f;
+				ifm_encoder_raw -= 0x800000;
+				g_ifm_encoder_position = ((float) ifm_encoder_raw / 4096.0f) * 2.0 * M_PI;
 				g_ifm_encoder_tick_last_update = HAL_GetTick();
 			} else if(header.StdId == BRITER_CAN_ID){
 				// Briter encoder message.

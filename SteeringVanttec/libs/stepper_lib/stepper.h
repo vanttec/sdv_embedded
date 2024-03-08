@@ -24,8 +24,8 @@ typedef struct {
 
   // Once limit has been reached, motor will stop moving.
   // Setpoints that exceed step count, will be clamped.
-  int32_t max_steps;
-  int32_t min_steps;
+  float max_angle;
+  float min_angle;
 
   // If error is within tolerance, stepper will not move.
   int32_t step_deadband;

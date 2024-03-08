@@ -45,13 +45,6 @@ HAL_StatusTypeDef stepper_initialize(Stepper *stepper,
 
   stepper->enabled = false;
 
-  if (stepper->config.enable_soft_limit) {
-    if (initial_position > stepper->config.max_steps ||
-        initial_position < stepper->config.min_steps) {
-      return HAL_ERROR;
-    }
-  }
-
   stepper->position = initial_position;
 
   stepper_disable(stepper);
@@ -130,7 +123,7 @@ void stepper_disable(Stepper *stepper) {
 }
 
 void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick_time) {
-  int32_t state = osKernelLock();
+  //int32_t state = osKernelLock();
   if (stepper->config.enable_encoder_correction) {
     if(HAL_GetTick() - encoder_tick_time > STEPPER_ENCODER_TIME_TOLERANCE){
       // We have not received encoder value, disable stepper.
@@ -169,9 +162,24 @@ void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick
     stepper->direction = false;
   }
 
-  HAL_TIM_PWM_Start(stepper->config.step_timer,
+  if(stepper->config.enable_soft_limit){
+    // Prevent movement only in one direction.
+    if(stepper->mechanisim_angle > stepper->config.max_angle && stepper->direction){
+      HAL_TIM_PWM_Stop_IT(stepper->config.step_timer,
+                        stepper->config.step_timer_channel);
+      return;
+    }
+
+    if(stepper->mechanisim_angle < stepper->config.min_angle && !stepper->direction){
+      HAL_TIM_PWM_Stop_IT(stepper->config.step_timer,
+                        stepper->config.step_timer_channel);
+      return;
+    }
+  }
+
+  HAL_TIM_PWM_Start_IT(stepper->config.step_timer,
                     stepper->config.step_timer_channel);
-  osKernelRestoreLock(state);
+  //osKernelRestoreLock(state);
 }
 
 #define MECHANISIM_DEGS_TO_RAD (M_PI / 180.0f)
