@@ -30,7 +30,7 @@ void encoder_error_handler(){
 
 HAL_StatusTypeDef encoder_setup_can(CAN_HandleTypeDef *hcan) {
     CAN_FilterTypeDef filter;
-	filter.FilterBank = 0;
+	filter.FilterBank = 2;
 	filter.FilterMode = CAN_FILTERMODE_IDLIST;
 	filter.FilterScale = CAN_FILTERSCALE_16BIT;
 	filter.FilterFIFOAssignment = CAN_RX_FIFO1;

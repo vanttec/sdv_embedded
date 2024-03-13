@@ -30,6 +30,7 @@
 #include "encoder_task.h"
 #include "stepper_task.h"
 #include "stepper.h"
+#include "math.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -157,16 +158,16 @@ int main(void)
   steering_stepper.config.enable_port = STP1_EN_GPIO_Port;
   steering_stepper.config.direction_pin = STP1_DIR_Pin;
   steering_stepper.config.direction_port = STP1_DIR_GPIO_Port;
-  steering_stepper.config.invert = true;
+  steering_stepper.config.invert = false;
   steering_stepper.config.enable_encoder_correction = true;
   steering_stepper.config.enable_soft_limit = false;
   steering_stepper.config.gear_reduction = 44.0f/16.0f;
   steering_stepper.config.degs_per_step = 1.8f;
   steering_stepper.config.step_deadband = 10;
   steering_stepper.config.pulse_length = 100;
-  steering_stepper.config.enable_soft_limit = true;
-  steering_stepper.config.max_angle = 6;
-  steering_stepper.config.min_angle = -6;
+  steering_stepper.config.enable_soft_limit = false; //todo softlimit broken
+  steering_stepper.config.max_angle = (M_PI * 2) * 3;
+  steering_stepper.config.min_angle = (M_PI * 2) * 3;
   __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC1);
   if(stepper_initialize(&steering_stepper, 0) != HAL_OK){
     Error_Handler();

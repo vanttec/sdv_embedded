@@ -24,11 +24,15 @@ void stepper_task(void *task_attrs){
     uint8_t base_msg_id = (attrs.stepper_id & 0b11) << 6;
 
     //0xI0, enable
-    register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_ENABLE_ID, VANTTEC_CANLIB_BYTE, &(attrs.stepper->enabled), 1);
+    // register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_ENABLE_ID, VANTTEC_CANLIB_BYTE, &(attrs.stepper->enabled), 1);
 
     // 0xI1, setpoint
     float* mechanisim_setpoint = malloc(sizeof(float));
     *mechanisim_setpoint = 0.0f;
+
+    int32_t* test_setpoint = malloc(sizeof(int32_t));
+    *test_setpoint = 0;
+    //register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_SETPOINT_ID, VANTTEC_CANLIB_LONG, test_setpoint, 4);
     register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_SETPOINT_ID, VANTTEC_CANLIB_FLOAT, mechanisim_setpoint, 4);
 
     for(;;){

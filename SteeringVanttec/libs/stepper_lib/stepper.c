@@ -164,13 +164,13 @@ void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick
 
   if(stepper->config.enable_soft_limit){
     // Prevent movement only in one direction.
-    if(stepper->mechanisim_angle > stepper->config.max_angle && stepper->direction){
+    if(stepper->mechanisim_angle > stepper->config.max_angle && !stepper->direction){
       HAL_TIM_PWM_Stop_IT(stepper->config.step_timer,
                         stepper->config.step_timer_channel);
       return;
     }
 
-    if(stepper->mechanisim_angle < stepper->config.min_angle && !stepper->direction){
+    if(stepper->mechanisim_angle < stepper->config.min_angle && stepper->direction){
       HAL_TIM_PWM_Stop_IT(stepper->config.step_timer,
                         stepper->config.step_timer_channel);
       return;
