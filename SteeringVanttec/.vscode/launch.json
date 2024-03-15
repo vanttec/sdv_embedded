@@ -12,10 +12,10 @@
             "request": "launch",
             "type": "cortex-debug",
             "runToEntryPoint": "main",
-            "servertype": "jlink",
+            "servertype": "stlink",
             "device": "stm32l431rc",
             "preLaunchTask": "Build",
-            "svdPath": "${command:vscode-embedded.st.svd}/STM32L4x1.svd",
+            //"svdPath": "${command:vscode-embedded.st.svd}/STM32L4x1.svd",
             "liveWatch": {
                 "enabled": true,
                 "samplesPerSecond": 4
