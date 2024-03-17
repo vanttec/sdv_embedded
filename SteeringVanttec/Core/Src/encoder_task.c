@@ -30,18 +30,18 @@ void encoder_error_handler(){
 
 HAL_StatusTypeDef encoder_setup_can(CAN_HandleTypeDef *hcan) {
     CAN_FilterTypeDef filter;
-	filter.FilterBank = 2;
-	filter.FilterMode = CAN_FILTERMODE_IDLIST;
-	filter.FilterScale = CAN_FILTERSCALE_16BIT;
-	filter.FilterFIFOAssignment = CAN_RX_FIFO1;
-	filter.FilterActivation = CAN_FILTER_ENABLE;
-    // First ID in list.
-	filter.FilterIdLow = 0;
-	filter.FilterIdHigh = 0x01A0 << 5; // IFM
+	// filter.FilterBank = 2;
+	// filter.FilterMode = CAN_FILTERMODE_IDLIST;
+	// filter.FilterScale = CAN_FILTERSCALE_16BIT;
+	// filter.FilterFIFOAssignment = CAN_RX_FIFO1;
+	// filter.FilterActivation = CAN_FILTER_ENABLE;
+    // // First ID in list.
+	// filter.FilterIdLow = 0;
+	// filter.FilterIdHigh = 0x01A0 << 5; // IFM
 
-    // Mask is now second ID.
-	filter.FilterMaskIdLow = 0;
-	filter.FilterMaskIdHigh = 0x0013 << 5; // BRITER
+    // // Mask is now second ID.
+	// filter.FilterMaskIdLow = 0;
+	// filter.FilterMaskIdHigh = 0x0013 << 5; // BRITER
 
 	HAL_StatusTypeDef ret = HAL_CAN_ConfigFilter(hcan, &filter);
 	return ret;
@@ -129,7 +129,7 @@ void encoder_task(void *attrs_hcan){
 
 				memcpy(&ifm_encoder_raw, buf, 4);
 				ifm_encoder_raw -= 0x800000;
-				g_ifm_encoder_position = ((float) ifm_encoder_raw / 4096.0f) * 2.0 * M_PI;
+				g_ifm_encoder_position = ((float) ifm_encoder_raw / 4096.0f) * 2.0 * M_PI * -1;
 				g_ifm_encoder_tick_last_update = HAL_GetTick();
 			} else if(header.StdId == BRITER_CAN_ID){
 				// Briter encoder message.

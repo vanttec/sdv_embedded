@@ -67,7 +67,7 @@ const osThreadAttr_t defaultTask_attributes = {
 /* USER CODE BEGIN PV */
 Stepper steering_stepper;
 Stepper breaking_stepper;
-stepper_task_attrs steering_stepper_attrs;
+static stepper_task_attrs steering_stepper_attrs;
 stepper_task_attrs breaking_stepper_attrs;
 
 
@@ -166,8 +166,8 @@ int main(void)
   steering_stepper.config.step_deadband = 10;
   steering_stepper.config.pulse_length = 100;
   steering_stepper.config.enable_soft_limit = false; //todo softlimit broken
-  steering_stepper.config.max_angle = (M_PI * 2) * 3;
-  steering_stepper.config.min_angle = (M_PI * 2) * 3;
+  steering_stepper.config.max_angle = (M_PI * 2) * 1.52;
+  steering_stepper.config.min_angle = (M_PI * 2) * 1;
   __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC1);
   if(stepper_initialize(&steering_stepper, 0) != HAL_OK){
     Error_Handler();
@@ -656,12 +656,18 @@ void default_task(void *argument)
   /* Infinite loop */
   for(;;)
   {
+    HAL_GPIO_WritePin(DEBUG_2_GPIO_Port,DEBUG_2_Pin, 1);
+    HAL_GPIO_WritePin(DEBUG_3_GPIO_Port,DEBUG_3_Pin, 0);
+    steering_stepper.setpoint = mechanisim_angle_to_steps(steering_stepper.config.gear_reduction, steering_stepper.config.degs_per_step, 180);
     osDelay(5000);
-    steering_stepper.setpoint = mechanisim_angle_to_steps(steering_stepper.config.gear_reduction, steering_stepper.config.degs_per_step, 3);
-    osDelay(5000);
-    steering_stepper.setpoint = mechanisim_angle_to_steps(steering_stepper.config.gear_reduction, steering_stepper.config.degs_per_step, 0);
-    osDelay(5000);
-    steering_stepper.setpoint = mechanisim_angle_to_steps(steering_stepper.config.gear_reduction, steering_stepper.config.degs_per_step, -3);
+    // HAL_GPIO_WritePin(DEBUG_2_GPIO_Port,DEBUG_2_Pin, 0);
+    // HAL_GPIO_WritePin(DEBUG_3_GPIO_Port,DEBUG_3_Pin, 1);
+    // steering_stepper.setpoint = mechanisim_angle_to_steps(steering_stepper.config.gear_reduction, steering_stepper.config.degs_per_step, -3);
+    // osDelay(5000);
+    // HAL_GPIO_WritePin(DEBUG_2_GPIO_Port,DEBUG_2_Pin, 1);
+    // HAL_GPIO_WritePin(DEBUG_3_GPIO_Port,DEBUG_3_Pin, 1);
+    // steering_stepper.setpoint = mechanisim_angle_to_steps(steering_stepper.config.gear_reduction, steering_stepper.config.degs_per_step, 0);
+    // osDelay(5000);  
   }
   /* USER CODE END 5 */
 }

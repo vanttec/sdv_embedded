@@ -150,7 +150,7 @@ void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick
   }
 
   // We need to move stepper, set and determine direction pin.
-  if (stepper->position - stepper->setpoint < 0) {
+  if (stepper->position - stepper->setpoint > 0) {
     HAL_GPIO_WritePin(stepper->config.direction_port,
                       stepper->config.direction_pin,
                       stepper->config.invert ? GPIO_PIN_SET : GPIO_PIN_RESET);
