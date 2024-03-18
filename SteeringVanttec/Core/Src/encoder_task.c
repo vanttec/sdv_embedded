@@ -30,18 +30,17 @@ void encoder_error_handler(){
 
 HAL_StatusTypeDef encoder_setup_can(CAN_HandleTypeDef *hcan) {
     CAN_FilterTypeDef filter;
-	// filter.FilterBank = 2;
-	// filter.FilterMode = CAN_FILTERMODE_IDLIST;
-	// filter.FilterScale = CAN_FILTERSCALE_16BIT;
-	// filter.FilterFIFOAssignment = CAN_RX_FIFO1;
-	// filter.FilterActivation = CAN_FILTER_ENABLE;
-    // // First ID in list.
-	// filter.FilterIdLow = 0;
-	// filter.FilterIdHigh = 0x01A0 << 5; // IFM
+	filter.FilterBank = 2;
+	filter.FilterMode = CAN_FILTERMODE_IDLIST;
+	filter.FilterScale = CAN_FILTERSCALE_16BIT;
+	filter.FilterFIFOAssignment = CAN_RX_FIFO1;
+	filter.FilterActivation = CAN_FILTER_ENABLE;
 
-    // // Mask is now second ID.
-	// filter.FilterMaskIdLow = 0;
-	// filter.FilterMaskIdHigh = 0x0013 << 5; // BRITER
+	filter.FilterIdHigh = 0x0410 << 5u; // IFM
+	filter.FilterIdLow = 0x01A0 << 5u;
+
+	filter.FilterMaskIdLow = 0x0000;
+	filter.FilterMaskIdHigh = 0x0000;
 
 	HAL_StatusTypeDef ret = HAL_CAN_ConfigFilter(hcan, &filter);
 	return ret;

@@ -150,6 +150,7 @@ int main(void)
   init_canlib_rx();
   encoder_setup_can(&hcan1);
   canlib_init_generic_tasks();
+  init_requirements_task();
 
   create_default_stepper_config(&steering_stepper.config);
   steering_stepper.config.step_timer = &htim2;

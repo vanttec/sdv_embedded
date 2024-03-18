@@ -2,6 +2,8 @@
   "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
   "cmake.configureOnOpen": true,
   "files.associations": {
-    "vanttec_canlib_generic_ids.h": "c"
-  }
+    "vanttec_canlib_generic_ids.h": "c",
+    "vanttec_sdv_ids.h": "c"
+  },
+  "cortex-debug.variableUseNaturalFormat": false
 }

@@ -32,10 +32,17 @@ void stepper_task(void *task_attrs){
 
     int32_t* test_setpoint = malloc(sizeof(int32_t));
     *test_setpoint = 0;
-    //register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_SETPOINT_ID, VANTTEC_CANLIB_LONG, test_setpoint, 4);
     register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_SETPOINT_ID, VANTTEC_CANLIB_FLOAT, mechanisim_setpoint, 4);
 
+    uint8_t* drivemode = malloc(sizeof(uint8_t));
+    *drivemode = 0U;
+
+    register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_DRIVEMODE, VANTTEC_CANLIB_BYTE, drivemode, 1);
+
+    //register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_SETPOINT_ID, VANTTEC_CANLIB_FLOAT, mechanisim_setpoint, 4);
+
     for(;;){
+        //*mechanisim_setpoint = (float)(*test_setpoint);
         attrs.stepper->setpoint = mechanisim_angle_to_steps(attrs.stepper->config.gear_reduction, attrs.stepper->config.degs_per_step, *mechanisim_setpoint);
         g_test_setpoint = attrs.stepper->setpoint;
 
