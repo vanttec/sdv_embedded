@@ -23,6 +23,11 @@ void stepper_task(void *task_attrs){
     // 0xI2 -> fault status send
     uint8_t base_msg_id = (attrs.stepper_id & 0b11) << 6;
 
+    // [DEBUG]
+    // base_msg_id is used to address individual steppers
+    // if you want to address the board as a whole, dont use it
+    // for example, setting the mode vs. setting a setpoint 
+
     //0xI0, enable
     // register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_ENABLE_ID, VANTTEC_CANLIB_BYTE, &(attrs.stepper->enabled), 1);
 
@@ -37,18 +42,21 @@ void stepper_task(void *task_attrs){
     uint8_t* drivemode = malloc(sizeof(uint8_t));
     *drivemode = 0U;
 
-    register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_DRIVEMODE, VANTTEC_CANLIB_BYTE, drivemode, 1);
-
-    //register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_SETPOINT_ID, VANTTEC_CANLIB_FLOAT, mechanisim_setpoint, 4);
+    register_canlib_rx(DEVICE_ID, VANTTEC_CAN_ID_DRIVE_MODE, VANTTEC_CANLIB_BYTE, drivemode, 1);
 
     for(;;){
-        //*mechanisim_setpoint = (float)(*test_setpoint);
         attrs.stepper->setpoint = mechanisim_angle_to_steps(attrs.stepper->config.gear_reduction, attrs.stepper->config.degs_per_step, *mechanisim_setpoint);
         g_test_setpoint = attrs.stepper->setpoint;
 
+        if (drivemode == 0) { // [0] is manual mode
+            stepper_disable(attrs.stepper);
+        } else { // [1] is autonomous mode
+            stepper_enable(attrs.stepper);
+        }
+
         stepper_update(attrs.stepper, *(attrs.encoder_value), *(attrs.encoder_tick_value));
 
-        if(attrs.stepper->has_fault){
+        if (attrs.stepper->has_fault){
             // TODO: Show stepper fault in LED.
             canlib_send_byte(base_msg_id | VANTTEC_CAN_ID_STEPPER_FAULT_ID, attrs.stepper->has_fault);
         }
