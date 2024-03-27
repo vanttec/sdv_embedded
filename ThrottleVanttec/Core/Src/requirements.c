@@ -19,7 +19,7 @@ const osThreadAttr_t emergencystopTaskAttributes = {
 osThreadId_t hbTaskHandle;
 const osThreadAttr_t hbTaskAttributes = {
     .name = "canlib_hb",
-    .stack_size = 128 * 1};
+    .stack_size = 128 * 4};
 osThreadId_t drivemodeTaskHandle;
 const osThreadAttr_t drivemodeTaskAttributes = {
     .name = "drivemode",

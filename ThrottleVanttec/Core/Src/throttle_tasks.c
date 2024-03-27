@@ -13,19 +13,19 @@
 osThreadId_t potTaskHandle;
 const osThreadAttr_t potTaskAttributes = {
     .name = "pot",
-    .stack_size = 128 * 4};
+    .stack_size = 128 * 8};
 osThreadId_t motorTaskHandle;
 const osThreadAttr_t motorTaskAttributes = {
     .name = "motor",
-    .stack_size = 128 * 4};
+    .stack_size = 128 * 8};
 osThreadId_t modeTaskHandle;
 const osThreadAttr_t modeTaskAttributes = {
     .name = "mode",
-    .stack_size = 128 * 4};
+    .stack_size = 128 * 8};
 osThreadId_t brakeTaskHandle;
 const osThreadAttr_t brakeTaskAttributes = {
     .name = "brake",
-    .stack_size = 128 * 4};
+    .stack_size = 128 * 8};
 #define MAX_VELOCITY 180 //10km/h (255-35km/h)
 void pot_task(void *args)
 {
@@ -44,10 +44,11 @@ void pot_task(void *args)
             else if(pot_data==0){
             	pot_data=1;
             }
-            // Change potentiometer
-            writeWiper(pot_data);
+
             last_pot_data = pot_data;
         }
+        // Change potentiometer
+        writeWiper(pot_data);
         osDelay(10);
     }
 }
