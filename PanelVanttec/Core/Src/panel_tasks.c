@@ -597,6 +597,83 @@ void show_task(void *args)
 				show_data = 0x05;
 
 			}
+			else if (show_data == 0x12)
+			{
+				for (i = 0; i < 5; i++){
+					  for (j = 0; j <= 3; j++){
+							switch (j) {
+								case 1:
+									HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, 1);
+									break;
+								case 2:
+									HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, 1);
+									break;
+								case 3:
+									HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, 1);
+									break;
+								default:
+									HAL_GPIO_WritePin(L3D_GPIO_Port, L1D_Pin, 0);
+									HAL_GPIO_WritePin(L3D_GPIO_Port, L2D_Pin, 0);
+									HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, 0);
+									break;
+							}
+							HAL_Delay(200);
+					  }
+				  }
+
+				  for (i = 0; i < 5; i++){
+					  HAL_GPIO_TogglePin(L1D_GPIO_Port, L1D_Pin);
+					  HAL_Delay(200);
+					  HAL_GPIO_TogglePin(L1D_GPIO_Port, L1D_Pin);
+					  HAL_Delay(200);
+					  HAL_GPIO_TogglePin(L2D_GPIO_Port, L2D_Pin);
+					  HAL_Delay(200);
+					  HAL_GPIO_TogglePin(L2D_GPIO_Port, L2D_Pin);
+					  HAL_Delay(200);
+					  HAL_GPIO_TogglePin(L3D_GPIO_Port, L3D_Pin);
+					  HAL_Delay(200);
+					  HAL_GPIO_TogglePin(L3D_GPIO_Port, L3D_Pin);
+					  HAL_Delay(200);
+				  }
+
+				  for (i = 0; i <= 6; i++){
+					HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, 1);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, 1);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L3D_Pin, 1);
+					HAL_Delay(200);
+
+					HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, 0);
+					HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, 0);
+					HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, 0);
+					HAL_Delay(200);
+				  }
+
+				  for (i = 0; i < 5; i++){
+					  for (j = 0; j <= 3; j++){
+							switch (j) {
+								case 1:
+									HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, 1);
+									break;
+								case 2:
+									HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, 0);
+									HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, 1);
+									break;
+								case 3:
+									HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, 0);
+									HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, 0);
+									HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, 1);
+									break;
+								default:
+									HAL_GPIO_WritePin(L1D_GPIO_Port, L1D_Pin, 0);
+									HAL_GPIO_WritePin(L2D_GPIO_Port, L2D_Pin, 0);
+									HAL_GPIO_WritePin(L3D_GPIO_Port, L3D_Pin, 0);
+									break;
+							}
+							HAL_Delay(200);
+					  }
+				  }
+			  }
+		  }
 		osDelay(10);
 	}
 }
