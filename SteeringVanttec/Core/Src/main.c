@@ -656,6 +656,8 @@ void default_task(void *argument)
   /* Infinite loop */
   for(;;)
   {
+    canlib_send_byte(VANTTEC_CAN_ID_HB, 0x4444);
+    osDelay(500);
     // HAL_GPIO_WritePin(DEBUG_2_GPIO_Port,DEBUG_2_Pin, 1);
     // HAL_GPIO_WritePin(DEBUG_3_GPIO_Port,DEBUG_3_Pin, 0);
     // steering_stepper.setpoint = mechanisim_angle_to_steps(steering_stepper.config.gear_reduction, steering_stepper.config.degs_per_step, 180);
