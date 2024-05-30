@@ -12,7 +12,7 @@
             "request": "launch",
             "type": "cortex-debug",
             "runToEntryPoint": "main",
-            "servertype": "stlink",
+            "servertype": "stutil",
             "device": "stm32l431rc",
             "preLaunchTask": "Build",
             //"svdPath": "${command:vscode-embedded.st.svd}/STM32L4x1.svd",
