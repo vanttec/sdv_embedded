@@ -22,7 +22,7 @@ void hb_task(void *args)
     uint8_t data = 0;
     for (;;)
     {
-        canlib_send_byte(VANTTEC_CAN_ID_HB, data);
+        // canlib_send_byte(VANTTEC_CAN_ID_HB, data);
         HAL_GPIO_TogglePin(DEBUG_2_GPIO_Port,DEBUG_2_Pin);
         data++;
         osDelay(1000);

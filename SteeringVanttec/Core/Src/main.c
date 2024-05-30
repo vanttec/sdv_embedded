@@ -145,7 +145,9 @@ int main(void)
   MX_ADC1_Init();
   MX_CAN1_Init();
   /* USER CODE BEGIN 2 */
-  init_canlib(hcan1, VANTTEC_CAN_ID_STEPPER_TX);
+  int filters[] = {0x407, 0x410, 0x13};
+  int filters_size = sizeof(filters) / sizeof(filters[0]);
+  init_canlib(hcan1, VANTTEC_CAN_ID_STEPPER_TX, filters, filters_size);
   init_canlib_tx();
   init_canlib_rx();
   encoder_setup_can(&hcan1);
@@ -656,20 +658,8 @@ void default_task(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    canlib_send_byte(VANTTEC_CAN_ID_HB, 0x4444);
-    osDelay(500);
-    // HAL_GPIO_WritePin(DEBUG_2_GPIO_Port,DEBUG_2_Pin, 1);
-    // HAL_GPIO_WritePin(DEBUG_3_GPIO_Port,DEBUG_3_Pin, 0);
-    // steering_stepper.setpoint = mechanisim_angle_to_steps(steering_stepper.config.gear_reduction, steering_stepper.config.degs_per_step, 180);
-    // osDelay(5000);
-    // HAL_GPIO_WritePin(DEBUG_2_GPIO_Port,DEBUG_2_Pin, 0);
-    // HAL_GPIO_WritePin(DEBUG_3_GPIO_Port,DEBUG_3_Pin, 1);
-    // steering_stepper.setpoint = mechanisim_angle_to_steps(steering_stepper.config.gear_reduction, steering_stepper.config.degs_per_step, -3);
-    // osDelay(5000);
-    // HAL_GPIO_WritePin(DEBUG_2_GPIO_Port,DEBUG_2_Pin, 1);
-    // HAL_GPIO_WritePin(DEBUG_3_GPIO_Port,DEBUG_3_Pin, 1);
-    // steering_stepper.setpoint = mechanisim_angle_to_steps(steering_stepper.config.gear_reduction, steering_stepper.config.degs_per_step, 0);
-    // osDelay(5000);  
+    canlib_send_byte(VANTTEC_CAN_ID_HB, 0x444);
+    osDelay(5000);
   }
   /* USER CODE END 5 */
 }

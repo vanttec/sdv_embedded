@@ -48,9 +48,9 @@ void stepper_task(void *task_attrs){
         attrs.stepper->setpoint = mechanisim_angle_to_steps(attrs.stepper->config.gear_reduction, attrs.stepper->config.degs_per_step, *mechanisim_setpoint);
         g_test_setpoint = attrs.stepper->setpoint;
 
-        if (drivemode == 0) { // [0] is manual mode
+        if (*drivemode == 0) {      // [0] is manual mode
             stepper_disable(attrs.stepper);
-        } else { // [1] is autonomous mode
+        } else {                    // [1] is autonomous mode
             stepper_enable(attrs.stepper);
         }
 
@@ -58,11 +58,11 @@ void stepper_task(void *task_attrs){
 
         if (attrs.stepper->has_fault){
             // TODO: Show stepper fault in LED.
-            canlib_send_byte(base_msg_id | VANTTEC_CAN_ID_STEPPER_FAULT_ID, attrs.stepper->has_fault);
+            // canlib_send_byte(base_msg_id | VANTTEC_CAN_ID_STEPPER_FAULT_ID, attrs.stepper->has_fault);
         }
 
-        canlib_send_long(base_msg_id | VANTTEC_CAN_ID_STEPPER_RAW_POSITION_ID, attrs.stepper->position);
-        canlib_send_float(base_msg_id | VANTTEC_CAN_ID_STEPPER_POSITION_ID, attrs.stepper->mechanisim_angle);
+        // canlib_send_long(base_msg_id | VANTTEC_CAN_ID_STEPPER_RAW_POSITION_ID, attrs.stepper->position);
+        // canlib_send_float(base_msg_id | VANTTEC_CAN_ID_STEPPER_POSITION_ID, attrs.stepper->mechanisim_angle);
 
         osDelay(STEPPER_TASK_DELAY);
     }
