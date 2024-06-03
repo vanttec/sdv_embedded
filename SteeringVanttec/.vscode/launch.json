@@ -12,7 +12,11 @@
             "request": "launch",
             "type": "cortex-debug",
             "runToEntryPoint": "main",
-            "servertype": "stutil",
+            "servertype": "openocd",
+            "configFiles": [
+                "interface/stlink.cfg",
+                "target/stm32l4x.cfg"
+            ],
             "device": "stm32l431rc",
             "preLaunchTask": "Build",
             //"svdPath": "${command:vscode-embedded.st.svd}/STM32L4x1.svd",

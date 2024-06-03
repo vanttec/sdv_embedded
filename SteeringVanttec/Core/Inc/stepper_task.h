@@ -8,4 +8,5 @@ typedef struct {
     uint32_t *encoder_tick_value;
 } stepper_task_attrs;
 
-void stepper_task(void *task_attrs);
+void steering_stepper_task(void *task_attrs);
+void braking_stepper_task(void *task_attrs);

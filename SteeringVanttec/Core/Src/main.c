@@ -66,21 +66,21 @@ const osThreadAttr_t defaultTask_attributes = {
 };
 /* USER CODE BEGIN PV */
 Stepper steering_stepper;
-Stepper breaking_stepper;
+Stepper braking_stepper;
 static stepper_task_attrs steering_stepper_attrs;
-stepper_task_attrs breaking_stepper_attrs;
+static stepper_task_attrs braking_stepper_attrs;
 
 
-osThreadId_t steering_stepper_task;
+osThreadId_t steering_stepper_task_id;
 const osThreadAttr_t steering_stepper_task_attrs = {
   .name = "steeringStepperTask",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityAboveNormal,
 };
 
-osThreadId_t breaking_stepper_task;
-const osThreadAttr_t breaking_stepper_task_attrs = {
-  .name = "breakingStepperTask",
+osThreadId_t braking_stepper_task_id;
+const osThreadAttr_t braking_stepper_task_attrs = {
+  .name = "brakingStepperTask",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityAboveNormal,
 };
@@ -145,7 +145,7 @@ int main(void)
   MX_ADC1_Init();
   MX_CAN1_Init();
   /* USER CODE BEGIN 2 */
-  int filters[] = {0x407, 0x410, 0x13};
+  int filters[] = {0x01A0, 0x0410, 0x0013};
   int filters_size = sizeof(filters) / sizeof(filters[0]);
   init_canlib(hcan1, VANTTEC_CAN_ID_STEPPER_TX, filters, filters_size);
   init_canlib_tx();
@@ -175,20 +175,23 @@ int main(void)
     Error_Handler();
   }
 
-  create_default_stepper_config(&breaking_stepper.config);
-  breaking_stepper.config.step_timer = &htim2;
-  breaking_stepper.config.step_timer_channel = TIM_CHANNEL_4;
-  breaking_stepper.config.enable_pin = STP2_EN_Pin;
-  breaking_stepper.config.enable_port = STP2_EN_GPIO_Port;
-  breaking_stepper.config.direction_pin = STP2_DIR_Pin;
-  breaking_stepper.config.direction_port = STP2_DIR_GPIO_Port;
-  breaking_stepper.config.invert = false;
-  breaking_stepper.config.enable_encoder_correction = false;
-  breaking_stepper.config.enable_soft_limit = false;
-  //__HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC4);
-  // if(stepper_initialize(&breaking_stepper, 0) != HAL_OK){
-  //   Error_Handler();
-  // }
+  create_default_stepper_config(&braking_stepper.config);
+  braking_stepper.config.step_timer = &htim2;
+  braking_stepper.config.step_timer_channel = TIM_CHANNEL_4;
+  braking_stepper.config.enable_pin = STP2_EN_Pin;
+  braking_stepper.config.enable_port = STP2_EN_GPIO_Port;
+  braking_stepper.config.direction_pin = STP2_DIR_Pin;
+  braking_stepper.config.direction_port = STP2_DIR_GPIO_Port;
+  braking_stepper.config.invert = false;
+  braking_stepper.config.enable_encoder_correction = true;
+  braking_stepper.config.gear_reduction = 1.0f;
+  braking_stepper.config.degs_per_step = 1.8f;
+  braking_stepper.config.step_deadband = 1;
+  braking_stepper.config.enable_soft_limit = false;
+  __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC4);
+  if(stepper_initialize(&braking_stepper, 0) != HAL_OK){
+    Error_Handler();
+  }
 
   /* USER CODE END 2 */
 
@@ -222,13 +225,13 @@ int main(void)
   steering_stepper_attrs.stepper = &steering_stepper;
   steering_stepper_attrs.encoder_value = &g_ifm_encoder_position;
   steering_stepper_attrs.encoder_tick_value = &g_ifm_encoder_tick_last_update;
-  steering_stepper_task = osThreadNew(stepper_task, &steering_stepper_attrs, &steering_stepper_task_attrs);
+  steering_stepper_task_id = osThreadNew(steering_stepper_task, &steering_stepper_attrs, &steering_stepper_task_attrs);
 
-  breaking_stepper_attrs.stepper_id = 1;
-  breaking_stepper_attrs.stepper = &steering_stepper;
-  breaking_stepper_attrs.encoder_value = &g_briter_encoder_position;
-  breaking_stepper_attrs.encoder_tick_value = &g_briter_encoder_tick_last_update;
-  //breaking_stepper_task = osThreadNew(stepper_task, &breaking_stepper_attrs, &breaking_stepper_task_attrs);
+  braking_stepper_attrs.stepper_id = 1;
+  braking_stepper_attrs.stepper = &braking_stepper;
+  braking_stepper_attrs.encoder_value = &g_briter_encoder_position;
+  braking_stepper_attrs.encoder_tick_value = &g_briter_encoder_tick_last_update;
+  braking_stepper_task_id = osThreadNew(braking_stepper_task, &braking_stepper_attrs, &braking_stepper_task_attrs);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -642,6 +645,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
   stepper_irq_callback(&steering_stepper, htim);
+  stepper_irq_callback(&braking_stepper, htim);
 }
 /* USER CODE END 4 */
 

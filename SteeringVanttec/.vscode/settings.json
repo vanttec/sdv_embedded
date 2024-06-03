@@ -3,7 +3,8 @@
   "cmake.configureOnOpen": true,
   "files.associations": {
     "vanttec_canlib_generic_ids.h": "c",
-    "vanttec_sdv_ids.h": "c"
+    "vanttec_sdv_ids.h": "c",
+    "cstdint": "c"
   },
   "cortex-debug.variableUseNaturalFormat": false,
   "C_Cpp.errorSquiggles": "enabled"

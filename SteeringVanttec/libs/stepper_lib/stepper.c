@@ -177,8 +177,13 @@ void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick
     }
   }
 
-  HAL_TIM_PWM_Start_IT(stepper->config.step_timer,
+  HAL_StatusTypeDef out = HAL_TIM_PWM_Start_IT(stepper->config.step_timer,
                     stepper->config.step_timer_channel);
+
+  if (out != HAL_OK) {
+    uint32_t error_code = HAL_GetError();
+  }
+
   //osKernelRestoreLock(state);
 }
 

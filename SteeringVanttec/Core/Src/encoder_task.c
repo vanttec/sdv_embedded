@@ -6,7 +6,7 @@
 
 #define IFM_NODE_ID 0x20
 #define BRITER_CAN_ID 0x13
-#define BRITER_RETURN_TIME_MICROSECONDS 10000
+#define BRITER_RETURN_TIME_MICROSECONDS 0xfffe
 #define BRITER_RETURN_TIME_LOWER_BYTE (BRITER_RETURN_TIME_MICROSECONDS & 0xff)
 #define BRITER_RETURN_TIME_UPPER_BYTE ((BRITER_RETURN_TIME_MICROSECONDS & 0xff00) >> 16)
 
@@ -36,10 +36,10 @@ HAL_StatusTypeDef encoder_setup_can(CAN_HandleTypeDef *hcan) {
 	filter.FilterFIFOAssignment = CAN_RX_FIFO1;
 	filter.FilterActivation = CAN_FILTER_ENABLE;
 
-	filter.FilterIdHigh = 0x0410 << 5u; // IFM
-	filter.FilterIdLow = 0x01A0 << 5u;
+	filter.FilterIdHigh = 0x0410 << 5u; // Jetson
+	filter.FilterIdLow = 0x013 << 5u; // Encoder briter
 
-	filter.FilterMaskIdLow = 0x0000;
+	filter.FilterMaskIdLow = 0x01A0 << 5u; // Encoder IFM
 	filter.FilterMaskIdHigh = 0x0000;
 
 	HAL_StatusTypeDef ret = HAL_CAN_ConfigFilter(hcan, &filter);
@@ -90,10 +90,25 @@ HAL_StatusTypeDef encoder_initialize_briter(CAN_HandleTypeDef *hcan){
 		return HAL_ERROR;
 	}
 
+	osDelay(50);
+
 	// Set return time.
-	static uint8_t return_time[] = {0x05, BRITER_CAN_ID, 0x05, BRITER_RETURN_TIME_LOWER_BYTE, BRITER_RETURN_TIME_UPPER_BYTE};
+	static uint8_t return_time_msg[] = {0x05, BRITER_CAN_ID, 0x05, 0x40, 0x9C};
 	header.DLC = 5;
-	ret = HAL_CAN_AddTxMessage(hcan, &header, return_time, &mailbox);
+	ret = HAL_CAN_AddTxMessage(hcan, &header, return_time_msg, &mailbox);
+	if(ret != HAL_OK){
+		return ret;
+	}
+
+	osDelay(50);
+
+	// set initial position as 0
+	static uint8_t init_pos_msg[] = {0x04, BRITER_CAN_ID, 0x06, 0x00};
+	header.DLC = 4;
+	ret = HAL_CAN_AddTxMessage(hcan, &header, init_pos_msg, &mailbox);
+	if(ret != HAL_OK){
+		return ret;
+	}
 
 	// TODO We should probably check for encoder response
 	return ret;
@@ -139,10 +154,27 @@ void encoder_task(void *attrs_hcan){
 				if(buf[0] == 0x07 && buf[1] == BRITER_CAN_ID && buf[2] == 0x01){
 					uint32_t encoder_position;
 					memcpy(&encoder_position, buf + 3, 4);
-					briter_encoder_raw = __builtin_bswap32(encoder_position);
-					g_briter_encoder_tick_last_update = HAL_GetTick();
+					briter_encoder_raw = (encoder_position);
 
 					// TODO Parse raw pulses into turns.
+					g_briter_encoder_position = ((float) briter_encoder_raw / 1024.0f) * 2.0 * M_PI;
+
+
+					// encoder goes from 0.0 to 1.0
+					// but if for some reason, the encoder goes backwards because of mechanical
+					// deformities, etc. this will reset the value to 0.0
+					if (g_briter_encoder_position > 2.0){
+						uint32_t mailbox;
+							CAN_TxHeaderTypeDef s_header;
+							s_header.IDE = CAN_ID_STD;
+							s_header.StdId = BRITER_CAN_ID;
+							s_header.RTR = CAN_RTR_DATA;
+							s_header.DLC = 4;
+						static uint8_t init_pos_msg[] = {0x04, BRITER_CAN_ID, 0x06, 0x00};
+						HAL_CAN_AddTxMessage(hcan, &s_header, init_pos_msg, &mailbox);
+					}
+
+					g_briter_encoder_tick_last_update = HAL_GetTick();
 				}
 			}
 		}
