@@ -99,10 +99,10 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_TIM2_Init(void);
-static void MX_TIM1_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_CAN1_Init(void);
 static void MX_TIM16_Init(void);
+static void MX_TIM1_Init(void);
 void default_task(void *argument);
 
 /* USER CODE BEGIN PFP */
@@ -143,10 +143,10 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   MX_TIM2_Init();
-  MX_TIM1_Init();
   MX_ADC1_Init();
   MX_CAN1_Init();
   MX_TIM16_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
   int filters[] = {0x01A0, 0x0410, 0x0013};
   int filters_size = sizeof(filters) / sizeof(filters[0]);
@@ -502,7 +502,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 80-1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_DOWN;
-  htim2.Init.Period = 3500-1;
+  htim2.Init.Period = 3500-1 ;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -724,7 +724,7 @@ void default_task(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    canlib_send_byte(VANTTEC_CAN_ID_HB, (uint8_t)0x444);
+    canlib_send_byte(VANTTEC_CAN_ID_HB, (uint8_t)0x42);
     osDelay(5000);
   }
   /* USER CODE END 5 */
