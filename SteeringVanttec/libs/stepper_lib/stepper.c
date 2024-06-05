@@ -181,7 +181,7 @@ void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick
                     stepper->config.step_timer_channel);
 
   if (out != HAL_OK) {
-    uint32_t error_code = HAL_GetError();
+    uint32_t error_code = 0x42; // TODO remove this, just for testing
   }
 
   //osKernelRestoreLock(state);

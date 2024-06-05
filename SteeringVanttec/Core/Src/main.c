@@ -187,6 +187,7 @@ int main(void)
   braking_stepper.config.gear_reduction = 1.0f;
   braking_stepper.config.degs_per_step = 1.8f;
   braking_stepper.config.step_deadband = 1;
+  braking_stepper.config.pulse_length = 100;
   braking_stepper.config.enable_soft_limit = false;
   __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC4);
   if(stepper_initialize(&braking_stepper, 0) != HAL_OK){
