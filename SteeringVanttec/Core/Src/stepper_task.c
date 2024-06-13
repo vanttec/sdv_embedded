@@ -37,8 +37,8 @@ void steering_stepper_task(void *task_attrs){
 
     // 0xI1, setpoint
     float* steer_mechanisim_setpoint = malloc(sizeof(float));
-    *steer_mechanisim_setpoint = 0.0f;
-    register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_SETPOINT_ID, VANTTEC_CANLIB_FLOAT, steer_mechanisim_setpoint, 4);
+    *steer_mechanisim_setpoint = 10.0f;
+    // register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_SETPOINT_ID, VANTTEC_CANLIB_FLOAT, steer_mechanisim_setpoint, 4);
 
     uint8_t* drivemode = malloc(sizeof(uint8_t));
     *drivemode = 0U;
@@ -94,7 +94,7 @@ void braking_stepper_task(void *task_attrs){
     // 0xI1, setpoint
    
     float* brake_mechanisim_setpoint = malloc(sizeof(float));
-    *brake_mechanisim_setpoint = 1.0f;
+    *brake_mechanisim_setpoint = 0.0f;
     // register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_SETPOINT_ID, VANTTEC_CANLIB_FLOAT, brake_mechanisim_setpoint, 4);
 
     uint8_t* drivemode = malloc(sizeof(uint8_t));
@@ -110,9 +110,9 @@ void braking_stepper_task(void *task_attrs){
         );
 
         // if (*drivemode == 0) {      // [0] is manual mode
-        //     stepper_disable(attrs.stepper);
+        stepper_disable(attrs.stepper);
         // } else {                    // [1] is autonomous mode
-        stepper_enable(attrs.stepper);
+        //stepper_enable(attrs.stepper);
         // }
 
         g_test_stepper_arrived = stepper_at_setpoint(attrs.stepper);

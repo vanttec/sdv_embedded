@@ -156,11 +156,11 @@ int main(void)
 
   create_default_stepper_config(&steering_stepper.config);
   steering_stepper.config.step_timer = &htim2;
-  steering_stepper.config.step_timer_channel = TIM_CHANNEL_1;
-  steering_stepper.config.enable_pin = STP1_EN_Pin;
-  steering_stepper.config.enable_port = STP1_EN_GPIO_Port;
-  steering_stepper.config.direction_pin = STP1_DIR_Pin;
-  steering_stepper.config.direction_port = STP1_DIR_GPIO_Port;
+  steering_stepper.config.step_timer_channel = TIM_CHANNEL_4;
+  steering_stepper.config.enable_pin = STP2_EN_Pin;
+  steering_stepper.config.enable_port = STP2_EN_GPIO_Port;
+  steering_stepper.config.direction_pin = STP2_DIR_Pin;
+  steering_stepper.config.direction_port = STP2_DIR_GPIO_Port;
   steering_stepper.config.invert = false;
   steering_stepper.config.enable_encoder_correction = true;
   steering_stepper.config.gear_reduction = 44.0f/16.0f;
@@ -170,26 +170,26 @@ int main(void)
   steering_stepper.config.enable_soft_limit = false; //TODO softlimit broken
   steering_stepper.config.max_angle = (M_PI * 2) * 1.52;
   steering_stepper.config.min_angle = (M_PI * 2) * 1;
-  __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC1);
+  __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC4);
   if(stepper_initialize(&steering_stepper, 0) != HAL_OK){
     Error_Handler();
   }
 
   create_default_stepper_config(&braking_stepper.config);
   braking_stepper.config.step_timer = &htim2;
-  braking_stepper.config.step_timer_channel = TIM_CHANNEL_4;
-  braking_stepper.config.enable_pin = STP2_EN_Pin;
-  braking_stepper.config.enable_port = STP2_EN_GPIO_Port;
-  braking_stepper.config.direction_pin = STP2_DIR_Pin;
-  braking_stepper.config.direction_port = STP2_DIR_GPIO_Port;
-  braking_stepper.config.invert = false;
+  braking_stepper.config.step_timer_channel = TIM_CHANNEL_1;
+  braking_stepper.config.enable_pin = STP1_EN_Pin;
+  braking_stepper.config.enable_port = STP1_EN_GPIO_Port;
+  braking_stepper.config.direction_pin = STP1_DIR_Pin;
+  braking_stepper.config.direction_port = STP1_DIR_GPIO_Port;
+  braking_stepper.config.invert = true;
   braking_stepper.config.enable_encoder_correction = true;
   braking_stepper.config.gear_reduction = 1.0f;
   braking_stepper.config.degs_per_step = 1.8f;
   braking_stepper.config.step_deadband = 1;
   braking_stepper.config.pulse_length = 100;
   braking_stepper.config.enable_soft_limit = false;
-  __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC4);
+  __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC1);
   if(stepper_initialize(&braking_stepper, 0) != HAL_OK){
     Error_Handler();
   }

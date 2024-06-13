@@ -1,0 +1,1 @@
+SteeringVanttec.ioc:247:ProjectManager.functionlistsort=1-SystemClock_Config-RCC-false-HAL-false,2-MX_GPIO_Init-GPIO-false-HAL-true,3-MX_USART1_UART_Init-USART1-false-HAL-true,4-MX_TIM2_Init-TIM2-false-HAL-true,5-MX_TIM1_Init-TIM1-false-HAL-true,6-MX_ADC1_Init-ADC1-false-HAL-true,7-MX_CAN1_Init-CAN1-false-HAL-true
