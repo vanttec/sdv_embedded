@@ -71,6 +71,8 @@ void Error_Handler(void);
 #define DEBUG_2_GPIO_Port GPIOA
 #define DEBUG_1_Pin GPIO_PIN_1
 #define DEBUG_1_GPIO_Port GPIOA
+#define STP2_STEP_Pin GPIO_PIN_6
+#define STP2_STEP_GPIO_Port GPIOA
 #define BAT_TEMP_Pin GPIO_PIN_4
 #define BAT_TEMP_GPIO_Port GPIOC
 #define STP2_FLT_Pin GPIO_PIN_1
@@ -79,8 +81,6 @@ void Error_Handler(void);
 #define STP2_DIR_GPIO_Port GPIOB
 #define STP2_EN_Pin GPIO_PIN_10
 #define STP2_EN_GPIO_Port GPIOB
-#define STP2_STEP_Pin GPIO_PIN_11
-#define STP2_STEP_GPIO_Port GPIOB
 #define ID_0_Pin GPIO_PIN_12
 #define ID_0_GPIO_Port GPIOB
 #define ID_1_Pin GPIO_PIN_13

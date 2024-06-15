@@ -54,6 +54,7 @@ CAN_HandleTypeDef hcan1;
 
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim16;
 
 UART_HandleTypeDef huart1;
 
@@ -98,9 +99,10 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_TIM2_Init(void);
-static void MX_TIM1_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_CAN1_Init(void);
+static void MX_TIM16_Init(void);
+static void MX_TIM1_Init(void);
 void default_task(void *argument);
 
 /* USER CODE BEGIN PFP */
@@ -141,9 +143,10 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   MX_TIM2_Init();
-  MX_TIM1_Init();
   MX_ADC1_Init();
   MX_CAN1_Init();
+  MX_TIM16_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
   int filters[] = {0x01A0, 0x0410, 0x0013};
   int filters_size = sizeof(filters) / sizeof(filters[0]);
@@ -156,11 +159,11 @@ int main(void)
 
   create_default_stepper_config(&steering_stepper.config);
   steering_stepper.config.step_timer = &htim2;
-  steering_stepper.config.step_timer_channel = TIM_CHANNEL_4;
-  steering_stepper.config.enable_pin = STP2_EN_Pin;
-  steering_stepper.config.enable_port = STP2_EN_GPIO_Port;
-  steering_stepper.config.direction_pin = STP2_DIR_Pin;
-  steering_stepper.config.direction_port = STP2_DIR_GPIO_Port;
+  steering_stepper.config.step_timer_channel = TIM_CHANNEL_1;
+  steering_stepper.config.enable_pin = STP1_EN_Pin;
+  steering_stepper.config.enable_port = STP1_EN_GPIO_Port;
+  steering_stepper.config.direction_pin = STP1_DIR_Pin;
+  steering_stepper.config.direction_port = STP1_DIR_GPIO_Port;
   steering_stepper.config.invert = false;
   steering_stepper.config.enable_encoder_correction = true;
   steering_stepper.config.gear_reduction = 44.0f/16.0f;
@@ -170,26 +173,26 @@ int main(void)
   steering_stepper.config.enable_soft_limit = false; //TODO softlimit broken
   steering_stepper.config.max_angle = (M_PI * 2) * 1.52;
   steering_stepper.config.min_angle = (M_PI * 2) * 1;
-  __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC4);
+  __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC1);
   if(stepper_initialize(&steering_stepper, 0) != HAL_OK){
     Error_Handler();
   }
 
   create_default_stepper_config(&braking_stepper.config);
-  braking_stepper.config.step_timer = &htim2;
+  braking_stepper.config.step_timer = &htim16;
   braking_stepper.config.step_timer_channel = TIM_CHANNEL_1;
-  braking_stepper.config.enable_pin = STP1_EN_Pin;
-  braking_stepper.config.enable_port = STP1_EN_GPIO_Port;
-  braking_stepper.config.direction_pin = STP1_DIR_Pin;
-  braking_stepper.config.direction_port = STP1_DIR_GPIO_Port;
+  braking_stepper.config.enable_pin = STP2_EN_Pin;
+  braking_stepper.config.enable_port = STP2_EN_GPIO_Port;
+  braking_stepper.config.direction_pin = STP2_DIR_Pin;
+  braking_stepper.config.direction_port = STP2_DIR_GPIO_Port;
   braking_stepper.config.invert = true;
   braking_stepper.config.enable_encoder_correction = true;
   braking_stepper.config.gear_reduction = 1.0f;
   braking_stepper.config.degs_per_step = 1.8f;
-  braking_stepper.config.step_deadband = 1;
+  braking_stepper.config.step_deadband = 5;
   braking_stepper.config.pulse_length = 100;
   braking_stepper.config.enable_soft_limit = false;
-  __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC1);
+  __HAL_TIM_ENABLE_IT(&htim16, TIM_IT_CC1);
   if(stepper_initialize(&braking_stepper, 0) != HAL_OK){
     Error_Handler();
   }
@@ -499,7 +502,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 80-1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_DOWN;
-  htim2.Init.Period = 3500-1;
+  htim2.Init.Period = 3500-1 ;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -529,14 +532,72 @@ static void MX_TIM2_Init(void)
   {
     Error_Handler();
   }
-  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
-  {
-    Error_Handler();
-  }
   /* USER CODE BEGIN TIM2_Init 2 */
 
   /* USER CODE END TIM2_Init 2 */
   HAL_TIM_MspPostInit(&htim2);
+
+}
+
+/**
+  * @brief TIM16 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM16_Init(void)
+{
+
+  /* USER CODE BEGIN TIM16_Init 0 */
+
+  /* USER CODE END TIM16_Init 0 */
+
+  TIM_OC_InitTypeDef sConfigOC = {0};
+  TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig = {0};
+
+  /* USER CODE BEGIN TIM16_Init 1 */
+
+  /* USER CODE END TIM16_Init 1 */
+  htim16.Instance = TIM16;
+  htim16.Init.Prescaler = 80-1;
+  htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim16.Init.Period = 2000-1;
+  htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim16.Init.RepetitionCounter = 0;
+  htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim16) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim16) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
+  sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+  if (HAL_TIM_PWM_ConfigChannel(&htim16, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sBreakDeadTimeConfig.OffStateRunMode = TIM_OSSR_DISABLE;
+  sBreakDeadTimeConfig.OffStateIDLEMode = TIM_OSSI_DISABLE;
+  sBreakDeadTimeConfig.LockLevel = TIM_LOCKLEVEL_OFF;
+  sBreakDeadTimeConfig.DeadTime = 0;
+  sBreakDeadTimeConfig.BreakState = TIM_BREAK_DISABLE;
+  sBreakDeadTimeConfig.BreakPolarity = TIM_BREAKPOLARITY_HIGH;
+  sBreakDeadTimeConfig.AutomaticOutput = TIM_AUTOMATICOUTPUT_DISABLE;
+  if (HAL_TIMEx_ConfigBreakDeadTime(&htim16, &sBreakDeadTimeConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM16_Init 2 */
+
+  /* USER CODE END TIM16_Init 2 */
+  HAL_TIM_MspPostInit(&htim16);
 
 }
 
@@ -663,7 +724,7 @@ void default_task(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    canlib_send_byte(VANTTEC_CAN_ID_HB, 0x444);
+    canlib_send_byte(VANTTEC_CAN_ID_HB, (uint8_t)0x42);
     osDelay(5000);
   }
   /* USER CODE END 5 */
@@ -671,7 +732,7 @@ void default_task(void *argument)
 
 /**
   * @brief  Period elapsed callback in non blocking mode
-  * @note   This function is called  when TIM16 interrupt took place, inside
+  * @note   This function is called  when TIM15 interrupt took place, inside
   * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
   * a global variable "uwTick" used as application time base.
   * @param  htim : TIM handle
@@ -682,7 +743,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 
   /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM16) {
+  if (htim->Instance == TIM15) {
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */

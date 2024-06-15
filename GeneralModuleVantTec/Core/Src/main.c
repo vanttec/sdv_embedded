@@ -104,9 +104,7 @@ int main(void)
   MX_GPIO_Init();
   MX_CAN1_Init();
   /* USER CODE BEGIN 2 */
-  int filters[] = {0x01A0, 0x0404, 0x0013};
-  int filters_size = sizeof(filters) / sizeof(filters[0]);
-  init_canlib(hcan1, VANTTEC_CAN_ID_GENERAL_TX, filters, filters_size);
+  init_canlib(hcan1, VANTTEC_CAN_ID_GENERAL_TX);
   init_canlib_tx();
   init_canlib_rx();
   canlib_init_generic_tasks();

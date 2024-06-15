@@ -106,9 +106,7 @@ int main(void)
   MX_CAN1_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-  int filters[] = {0x01A0, 0x0406, 0x0013};
-  int filters_size = sizeof(filters) / sizeof(filters[0]);
-  init_canlib(hcan1, VANTTEC_CAN_ID_THROTTLE_TX, filters, filters_size);
+  init_canlib(hcan1, VANTTEC_CAN_ID_THROTTLE_TX);
   init_canlib_tx();
   init_canlib_rx();
   canlib_init_generic_tasks();
