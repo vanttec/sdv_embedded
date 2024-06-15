@@ -103,12 +103,12 @@ HAL_StatusTypeDef encoder_initialize_briter(CAN_HandleTypeDef *hcan){
 	osDelay(50);
 
 	// set initial position as 0
-	static uint8_t init_pos_msg[] = {0x04, BRITER_CAN_ID, 0x06, 0x00};
-	header.DLC = 4;
-	ret = HAL_CAN_AddTxMessage(hcan, &header, init_pos_msg, &mailbox);
-	if(ret != HAL_OK){
-		return ret;
-	}
+//	static uint8_t init_pos_msg[] = {0x04, BRITER_CAN_ID, 0x06, 0x00};
+//	header.DLC = 4;
+//	ret = HAL_CAN_AddTxMessage(hcan, &header, init_pos_msg, &mailbox);
+//	if(ret != HAL_OK){
+//		return ret;
+//	}
 
 	// TODO We should probably check for encoder response
 	return ret;
@@ -170,8 +170,8 @@ void encoder_task(void *attrs_hcan){
 							s_header.StdId = BRITER_CAN_ID;
 							s_header.RTR = CAN_RTR_DATA;
 							s_header.DLC = 4;
-						static uint8_t init_pos_msg[] = {0x04, BRITER_CAN_ID, 0x06, 0x00};
-						HAL_CAN_AddTxMessage(hcan, &s_header, init_pos_msg, &mailbox);
+//						static uint8_t init_pos_msg[] = {0x04, BRITER_CAN_ID, 0x06, 0x00};
+//						HAL_CAN_AddTxMessage(hcan, &s_header, init_pos_msg, &mailbox);
 					}
 
 					g_briter_encoder_tick_last_update = HAL_GetTick();
