@@ -38,7 +38,7 @@ void steering_stepper_task(void *task_attrs){
     // 0xI1, setpoint
     float* steer_mechanisim_setpoint = malloc(sizeof(float));
     *steer_mechanisim_setpoint = 0.0f;
-    register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_SETPOINT_ID, VANTTEC_CANLIB_FLOAT, steer_mechanisim_setpoint, 4);
+    // register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_SETPOINT_ID, VANTTEC_CANLIB_FLOAT, steer_mechanisim_setpoint, 4);
 
     uint8_t* drivemode = malloc(sizeof(uint8_t));
     *drivemode = 0U;
@@ -89,13 +89,13 @@ void braking_stepper_task(void *task_attrs){
     // for example, setting the mode vs. setting a setpoint 
 
     //0xI0, enable
-    // register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_ENABLE_ID, VANTTEC_CANLIB_BYTE, &(attrs.stepper->enabled), 1);
+    // register_canlib_rx(DEVICE_ID, base_fmsg_id | VANTTEC_CAN_ID_STEPPER_ENABLE_ID, VANTTEC_CANLIB_BYTE, &(attrs.stepper->enabled), 1);
 
     // 0xI1, setpoint
    
     float* brake_mechanisim_setpoint = malloc(sizeof(float));
-    *brake_mechanisim_setpoint = 0.0f;
-    // register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_SETPOINT_ID, VANTTEC_CANLIB_FLOAT, brake_mechanisim_setpoint, 4);
+    *brake_mechanisim_setpoint = 0.0f; //If no message is sent, return to zero at startup for security reasons
+    register_canlib_rx(DEVICE_ID, base_msg_id | VANTTEC_CAN_ID_STEPPER_SETPOINT_ID, VANTTEC_CANLIB_FLOAT, brake_mechanisim_setpoint, 4);
 
     uint8_t* drivemode = malloc(sizeof(uint8_t));
     *drivemode = 0U;
@@ -106,13 +106,13 @@ void braking_stepper_task(void *task_attrs){
         attrs.stepper->setpoint = mechanisim_angle_to_steps(
             attrs.stepper->config.gear_reduction,
             attrs.stepper->config.degs_per_step,
-            *brake_mechanisim_setpoint
+            *brake_mechanisim_setpoint *3.3 //Control sends a message from 0 to -1, and the maximum of the mechanism is when the value is set to -3.1
         );
 
         // if (*drivemode == 0) {      // [0] is manual mode
-        //     stepper_disable(attrs.stepper);
-        // } else {                    // [1] is autonomous mode
         stepper_disable(attrs.stepper);
+        // } else {                    // [1] is autonomous mode
+        //stepper_enable(attrs.stepper);
         // }
 
         g_test_stepper_arrived = stepper_at_setpoint(attrs.stepper);

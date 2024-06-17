@@ -180,7 +180,7 @@ void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick
   HAL_StatusTypeDef out = HAL_TIM_PWM_Start_IT(stepper->config.step_timer,
                     stepper->config.step_timer_channel);
 
-  if (out != HAL_OK) {
+  if (out == HAL_ERROR) {
     uint32_t error_code = 0x42; // TODO remove this, just for testing
   }
 

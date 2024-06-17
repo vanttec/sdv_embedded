@@ -21,7 +21,6 @@ void hb_task(void *args)
 {
     for (;;)
     {
-
         HAL_GPIO_TogglePin(DEBUG_2_GPIO_Port,DEBUG_2_Pin);
         osDelay(1000);
     }

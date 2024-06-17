@@ -154,7 +154,8 @@ void encoder_task(void *attrs_hcan){
 				if(buf[0] == 0x07 && buf[1] == BRITER_CAN_ID && buf[2] == 0x01){
 					uint32_t encoder_position;
 					memcpy(&encoder_position, buf + 3, 4);
-					briter_encoder_raw = (encoder_position);
+					briter_encoder_raw = (encoder_position - 49152); //To reset encoder, send manually with cansend [0x04][0x13][0x0C][0x01] to set the midpoint of the encoder
+					// 49152 is the midpoint of the encoder value, we subtract that, so the value becomes 0 at reset
 
 					// TODO Parse raw pulses into turns.
 					g_briter_encoder_position = ((float) briter_encoder_raw / 1024.0f) * 2.0 * M_PI;
@@ -163,16 +164,16 @@ void encoder_task(void *attrs_hcan){
 					// encoder goes from 0.0 to 1.0
 					// but if for some reason, the encoder goes backwards because of mechanical
 					// deformities, etc. this will reset the value to 0.0
-					if (g_briter_encoder_position > 2.0){
-						uint32_t mailbox;
-							CAN_TxHeaderTypeDef s_header;
-							s_header.IDE = CAN_ID_STD;
-							s_header.StdId = BRITER_CAN_ID;
-							s_header.RTR = CAN_RTR_DATA;
-							s_header.DLC = 4;
+//					if (g_briter_encoder_position > 2.0){ //TODO fix this
+//						uint32_t mailbox;
+//							CAN_TxHeaderTypeDef s_header;
+//							s_header.IDE = CAN_ID_STD;
+//							s_header.StdId = BRITER_CAN_ID;
+//							s_header.RTR = CAN_RTR_DATA;
+//							s_header.DLC = 4;
 //						static uint8_t init_pos_msg[] = {0x04, BRITER_CAN_ID, 0x06, 0x00};
-//						HAL_CAN_AddTxMessage(hcan, &s_header, init_pos_msg, &mailbox);
-					}
+//						HAL_CAN_AddTxMessage(hcan, &s_header, init_pos_msg, &mailbox); //TODO fix this, it resets the encoder unnecessarily
+//					}
 
 					g_briter_encoder_tick_last_update = HAL_GetTick();
 				}
