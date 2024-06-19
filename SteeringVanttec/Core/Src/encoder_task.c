@@ -12,7 +12,7 @@
 
 // Temporary global variable to simplify debugging
 int32_t ifm_encoder_raw = 0;
-uint32_t briter_encoder_raw = 0;
+float briter_encoder_raw = 0.0;
 
 // When we got last encoder value.
 uint32_t g_ifm_encoder_tick_last_update = 0;
@@ -154,7 +154,7 @@ void encoder_task(void *attrs_hcan){
 				if(buf[0] == 0x07 && buf[1] == BRITER_CAN_ID && buf[2] == 0x01){
 					uint32_t encoder_position;
 					memcpy(&encoder_position, buf + 3, 4);
-					briter_encoder_raw = (encoder_position - 49152); //To reset encoder, send manually with cansend [0x04][0x13][0x0C][0x01] to set the midpoint of the encoder
+					briter_encoder_raw = (float) (encoder_position - 49152.0); //To reset encoder, send manually with cansend [0x04][0x13][0x0C][0x01] to set the midpoint of the encoder
 					// 49152 is the midpoint of the encoder value, we subtract that, so the value becomes 0 at reset
 
 					// TODO Parse raw pulses into turns.

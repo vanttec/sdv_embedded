@@ -106,7 +106,7 @@ void braking_stepper_task(void *task_attrs){
         attrs.stepper->setpoint = mechanisim_angle_to_steps(
             attrs.stepper->config.gear_reduction,
             attrs.stepper->config.degs_per_step,
-            *brake_mechanisim_setpoint *3.3 //Control sends a message from 0 to -1, and the maximum of the mechanism is when the value is set to -3.1
+            *brake_mechanisim_setpoint *3.5 //Control sends a message from 0 to -1, and the maximum of the mechanism is when the value is set to -3.1
         );
 
         // if (*drivemode == 0) {      // [0] is manual mode
