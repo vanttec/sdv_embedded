@@ -7,5 +7,8 @@
     "cstdint": "c"
   },
   "cortex-debug.variableUseNaturalFormat": false,
-  "C_Cpp.errorSquiggles": "enabled"
+  "C_Cpp.errorSquiggles": "enabled",
+  "stm32-for-vscode.openOCDPath": "/opt/homebrew/bin/openocd",
+  "cortex-debug.armToolchainPath": "/opt/ST/STM32CubeCLT_1.15.1/GNU-tools-for-STM32/bin",
+  "cortex-debug.openocdPath": "/opt/homebrew/bin/openocd"
 }

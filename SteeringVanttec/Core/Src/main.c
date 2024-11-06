@@ -31,6 +31,7 @@
 #include "stepper_task.h"
 #include "stepper.h"
 #include "math.h"
+#include "generic_tasks/generic_tasks.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -119,6 +120,7 @@ void default_task(void *argument);
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -150,7 +152,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   int filters[] = {0x01A0, 0x0410, 0x0013};
   int filters_size = sizeof(filters) / sizeof(filters[0]);
-  init_canlib(hcan1, VANTTEC_CAN_ID_STEPPER_TX, filters, filters_size);
+  init_canlib(hcan1, VANTTEC_CAN_ID_STEPPER_TX);
   init_canlib_tx();
   init_canlib_rx();
   encoder_setup_can(&hcan1);
@@ -246,6 +248,7 @@ int main(void)
   osKernelStart();
 
   /* We should never get here as control is now taken by the scheduler */
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -560,7 +563,7 @@ static void MX_TIM16_Init(void)
   htim16.Instance = TIM16;
   htim16.Init.Prescaler = 80-1;
   htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim16.Init.Period = 1500-1; //Modify value to make the stepper go faster, lower -> faster
+  htim16.Init.Period = 5000-1;
   htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim16.Init.RepetitionCounter = 0;
   htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
