@@ -11,10 +11,7 @@
 
 # SDV_EMBEDDED
 
-
-SDV EMBEDDED is the official respository for VANTTEC self driving vehicle
-
-It includes code  made for controlling the acceleartion, steering , braking and lights inside the car with our modules.<br />
+Code  made for controlling the acceleartion, steering , braking and lights inside the car with our modules.<br />
 
 [Getting started](#getting-started)
 
@@ -22,15 +19,13 @@ It includes code  made for controlling the acceleartion, steering , braking and 
 
 ## Getting started
 
-![Tutorial][tutorial]
-
 ```sh
 git clone --recurse-submodules https://github.com/vanttec/sdv_embedded.git
 
 ```
 
-Read more about the official documentation [here][vanttec-documentation].
-
-
-[vanttec-documentation]: https://vanttec-documentation.readthedocs.io/
-[tutorial]: contrib/cardog2.webp
+## TODO
+-[ ] Solo una vanttec_canlib
+-[ ] Focos del panel de manera programatica porfavor
+-[ ] Actualizar todas las placas aque usen makefile
+-[ ] Tutorial como subir codigo
