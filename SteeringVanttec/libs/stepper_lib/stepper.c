@@ -1,323 +1,201 @@
-#include <stdint.h>
-#include "math.h"
 #include "stepper.h"
-//#include "Utils/CANSerialization.h"
+#include <stdint.h>
+#include <stdlib.h>
+#include <math.h>
+#include "cmsis_os.h"
 
-volatile stepper braking_stepper;
-volatile stepper steering_stepper;
+// If we have not received a new encoder value within ms, disable stepper and trigger fault
+#define STEPPER_ENCODER_TIME_TOLERANCE 1000
 
-const static float STEER_RATIO = 1.5; // Stepper to steering wheel ratio
-const static uint16_t MAX_STEERING_ANGLE = 600;
-const static uint16_t MIN_STEERING_ANGLE = 400;
-const static uint16_t PEDAL_LENGTH = 0.18;
-const static uint16_t PULLEY_RADIUS = 0.0353;
+HAL_StatusTypeDef configure_stepper_timer_channel(Stepper *stepper,
+                                                  TIM_HandleTypeDef *timer,
+                                                  uint32_t timer_channel) {
+  if (stepper->config.pulse_length <= 1) {
+    return HAL_ERROR;
+  }
 
-void configure_steering()
-{
+  // This assumes that timer has already been configured and initialized!
+  TIM_OC_InitTypeDef configOC = {0};
+  configOC.OCMode = TIM_OCMODE_PWM1;
+  configOC.Pulse = stepper->config.pulse_length - 1;
+  configOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  configOC.OCFastMode = TIM_OCFAST_ENABLE;
 
-	steering_stepper.is_active = 0;
-	steering_stepper.is_exec_started = 0;
-	steering_stepper.direction = IDLE;
-	steering_stepper.MAX_ANGLE = MAX_STEERING_ANGLE*STEER_RATIO;	//Degrees
-	steering_stepper.MIN_ANGLE = MIN_STEERING_ANGLE*STEER_RATIO;	//Degrees
-	steering_stepper.current_angle = 0;
-	steering_stepper.STEPPER_OFFSET = 10;//1.8;
+  if (HAL_TIM_PWM_ConfigChannel(timer, &configOC, timer_channel) != HAL_OK) {
+    return HAL_ERROR;
+  };
 
-	htim2.Instance->CCR1 = 2500;	// For duty cycle of 50%
-	HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_SET);
+  __HAL_TIM_SET_COUNTER(timer, stepper->config.pulse_length);
+
+  return HAL_OK;
 }
 
-void configure_braking()
-{
-	braking_stepper.is_active = 0;
-	braking_stepper.is_exec_started = 0;
-	braking_stepper.direction = IDLE;
-	braking_stepper.MAX_ANGLE = 60; // Degrees
-	braking_stepper.current_angle = 0;
-	braking_stepper.STEPPER_OFFSET = 1.8;
-
-	htim2.Instance->CCR1 = 392; // For duty cycle of 50%
-	// HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_SET); // Temp steering
+void create_default_stepper_config(StepperConfiguration *config) {
+  // TODO Create sensible defaults.
+  config->enable_soft_limit = false;
+  config->step_deadband = 0;
+  config->pulse_length = 1000;
 }
 
-void start(const stepper_type stepper)
-{
-	switch (stepper)
-	{
-	case STEERING:
-		HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_RESET);
-		steering_stepper.is_active = 1;
-		HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
-		break;
-	case BRAKING:
-		// HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_RESET); // Temp Steering
-		braking_stepper.is_active = 1;
-		HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
-			break;
-		default:
-			break;
-	}
-}
+HAL_StatusTypeDef stepper_initialize(Stepper *stepper,
+                                     int32_t initial_position) {
+  if (stepper == NULL) {
+    return HAL_ERROR;
+  }
 
-void pause(const stepper_type stepper)
-{
-	switch (stepper)
-	{
-	case STEERING:
-		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
-		steering_stepper.is_exec_started = 0;
-		HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_SET);
-		break;
-	case BRAKING:
-		// HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
-		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1); // Temp Steering
-		braking_stepper.is_exec_started = 0;
-		HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_GPIO_Port, GPIO_PIN_SET);
-		break;
-	default:
-		break;
-	}
-}
+  stepper->enabled = false;
 
-void stop(const stepper_type stepper)
-{
-	switch (stepper)
-	{
-	case STEERING:
-		HAL_GPIO_WritePin(GPIOC, STPR_EN_1_Pin, GPIO_PIN_SET);
-		// HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_RESET);
-		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
-		steering_stepper.is_active = 0;
-		steering_stepper.direction = IDLE;
-		steering_stepper.is_exec_started = 0;
-		HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_RESET);
-		break;
-	case BRAKING:
-		// HAL_GPIO_WritePin(GPIOB, STPR_EN_2_Pin, GPIO_PIN_SET);
-		// HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin, GPIO_PIN_RESET);
-		// HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
-		HAL_GPIO_WritePin(STPR_EN_1_GPIO_Port, STPR_EN_1_Pin, GPIO_PIN_SET); // Temp Steering
-		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);			   // Temp Steering
-		braking_stepper.is_active = 0;
-		braking_stepper.direction = IDLE;
-		braking_stepper.is_exec_started = 0;
-		HAL_GPIO_WritePin(DEBUG_5_GPIO_Port, DEBUG_5_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(DEBUG_6_GPIO_Port, DEBUG_6_Pin, GPIO_PIN_RESET);
-		break;
-	default:
-		break;
-	}
-}
+  stepper->position = initial_position;
 
-void em_stop()
-{
-	// For the break, the stop has a different meaning
-	float error = braking_stepper.desired_angle - braking_stepper.current_angle;
-	uint8_t direction = CW;
+  stepper_disable(stepper);
 
-	if (braking_stepper.direction != IDLE)
-	{
-		if (braking_stepper.direction != direction)
-		{
-			braking_stepper.direction = direction;
-			// HAL_GPIO_WritePin(GPIOB, STPR_DIR_2_Pin, direction);
-			HAL_GPIO_WritePin(GPIOB, STPR_DIR_1_Pin, direction); // Temp Steering
-		}
+  // Set step variables to default.
+  stepper->setpoint = stepper->position;
+  stepper->direction = false;
 
-		if (fabsf(error) > braking_stepper.STEPPER_OFFSET)
-		{
-			// Start execution
-			if (!braking_stepper.is_exec_started)
-			{
-				// HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
-				HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1); // Temp Steering
-				braking_stepper.is_exec_started = 1;
-			}
-		}
-		else
-			pause(BRAKING);
-	}
-	else
-		pause(BRAKING);
-}
+  stepper->has_fault = false;
 
-
-stepper_direction unsafe_direction;
-void steer(uint8_t direction){
-	//steering_stepper.mode = CONTROLLER;
-	float SAT_ANGLE;
-
-	if(steering_stepper.is_active)
-	{
-		if(direction != IDLE)
-		{
-			if(direction != steering_stepper.direction)
-			{
-				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
-			}
-
-			// Check max steering angle is not exceded
-			if(direction == CCW)
-				SAT_ANGLE = steering_stepper.MAX_ANGLE;
-			else
-				SAT_ANGLE = steering_stepper.MIN_ANGLE;
-
-
-			if(fabsf(steering_stepper.current_angle) < SAT_ANGLE)
-			{
-				if(!steering_stepper.is_exec_started)
-				{
-					HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-					steering_stepper.is_exec_started = 1;
-				}
-				steering_stepper.direction = direction;
-			} else {
-				unsafe_direction = steering_stepper.direction;
-
-				// Only can continue if direction is changed
-				if(direction != unsafe_direction)
-				{
-					HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
-					if(!steering_stepper.is_exec_started)
-					{
-						HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-						steering_stepper.is_exec_started = 1;
-					}
-				} else pause(STEERING);
-			}
-		} else pause(STEERING);
-	} else stop(STEERING);
-}
-
-uint32_t obtain_current_angle(){
-	uint32_t angle = 0;
-	float f_angle = -steering_stepper.current_angle/STEER_RATIO >= 0.0f ?
-			steering_stepper.current_angle/steering_stepper.MAX_ANGLE:
-			steering_stepper.current_angle/steering_stepper.MIN_ANGLE;
-	angle =  serialize_float(f_angle);
-	return angle;
-}
-
-
-float get_current_pos(){
-	return steering_stepper.current_angle >= 0.0f ?
-			-steering_stepper.current_angle/steering_stepper.MIN_ANGLE:
-			-steering_stepper.current_angle/steering_stepper.MAX_ANGLE;
-}
-
-
-void set_setpoint(const stepper_type stepper, float setpoint){
-	uint8_t direction = IDLE;
-	float error = 0;
-
-	switch(stepper)
-	{
-		case STEERING:
-			// setpoint: [-1,1]
-			if(setpoint >= 0)
-				steering_stepper.desired_angle = -setpoint*steering_stepper.MAX_ANGLE;  // To account for gear counter rotation
-			else
-				steering_stepper.desired_angle = -setpoint*steering_stepper.MIN_ANGLE;  // To account for gear counter rotation
-
-			error = steering_stepper.desired_angle - steering_stepper.current_angle;
-
-			direction = fabsf(error) < steering_stepper.STEPPER_OFFSET ? IDLE:error > 0? CW:CCW;
-
-			steer_by_setpoint(direction, error);
-			break;
-		case BRAKING:
-			// setpoint: [0,1]
-
-			braking_stepper.desired_angle = setpoint*braking_stepper.MAX_ANGLE;
-			error = braking_stepper.desired_angle - braking_stepper.current_angle;
-
-			direction = fabsf(error) < braking_stepper.STEPPER_OFFSET ? IDLE:error > 0? CW:CCW;
-
-			brake_by_setpoint(direction, error);
-			break;
-	}
-}
-
-void steer_by_setpoint(uint8_t direction, float error)
-{
-	if(steering_stepper.is_active)
-	{
-		if(direction != IDLE)
-		{
-			if(steering_stepper.direction != direction)
-			{
-				steering_stepper.direction = direction;
-				HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
-			}
-			if(fabsf(error) > steering_stepper.STEPPER_OFFSET)
-			{
-				// Start execution
-				if(!steering_stepper.is_exec_started)
-				{
-					HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-					steering_stepper.is_exec_started = 1;
-				}
-			} else pause(STEERING);
-		} else pause(STEERING);
-	} else stop(STEERING);
-}
-
-void brake_by_setpoint(uint8_t direction, float error)
-{
-
-	if (braking_stepper.is_active)
-	{
-		if (direction != IDLE)
-		{
-			if (braking_stepper.direction != direction)
-			{
-				braking_stepper.direction = direction;
-				HAL_GPIO_WritePin(STPR_DIR_1_GPIO_Port, STPR_DIR_1_Pin, direction); // Temp Steering
-				// HAL_GPIO_WritePin(GPIOC, STPR_DIR_1_Pin, direction);
-			}
-
-			if (fabsf(error) > braking_stepper.STEPPER_OFFSET)
-			{
-				// Start execution
-				if (!braking_stepper.is_exec_started)
-				{
-					HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1); // Temp Steering
-					// HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
-					braking_stepper.is_exec_started = 1;
-				}
-			}
-			else
-				pause(BRAKING);
-		}
-		else
-			pause(BRAKING);
-	}
-	else
-		stop(BRAKING);
-}
-
-void update_stepper_pos(const stepper_type stepper)
-{
-	switch (stepper)
-	{
-	case STEERING:
-		steering_stepper.current_angle = -ifm_encoder.absolute_angle * STEER_RATIO; // - To account for gear counter rotation
-		break;
-	case BRAKING:
-		braking_stepper.current_angle = briter_encoder.absolute_angle * (PEDAL_LENGTH / PULLEY_RADIUS); // REQUIRED RELATIONSHIP FROM PULLEY TO BRAKE ANGLE
-		break;
-	}
-}
-/*
-void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
-{
-  if (htim->Instance == TIM2) {
-	//steering_stepper.current_step++;
-	//HAL_GPIO_TogglePin(GPIOA, DEBUG_2_Pin);
+  if (configure_stepper_timer_channel(stepper, stepper->config.step_timer,
+                                      stepper->config.step_timer_channel) ==
+      HAL_ERROR) {
+    return HAL_ERROR;
   }
 }
-*/
+
+HAL_TIM_ActiveChannel get_tim_active_channel(uint32_t channel) {
+  switch (channel) {
+  case TIM_CHANNEL_1:
+    return HAL_TIM_ACTIVE_CHANNEL_1;
+  case TIM_CHANNEL_2:
+    return HAL_TIM_ACTIVE_CHANNEL_2;
+  case TIM_CHANNEL_3:
+    return HAL_TIM_ACTIVE_CHANNEL_3;
+  case TIM_CHANNEL_4:
+    return HAL_TIM_ACTIVE_CHANNEL_4;
+  default:
+    // TODO Determine a better default case.
+    return HAL_TIM_ACTIVE_CHANNEL_5;
+  }
+}
+
+void stepper_irq_callback(Stepper *stepper, TIM_HandleTypeDef *htim) {
+  // We assume that this has been called from stepper->step_timer interrupt.
+  // We only need to check if interrupt has been fired for the correct channel.
+
+  if (stepper->config.step_timer != htim ||
+      htim->Channel !=
+          get_tim_active_channel(stepper->config.step_timer_channel)) {
+    // This irq was not fired for this stepper.
+    return;
+  }
+
+  // Update stepper position from pulse
+  if (stepper->direction) {
+    stepper->position++;
+  } else {
+    stepper->position--;
+  }
+
+  if (stepper_at_setpoint(stepper)) {
+    // We have reached setpoint, stop stepper.
+    HAL_TIM_PWM_Stop_IT(stepper->config.step_timer,
+                        stepper->config.step_timer_channel);
+  }
+}
+
+bool stepper_at_setpoint(Stepper *stepper) {
+  return abs(stepper->position - stepper->setpoint) <=
+         stepper->config.step_deadband;
+}
+
+void stepper_enable(Stepper *stepper) {
+  if(stepper->has_fault){
+    // Do not enable stepper if we have a fault.
+    return;
+  }
+  HAL_GPIO_WritePin(stepper->config.enable_port, stepper->config.enable_pin,
+                    GPIO_PIN_SET);
+}
+
+void stepper_disable(Stepper *stepper) {
+  HAL_GPIO_WritePin(stepper->config.enable_port, stepper->config.enable_pin,
+                    GPIO_PIN_RESET);
+}
+
+void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick_time) {
+  //int32_t state = osKernelLock();
+  if (stepper->config.enable_encoder_correction) {
+    if(HAL_GetTick() - encoder_tick_time > STEPPER_ENCODER_TIME_TOLERANCE){
+      // We have not received encoder value, disable stepper.
+      stepper_disable(stepper);
+      stepper->has_fault = true;
+      return;
+    }
+
+    stepper->position = mechanisim_angle_to_steps(stepper->config.gear_reduction, stepper->config.degs_per_step, encoder_value);
+  }
+
+  GPIO_PinState fault_status = HAL_GPIO_ReadPin(stepper->config.fault_port, stepper->config.fault_pin);
+  stepper->has_fault = fault_status == GPIO_PIN_SET;
+
+  // TODO: should we disable stepper if we detected fault from motor controller?
+
+  // Calculate mechanisim positions.
+  stepper->mechanisim_angle = 
+        steps_to_mechanisim_angle(stepper->config.gear_reduction, stepper->config.degs_per_step, stepper->position);
+
+  if (stepper_at_setpoint(stepper)) {
+    // Stepper is already at setpoint, nothing to do here.
+    return;
+  }
+
+  // We need to move stepper, set and determine direction pin.
+  if (stepper->position - stepper->setpoint > 0) {
+    HAL_GPIO_WritePin(stepper->config.direction_port,
+                      stepper->config.direction_pin,
+                      stepper->config.invert ? GPIO_PIN_SET : GPIO_PIN_RESET);
+    stepper->direction = true;
+  } else {
+    HAL_GPIO_WritePin(stepper->config.direction_port,
+                      stepper->config.direction_pin,
+                      stepper->config.invert ? GPIO_PIN_RESET : GPIO_PIN_SET);
+    stepper->direction = false;
+  }
+
+  if(stepper->config.enable_soft_limit){
+    // Prevent movement only in one direction.
+    if(stepper->mechanisim_angle > stepper->config.max_angle && !stepper->direction){
+      HAL_TIM_PWM_Stop_IT(stepper->config.step_timer,
+                        stepper->config.step_timer_channel);
+      return;
+    }
+
+    if(stepper->mechanisim_angle < stepper->config.min_angle && stepper->direction){
+      HAL_TIM_PWM_Stop_IT(stepper->config.step_timer,
+                        stepper->config.step_timer_channel);
+      return;
+    }
+  }
+
+  HAL_StatusTypeDef out = HAL_TIM_PWM_Start_IT(stepper->config.step_timer,
+                    stepper->config.step_timer_channel);
+
+  if (out == HAL_ERROR) {
+    uint32_t error_code = 0x42; // TODO remove this, just for testing
+  }
+
+  //osKernelRestoreLock(state);
+}
+
+#define MECHANISIM_DEGS_TO_RAD (M_PI / 180.0f)
+int32_t mechanisim_angle_to_steps(float gear_reduction, float degs_per_step, float rads){
+  const float rads_per_step = degs_per_step * MECHANISIM_DEGS_TO_RAD;
+
+  return (rads * gear_reduction) / rads_per_step;
+}
+
+float steps_to_mechanisim_angle(float gear_reduction, float degs_per_step, int32_t stepper_steps){
+  const float rads_per_step = degs_per_step * MECHANISIM_DEGS_TO_RAD;
+
+  return ((float) stepper_steps * rads_per_step) / gear_reduction;
+}

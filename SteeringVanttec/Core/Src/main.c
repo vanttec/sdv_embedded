@@ -22,8 +22,15 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "stepper_tasks.h"
+#include "requirements.h"
+#include "vanttec_canlib.h"
+#include "vanttec_canlib_tx_task.h"
+#include "vanttec_canlib_rx_task.h"
 #include "vanttec_sdv_ids.h"
+#include "encoder_task.h"
+#include "stepper_task.h"
+#include "stepper.h"
+#include "math.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,6 +54,7 @@ CAN_HandleTypeDef hcan1;
 
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim16;
 
 UART_HandleTypeDef huart1;
 
@@ -58,7 +66,32 @@ const osThreadAttr_t defaultTask_attributes = {
   .priority = (osPriority_t) osPriorityAboveNormal,
 };
 /* USER CODE BEGIN PV */
+Stepper steering_stepper;
+Stepper braking_stepper;
+static stepper_task_attrs steering_stepper_attrs;
+static stepper_task_attrs braking_stepper_attrs;
 
+
+osThreadId_t steering_stepper_task_id;
+const osThreadAttr_t steering_stepper_task_attrs = {
+  .name = "steeringStepperTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal,
+};
+
+osThreadId_t braking_stepper_task_id;
+const osThreadAttr_t braking_stepper_task_attrs = {
+  .name = "brakingStepperTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal,
+};
+
+osThreadId_t encoder_task_handle;
+const osThreadAttr_t encoder_task_attrs = {
+  .name = "encoderTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal,
+};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -66,13 +99,13 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_TIM2_Init(void);
-static void MX_TIM1_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_CAN1_Init(void);
+static void MX_TIM16_Init(void);
+static void MX_TIM1_Init(void);
 void default_task(void *argument);
 
 /* USER CODE BEGIN PFP */
-
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -110,16 +143,60 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   MX_TIM2_Init();
-  MX_TIM1_Init();
   MX_ADC1_Init();
   MX_CAN1_Init();
+  MX_TIM16_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-  init_canlib(hcan1, VANTTEC_CAN_ID_STEPPER_TX);
+  int filters[] = {0x01A0, 0x0410, 0x0013};
+  int filters_size = sizeof(filters) / sizeof(filters[0]);
+  init_canlib(hcan1, VANTTEC_CAN_ID_STEPPER_TX, filters, filters_size);
   init_canlib_tx();
   init_canlib_rx();
+  encoder_setup_can(&hcan1);
   canlib_init_generic_tasks();
   init_requirements_task();
-  init_stepper_tasks();
+
+  create_default_stepper_config(&steering_stepper.config);
+  steering_stepper.config.step_timer = &htim2;
+  steering_stepper.config.step_timer_channel = TIM_CHANNEL_1;
+  steering_stepper.config.enable_pin = STP1_EN_Pin;
+  steering_stepper.config.enable_port = STP1_EN_GPIO_Port;
+  steering_stepper.config.direction_pin = STP1_DIR_Pin;
+  steering_stepper.config.direction_port = STP1_DIR_GPIO_Port;
+  steering_stepper.config.invert = false;
+  steering_stepper.config.enable_encoder_correction = true;
+  steering_stepper.config.gear_reduction = 44.0f/16.0f;
+  steering_stepper.config.degs_per_step = 1.8f;
+  steering_stepper.config.step_deadband = 10;
+  steering_stepper.config.pulse_length = 100;
+  steering_stepper.config.enable_soft_limit = false; //TODO softlimit broken
+  steering_stepper.config.max_angle = (M_PI * 2) * 1.52;
+  steering_stepper.config.min_angle = (M_PI * 2) * 1;
+  __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_CC1);
+  if(stepper_initialize(&steering_stepper, 0) != HAL_OK){
+    Error_Handler();
+  }
+
+  create_default_stepper_config(&braking_stepper.config);
+  braking_stepper.config.step_timer = &htim16;
+  braking_stepper.config.step_timer_channel = TIM_CHANNEL_1;
+  braking_stepper.config.enable_pin = STP2_EN_Pin;
+  braking_stepper.config.enable_port = STP2_EN_GPIO_Port;
+  braking_stepper.config.direction_pin = STP2_DIR_Pin;
+  braking_stepper.config.invert = true;
+  braking_stepper.config.direction_port = STP2_DIR_GPIO_Port;
+  braking_stepper.config.enable_encoder_correction = true;
+  braking_stepper.config.gear_reduction = 1.0f;
+  braking_stepper.config.degs_per_step = 1.8f;
+  braking_stepper.config.step_deadband = 5;
+  braking_stepper.config.pulse_length = 100;
+  braking_stepper.config.enable_soft_limit = false;
+  __HAL_TIM_ENABLE_IT(&htim16, TIM_IT_CC1);
+  if(stepper_initialize(&braking_stepper, 0) != HAL_OK){
+    Error_Handler();
+  }
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -143,10 +220,22 @@ int main(void)
 
   /* Create the thread(s) */
   /* creation of defaultTask */
-  //defaultTaskHandle = osThreadNew(default_task, NULL, &defaultTask_attributes);
+  defaultTaskHandle = osThreadNew(default_task, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
+  encoder_task_handle = osThreadNew(encoder_task, (void*) &hcan1, &encoder_task_attrs);
+  
+  steering_stepper_attrs.stepper_id = 0;
+  steering_stepper_attrs.stepper = &steering_stepper;
+  steering_stepper_attrs.encoder_value = &g_ifm_encoder_position;
+  steering_stepper_attrs.encoder_tick_value = &g_ifm_encoder_tick_last_update;
+  steering_stepper_task_id = osThreadNew(steering_stepper_task, &steering_stepper_attrs, &steering_stepper_task_attrs);
+
+  braking_stepper_attrs.stepper_id = 1;
+  braking_stepper_attrs.stepper = &braking_stepper;
+  braking_stepper_attrs.encoder_value = &g_briter_encoder_position;
+  braking_stepper_attrs.encoder_tick_value = &g_briter_encoder_tick_last_update;
+  braking_stepper_task_id = osThreadNew(braking_stepper_task, &braking_stepper_attrs, &braking_stepper_task_attrs);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -412,8 +501,8 @@ static void MX_TIM2_Init(void)
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 80-1;
-  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 5000-1 ;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_DOWN;
+  htim2.Init.Period = 3500-1 ;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -443,14 +532,72 @@ static void MX_TIM2_Init(void)
   {
     Error_Handler();
   }
-  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
-  {
-    Error_Handler();
-  }
   /* USER CODE BEGIN TIM2_Init 2 */
 
   /* USER CODE END TIM2_Init 2 */
   HAL_TIM_MspPostInit(&htim2);
+
+}
+
+/**
+  * @brief TIM16 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM16_Init(void)
+{
+
+  /* USER CODE BEGIN TIM16_Init 0 */
+
+  /* USER CODE END TIM16_Init 0 */
+
+  TIM_OC_InitTypeDef sConfigOC = {0};
+  TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig = {0};
+
+  /* USER CODE BEGIN TIM16_Init 1 */
+
+  /* USER CODE END TIM16_Init 1 */
+  htim16.Instance = TIM16;
+  htim16.Init.Prescaler = 80-1;
+  htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim16.Init.Period = 1500-1; //Modify value to make the stepper go faster, lower -> faster
+  htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim16.Init.RepetitionCounter = 0;
+  htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim16) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim16) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
+  sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+  if (HAL_TIM_PWM_ConfigChannel(&htim16, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sBreakDeadTimeConfig.OffStateRunMode = TIM_OSSR_DISABLE;
+  sBreakDeadTimeConfig.OffStateIDLEMode = TIM_OSSI_DISABLE;
+  sBreakDeadTimeConfig.LockLevel = TIM_LOCKLEVEL_OFF;
+  sBreakDeadTimeConfig.DeadTime = 0;
+  sBreakDeadTimeConfig.BreakState = TIM_BREAK_DISABLE;
+  sBreakDeadTimeConfig.BreakPolarity = TIM_BREAKPOLARITY_HIGH;
+  sBreakDeadTimeConfig.AutomaticOutput = TIM_AUTOMATICOUTPUT_DISABLE;
+  if (HAL_TIMEx_ConfigBreakDeadTime(&htim16, &sBreakDeadTimeConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM16_Init 2 */
+
+  /* USER CODE END TIM16_Init 2 */
+  HAL_TIM_MspPostInit(&htim16);
 
 }
 
@@ -497,31 +644,29 @@ static void MX_USART1_UART_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
+/* USER CODE BEGIN MX_GPIO_Init_1 */
+/* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
-  __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, DEBUG_6_Pin|DEBUG_5_Pin|DEBUG_4_Pin|DEBUG_3_Pin
-                          |STPR_EN_1_Pin|STPR_DIR_1_Pin, GPIO_PIN_RESET);
+                          |STP1_EN_Pin|STP1_DIR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, DEBUG_2_Pin|DEBUG_1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LVL_SFTR_OE_2_Pin|STPR_DIR_2_Pin|STPR_EN_2_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LVL_SFTR_OE_1_GPIO_Port, LVL_SFTR_OE_1_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, STP2_DIR_Pin|STP2_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : DEBUG_6_Pin DEBUG_5_Pin DEBUG_4_Pin DEBUG_3_Pin
-                           STPR_EN_1_Pin STPR_DIR_1_Pin */
+                           STP1_EN_Pin STP1_DIR_Pin */
   GPIO_InitStruct.Pin = DEBUG_6_Pin|DEBUG_5_Pin|DEBUG_4_Pin|DEBUG_3_Pin
-                          |STPR_EN_1_Pin|STPR_DIR_1_Pin;
+                          |STP1_EN_Pin|STP1_DIR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -534,38 +679,36 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LVL_SFTR_OE_2_Pin STPR_DIR_2_Pin STPR_EN_2_Pin */
-  GPIO_InitStruct.Pin = LVL_SFTR_OE_2_Pin|STPR_DIR_2_Pin|STPR_EN_2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : STPR_FLT_2_Pin ID_0_Pin ID_1_Pin ID_2_Pin
+  /*Configure GPIO pins : STP2_FLT_Pin ID_0_Pin ID_1_Pin ID_2_Pin
                            ID_3_Pin BRAKE_IN_Pin */
-  GPIO_InitStruct.Pin = STPR_FLT_2_Pin|ID_0_Pin|ID_1_Pin|ID_2_Pin
+  GPIO_InitStruct.Pin = STP2_FLT_Pin|ID_0_Pin|ID_1_Pin|ID_2_Pin
                           |ID_3_Pin|BRAKE_IN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : E_STOP_Pin STPR_FLT_1_Pin */
-  GPIO_InitStruct.Pin = E_STOP_Pin|STPR_FLT_1_Pin;
+  /*Configure GPIO pins : STP2_DIR_Pin STP2_EN_Pin */
+  GPIO_InitStruct.Pin = STP2_DIR_Pin|STP2_EN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : E_STOP_Pin STP1_FLT_Pin */
+  GPIO_InitStruct.Pin = E_STOP_Pin|STP1_FLT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : LVL_SFTR_OE_1_Pin */
-  GPIO_InitStruct.Pin = LVL_SFTR_OE_1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LVL_SFTR_OE_1_GPIO_Port, &GPIO_InitStruct);
-
+/* USER CODE BEGIN MX_GPIO_Init_2 */
+/* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
+  stepper_irq_callback(&steering_stepper, htim);
+  stepper_irq_callback(&braking_stepper, htim);
+}
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_default_task */
@@ -581,14 +724,15 @@ void default_task(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    canlib_send_byte(VANTTEC_CAN_ID_HB, (uint8_t)0x42);
+    osDelay(5000);
   }
   /* USER CODE END 5 */
 }
 
 /**
   * @brief  Period elapsed callback in non blocking mode
-  * @note   This function is called  when TIM6 interrupt took place, inside
+  * @note   This function is called  when TIM15 interrupt took place, inside
   * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
   * a global variable "uwTick" used as application time base.
   * @param  htim : TIM handle
@@ -599,7 +743,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 
   /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM6) {
+  if (htim->Instance == TIM15) {
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */

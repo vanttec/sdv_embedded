@@ -1,68 +1,94 @@
 /*
- * stepper.h
- *
- *  Created on: Mar 7, 2023
- *      Author: saveasmtz
+ *      Author: Abiel
  */
 
 #ifndef INC_STEPPER_H
 #define INC_STEPPER_H
 
-#include "main.h"
-#include "cmsis_os.h"
-#include "stdlib.h"
-#include "encoder.h"
+#include "stm32l4xx_hal.h"
+#include <stdbool.h>
+#include <stdint.h>
 
-extern TIM_HandleTypeDef htim2;
-extern encoder ifm_encoder;
-extern encoder briter_encoder;
+/*
+A timer channel is configured in PWM mode, where a pulse of arbitrary length is
+defined. Once pulse has been finsihed, HAL_TIM_OC_DelayElapsedCallback interrupt
+is called. Here, it is determined if we should pulse the stepper again.
 
-typedef enum {
-	STEERING,
-	BRAKING
-} stepper_type;
-
-typedef enum {
-	CONTROLLER,
-	AUTONOMOUS
-} stepper_mode;
-
-typedef enum {
-	CW,		// Clock-Wise
-	CCW,	// Counter Clock-Wise
-	IDLE	// No direction
-} stepper_direction;
+NOTE: This does not configure timer. Timer should be configured as
+TIM_COUNTERMODE_DOWN.
+*/
 
 typedef struct {
-	uint8_t is_active;			//0: inactive, 1: active
-	uint8_t is_exec_started;
-	stepper_mode mode;
-	stepper_direction direction;
+  bool enable_encoder_correction;
+  bool enable_soft_limit;
 
-	float MAX_ANGLE;			// Degrees
-	float MIN_ANGLE;			// Degrees
-	float current_angle; 		// Degrees
-	float desired_angle;		// Degrees
+  // Once limit has been reached, motor will stop moving.
+  // Setpoints that exceed step count, will be clamped.
+  float max_angle;
+  float min_angle;
 
-	float STEPPER_OFFSET;				// Offset to stop spinning
+  // If error is within tolerance, stepper will not move.
+  int32_t step_deadband;
 
-} stepper;
+  TIM_HandleTypeDef *step_timer;
+  uint32_t step_timer_channel;
 
-void configure_steering();
-void configure_braking();
-void start(const stepper_type stepper);
-void pause(const stepper_type stepper);
-void stop(const stepper_type stepper);
-void steer(uint8_t direction);
-void set_setpoint(const stepper_type stepper, float setpoint);
-uint32_t obtain_current_angle();
-float get_current_pos();
+  GPIO_TypeDef *enable_port;
+  uint16_t enable_pin;
 
-void steer_by_setpoint(uint8_t direction, float error);
-void brake_by_setpoint(uint8_t direction, float error);
-void update_stepper_pos(const stepper_type stepper);
+  GPIO_TypeDef *fault_port;
+  uint16_t fault_pin;
 
-//void stepping_by_pwm(stepper *stpr, stepper_type id);
-//void stepping_by_steps(stepper *stpr, stepper_type id);
+  GPIO_TypeDef *direction_port;
+  uint16_t direction_pin;
+  bool invert;
+
+  // For now, we only support a fixed pulse length.
+  uint32_t pulse_length;
+
+  float degs_per_step;
+  float gear_reduction;
+} StepperConfiguration;
+
+typedef struct {
+  bool enabled;
+  bool has_fault;
+
+  float mechanisim_angle;
+  int32_t position;
+  int32_t setpoint;
+
+  // If true, motor pulses will increase step count.
+  bool direction;
+
+  StepperConfiguration config;
+} Stepper;
+
+void create_default_stepper_config(StepperConfiguration *config);
+
+HAL_StatusTypeDef stepper_initialize(Stepper *stepper,
+                                     int32_t initial_position);
+
+void stepper_enable(Stepper *stepper);
+void stepper_disable(Stepper *stepper);
+
+// Must be called in a task, this handles timers, updating from encoder values
+// (if enabled). Setpoint must be given on update.
+void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick_time);
+
+bool stepper_at_setpoint(Stepper *stepper);
+
+// This must be called from HAL_TIM_PWM_PulseFinishedCallback such that we can
+// determine if stepper should be pulsed.
+void stepper_irq_callback(Stepper *stepper, TIM_HandleTypeDef *htim);
+
+// Angle is defined in radians. 
+// Degs per step is defined in degrees, as this is the commonly used unit in stepper datasheets.
+// Gear reduction should be writen in motor turns/mechanisim turns.
+// Eg: in case of a reduction, value should be larger than 1.
+int32_t mechanisim_angle_to_steps(float gear_reduction, float degs_per_step, float rads);
+
+// Angle is returned in radians.
+float steps_to_mechanisim_angle(float gear_reduction, float degs_per_step, int32_t stepper_steps);
 
 #endif /* INC_STEPPER_H */
