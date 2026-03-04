@@ -22,7 +22,8 @@
             "liveWatch": {
                 "enabled": true,
                 "samplesPerSecond": 4
-            }
+            },
+            "gdbPath": "/usr/bin/gdb",
         },
         {
             "showDevDebugOutput": "parsed",
@@ -36,7 +37,12 @@
             "device": "stm32l431",
             "configFiles": [
                 "openocd.cfg"
-            ]
+            ],
+            "gdbPath": "/usr/bin/gdb",
+            "liveWatch": {
+                "enabled": true,
+                "samplesPerSecond": 4
+            },
         },
         {
             "showDevDebugOutput": "parsed",
@@ -50,7 +56,8 @@
             "device": "stm32l431",
             "configFiles": [
                 "openocd.cfg"
-            ]
+            ],
+            "gdbPath": "/usr/bin/gdb",
         }
     ]
 }

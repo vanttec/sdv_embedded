@@ -3,6 +3,7 @@
 #include <cmsis_os.h>
 #include <string.h>
 #include <math.h>
+#include "main.h"
 
 #define IFM_NODE_ID 0x20
 #define BRITER_CAN_ID 0x13
@@ -36,10 +37,10 @@ HAL_StatusTypeDef encoder_setup_can(CAN_HandleTypeDef *hcan) {
 	filter.FilterFIFOAssignment = CAN_RX_FIFO1;
 	filter.FilterActivation = CAN_FILTER_ENABLE;
 
-	filter.FilterIdHigh = 0x0410 << 5u; // Jetson
-	filter.FilterIdLow = 0x013 << 5u; // Encoder briter
+	filter.FilterIdHigh = 0x013 << 5u; // Encoder briter
+	filter.FilterIdLow = 0x01A0 << 5u; // Encoder IFM
 
-	filter.FilterMaskIdLow = 0x01A0 << 5u; // Encoder IFM
+	filter.FilterMaskIdLow = 0x0000;
 	filter.FilterMaskIdHigh = 0x0000;
 
 	HAL_StatusTypeDef ret = HAL_CAN_ConfigFilter(hcan, &filter);
@@ -119,6 +120,8 @@ void encoder_task(void *attrs_hcan){
 	CAN_RxHeaderTypeDef header;
 	uint8_t buf[8];
 
+	osDelay(100);
+
 	HAL_StatusTypeDef ret = encoder_initialize_op_mode(hcan);
 	if(ret != HAL_OK){
 		encoder_error_handler();
@@ -134,6 +137,7 @@ void encoder_task(void *attrs_hcan){
 		if(HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO1) && HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO1, &header, buf) == HAL_OK){
 			uint8_t can_open_node_id = header.StdId & 0x7F; // LSB 7 bits of id.
 			uint8_t can_open_func_code = (header.StdId & 0x780) >> 7; // MSB 4 bits of id.
+
 			// FuncCode 0b0011 TPDO1.
 			if(can_open_node_id == IFM_NODE_ID && can_open_func_code == 0b0011){
 				// TPDO 1 from encoder.
@@ -142,7 +146,9 @@ void encoder_task(void *attrs_hcan){
 				}
 
 				memcpy(&ifm_encoder_raw, buf, 4);
+
 				ifm_encoder_raw -= 0x800000;
+
 				g_ifm_encoder_position = ((float) ifm_encoder_raw / 4096.0f) * 2.0 * M_PI * -1;
 				g_ifm_encoder_tick_last_update = HAL_GetTick();
 			} else if(header.StdId == BRITER_CAN_ID){
@@ -179,7 +185,6 @@ void encoder_task(void *attrs_hcan){
 				}
 			}
 		}
-
 		osDelay(10);
 	}
 }

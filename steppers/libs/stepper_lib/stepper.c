@@ -1,7 +1,7 @@
+//stepper.c
 #include "stepper.h"
 #include <stdint.h>
 #include <stdlib.h>
-#include <math.h>
 #include "cmsis_os.h"
 
 // If we have not received a new encoder value within ms, disable stepper and trigger fault
@@ -122,7 +122,10 @@ void stepper_disable(Stepper *stepper) {
                     GPIO_PIN_RESET);
 }
 
-void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick_time) {
+float g_period_2 = 0.0;
+float g_profile = 0.0;
+
+void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick_time, uint8_t id) {
   //int32_t state = osKernelLock();
   if (stepper->config.enable_encoder_correction) {
     if(HAL_GetTick() - encoder_tick_time > STEPPER_ENCODER_TIME_TOLERANCE){
@@ -134,7 +137,7 @@ void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick
 
     stepper->position = mechanisim_angle_to_steps(stepper->config.gear_reduction, stepper->config.degs_per_step, encoder_value);
   }
-
+  stepper->position = mechanisim_angle_to_steps(stepper->config.gear_reduction, stepper->config.degs_per_step, encoder_value);
   GPIO_PinState fault_status = HAL_GPIO_ReadPin(stepper->config.fault_port, stepper->config.fault_pin);
   stepper->has_fault = fault_status == GPIO_PIN_SET;
 
@@ -143,6 +146,70 @@ void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick
   // Calculate mechanisim positions.
   stepper->mechanisim_angle = 
         steps_to_mechanisim_angle(stepper->config.gear_reduction, stepper->config.degs_per_step, stepper->position);
+
+  static int8_t past_profile = -1; 
+
+  if (id == 1) {
+    // if ( stepper->mechanisim_angle < 0.3 ) {
+    //   stepper->mechanisim_angle = 0.3;
+    // }
+
+    // if ( stepper->mechanisim_angle > 1.0 && past_profile != 0) {               // profile 0
+    //     __HAL_TIM_SET_AUTORELOAD(stepper->config.step_timer, 1200 - 1);
+    //     __HAL_TIM_SET_COUNTER(stepper->config.step_timer, 0);
+    //     past_profile = 0;
+    // } else if ( stepper->mechanisim_angle < 0.4 && past_profile != 1) {      // profile 1
+    //     __HAL_TIM_SET_AUTORELOAD(stepper->config.step_timer, 700 - 1);
+    //     __HAL_TIM_SET_COUNTER(stepper->config.step_timer, 0);
+    //     past_profile = 1;
+    // } else if (past_profile != 2) {                                            // profile 2
+    //     __HAL_TIM_SET_AUTORELOAD(stepper->config.step_timer, 1000 - 1);
+    //     __HAL_TIM_SET_COUNTER(stepper->config.step_timer, 0);
+    //     past_profile = 2;
+    // }
+
+  } else if (id == 0) {
+
+    // float delta_angle = abs(stepper->mechanisim_angle - 
+
+    if ( (stepper->mechanisim_angle > -1.8 && stepper->mechanisim_angle < 1.8) && past_profile != 0) {    
+        // profile 0
+        HAL_TIM_PWM_Stop_IT(stepper->config.step_timer,
+        stepper->config.step_timer_channel);
+
+        __HAL_TIM_SET_AUTORELOAD(stepper->config.step_timer, 2000 - 1);
+
+        g_period_2 = 2000;
+        
+        osDelay(1);
+        
+        HAL_TIM_PWM_Start_IT(stepper->config.step_timer,
+          stepper->config.step_timer_channel);
+
+        past_profile = 0;
+    } else if ( (stepper->mechanisim_angle < -2.2 || stepper->mechanisim_angle > 2.2) &&  past_profile != 1) {
+        HAL_TIM_PWM_Stop_IT(stepper->config.step_timer,
+          stepper->config.step_timer_channel);
+        __HAL_TIM_SET_AUTORELOAD(stepper->config.step_timer, 3500 - 1);
+
+        g_period_2 = 3500;
+
+        osDelay(1);
+
+        HAL_TIM_PWM_Start_IT(stepper->config.step_timer,
+          stepper->config.step_timer_channel);
+
+        past_profile = 1;
+    }
+    // else if (past_profile != 2) {                                            // profile 2
+    //     __HAL_TIM_SET_AUTORELOAD(stepper->config.step_timer, 1000 - 1);
+    //     __HAL_TIM_SET_COUNTER(stepper->config.step_timer, 0);
+    //     past_profile = 2;
+    // }
+
+  }
+
+  g_profile = past_profile;
 
   if (stepper_at_setpoint(stepper)) {
     // Stepper is already at setpoint, nothing to do here.
@@ -162,34 +229,35 @@ void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick
     stepper->direction = false;
   }
 
-  if(stepper->config.enable_soft_limit){
-    // Prevent movement only in one direction.
-    if(stepper->mechanisim_angle > stepper->config.max_angle && !stepper->direction){
-      HAL_TIM_PWM_Stop_IT(stepper->config.step_timer,
-                        stepper->config.step_timer_channel);
-      return;
-    }
+  // if(stepper->config.enable_soft_limit){
+  //   // Prevent movement only in one direction.
+  //   if(stepper->mechanisim_angle > stepper->config.max_angle && !stepper->direction){
+  //     HAL_TIM_PWM_Stop_IT(stepper->config.step_timer,
+  //                       stepper->config.step_timer_channel);
+  //     return;
+  //   }
 
-    if(stepper->mechanisim_angle < stepper->config.min_angle && stepper->direction){
-      HAL_TIM_PWM_Stop_IT(stepper->config.step_timer,
-                        stepper->config.step_timer_channel);
-      return;
-    }
-  }
+  //   if(stepper->mechanisim_angle < stepper->config.min_angle && stepper->direction){
+  //     HAL_TIM_PWM_Stop_IT(stepper->config.step_timer,
+  //                       stepper->config.step_timer_channel);
+  //     return;
+  //   }
+  // }
 
   HAL_StatusTypeDef out = HAL_TIM_PWM_Start_IT(stepper->config.step_timer,
                     stepper->config.step_timer_channel);
 
-  if (out == HAL_ERROR) {
-    uint32_t error_code = 0x42; // TODO remove this, just for testing
-  }
+  // if (out == HAL_ERROR) {
+  //   uint32_t error_code = 0x42; // TODO remove this, just for testing
+  // }
 
   //osKernelRestoreLock(state);
 }
 
+#define M_PI 3.14159265358979323846
 #define MECHANISIM_DEGS_TO_RAD (M_PI / 180.0f)
-int32_t mechanisim_angle_to_steps(float gear_reduction, float degs_per_step, float rads){
-  const float rads_per_step = degs_per_step * MECHANISIM_DEGS_TO_RAD;
+int32_t mechanisim_angle_to_steps(float gear_reduction, volatile float degs_per_step, float rads){
+  const volatile float rads_per_step = degs_per_step * MECHANISIM_DEGS_TO_RAD;
 
   return (rads * gear_reduction) / rads_per_step;
 }

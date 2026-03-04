@@ -22,7 +22,7 @@
         "STM32L431xx",
         "USE_HAL_DRIVER"
       ],
-      "compilerPath": "/opt/ST/STM32CubeCLT_1.15.1/GNU-tools-for-STM32/bin/arm-none-eabi-gcc"
+      "compilerPath": "/usr/bin/arm-none-eabi-gcc"
     }
   ],
   "version": 4

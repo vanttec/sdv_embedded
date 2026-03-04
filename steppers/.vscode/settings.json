@@ -4,11 +4,16 @@
   "files.associations": {
     "vanttec_canlib_generic_ids.h": "c",
     "vanttec_sdv_ids.h": "c",
-    "cstdint": "c"
+    "cstdint": "c",
+    "cmsis_os.h": "c",
+    "compare": "c",
+    "vanttec_canlib.h": "c",
+    "stepper.h": "c"
   },
   "cortex-debug.variableUseNaturalFormat": false,
   "C_Cpp.errorSquiggles": "enabled",
-  "stm32-for-vscode.openOCDPath": "/opt/homebrew/bin/openocd",
-  "cortex-debug.armToolchainPath": "/opt/ST/STM32CubeCLT_1.15.1/GNU-tools-for-STM32/bin",
-  "cortex-debug.openocdPath": "/opt/homebrew/bin/openocd"
+  "stm32-for-vscode.openOCDPath": "/usr/bin/openocd",
+  "cortex-debug.armToolchainPath": "/usr/bin",
+  "cortex-debug.openocdPath": "/usr/bin/openocd",
+  "stm32-for-vscode.armToolchainPath": "/usr/bin"
 }

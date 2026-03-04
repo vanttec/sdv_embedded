@@ -76,7 +76,7 @@ static stepper_task_attrs braking_stepper_attrs;
 osThreadId_t steering_stepper_task_id;
 const osThreadAttr_t steering_stepper_task_attrs = {
   .name = "steeringStepperTask",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 8,
   .priority = (osPriority_t) osPriorityAboveNormal,
 };
 
@@ -90,7 +90,7 @@ const osThreadAttr_t braking_stepper_task_attrs = {
 osThreadId_t encoder_task_handle;
 const osThreadAttr_t encoder_task_attrs = {
   .name = "encoderTask",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 8,
   .priority = (osPriority_t) osPriorityAboveNormal,
 };
 /* USER CODE END PV */
@@ -167,10 +167,10 @@ int main(void)
   steering_stepper.config.direction_pin = STP1_DIR_Pin;
   steering_stepper.config.direction_port = STP1_DIR_GPIO_Port;
   steering_stepper.config.invert = false;
-  steering_stepper.config.enable_encoder_correction = true;
+  steering_stepper.config.enable_encoder_correction = false;
   steering_stepper.config.gear_reduction = 44.0f/16.0f;
   steering_stepper.config.degs_per_step = 1.8f;
-  steering_stepper.config.step_deadband = 10;
+  steering_stepper.config.step_deadband = 30;
   steering_stepper.config.pulse_length = 100;
   steering_stepper.config.enable_soft_limit = false; //TODO softlimit broken
   steering_stepper.config.max_angle = (M_PI * 2) * 1.52;
@@ -188,10 +188,10 @@ int main(void)
   braking_stepper.config.direction_pin = STP2_DIR_Pin;
   braking_stepper.config.invert = true;
   braking_stepper.config.direction_port = STP2_DIR_GPIO_Port;
-  braking_stepper.config.enable_encoder_correction = true;
+  braking_stepper.config.enable_encoder_correction = false;
   braking_stepper.config.gear_reduction = 1.0f;
   braking_stepper.config.degs_per_step = 1.8f;
-  braking_stepper.config.step_deadband = 5;
+  braking_stepper.config.step_deadband = 3;
   braking_stepper.config.pulse_length = 100;
   braking_stepper.config.enable_soft_limit = false;
   __HAL_TIM_ENABLE_IT(&htim16, TIM_IT_CC1);
@@ -505,7 +505,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 80-1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_DOWN;
-  htim2.Init.Period = 3500-1 ;
+  htim2.Init.Period = 8000-1 ;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -563,7 +563,7 @@ static void MX_TIM16_Init(void)
   htim16.Instance = TIM16;
   htim16.Init.Prescaler = 80-1;
   htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim16.Init.Period = 5000-1;
+  htim16.Init.Period = 1200-1;
   htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim16.Init.RepetitionCounter = 0;
   htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -728,7 +728,7 @@ void default_task(void *argument)
   for(;;)
   {
     canlib_send_byte(VANTTEC_CAN_ID_HB, (uint8_t)0x42);
-    osDelay(5000);
+    osDelay(500);
   }
   /* USER CODE END 5 */
 }

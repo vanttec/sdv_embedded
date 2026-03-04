@@ -74,7 +74,7 @@ void stepper_disable(Stepper *stepper);
 
 // Must be called in a task, this handles timers, updating from encoder values
 // (if enabled). Setpoint must be given on update.
-void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick_time);
+void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick_time, uint8_t id);
 
 bool stepper_at_setpoint(Stepper *stepper);
 
