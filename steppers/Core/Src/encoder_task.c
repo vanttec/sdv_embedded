@@ -20,13 +20,12 @@ uint32_t g_ifm_encoder_tick_last_update = 0;
 uint32_t g_briter_encoder_tick_last_update = 0;
 
 // Encoder position in turns
-float g_ifm_encoder_position = 0;
+float g_ifm_encoder_position   = 0;
+float g_ifm_mechanism_position = 0;  // = g_ifm_encoder_position / -16.0 (mechanism angle, same space as setpoints)
 float g_briter_encoder_position = 0;
 
 void encoder_error_handler(){
-	for(;;){
-		;
-	}
+	; // non-fatal: log and continue
 }
 
 HAL_StatusTypeDef encoder_setup_can(CAN_HandleTypeDef *hcan) {
@@ -36,6 +35,7 @@ HAL_StatusTypeDef encoder_setup_can(CAN_HandleTypeDef *hcan) {
 	filter.FilterScale = CAN_FILTERSCALE_16BIT;
 	filter.FilterFIFOAssignment = CAN_RX_FIFO1;
 	filter.FilterActivation = CAN_FILTER_ENABLE;
+	filter.SlaveStartFilterBank = 14; // was uninitialized (garbage); match canlib
 
 	filter.FilterIdHigh = 0x013 << 5u; // Encoder briter
 	filter.FilterIdLow = 0x01A0 << 5u; // Encoder IFM
@@ -122,15 +122,8 @@ void encoder_task(void *attrs_hcan){
 
 	osDelay(100);
 
-	HAL_StatusTypeDef ret = encoder_initialize_op_mode(hcan);
-	if(ret != HAL_OK){
-		encoder_error_handler();
-	}
-
-	ret = encoder_initialize_briter(hcan);
-	if(ret != HAL_OK){
-		encoder_error_handler();
-	}
+	encoder_initialize_op_mode(hcan);
+	encoder_initialize_briter(hcan);
 	osDelay(500);
 
 	for(;;){
@@ -141,16 +134,15 @@ void encoder_task(void *attrs_hcan){
 			// FuncCode 0b0011 TPDO1.
 			if(can_open_node_id == IFM_NODE_ID && can_open_func_code == 0b0011){
 				// TPDO 1 from encoder.
-				if(header.DLC != 4){
-					encoder_error_handler();
+				if(header.DLC == 4){
+					memcpy(&ifm_encoder_raw, buf, 4);
+
+					ifm_encoder_raw -= 0x800000;
+
+					g_ifm_encoder_position   = ((float) ifm_encoder_raw / 4096.0f) * 2.0 * M_PI * -1;
+					g_ifm_mechanism_position = -g_ifm_encoder_position / 16.0f;
+					g_ifm_encoder_tick_last_update = HAL_GetTick();
 				}
-
-				memcpy(&ifm_encoder_raw, buf, 4);
-
-				ifm_encoder_raw -= 0x800000;
-
-				g_ifm_encoder_position = ((float) ifm_encoder_raw / 4096.0f) * 2.0 * M_PI * -1;
-				g_ifm_encoder_tick_last_update = HAL_GetTick();
 			} else if(header.StdId == BRITER_CAN_ID){
 				// Briter encoder message.
 				// We have to parse an annoying data frame where -> [size, device id, data id, data(1..4)]

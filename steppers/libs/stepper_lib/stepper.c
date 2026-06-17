@@ -91,9 +91,9 @@ void stepper_irq_callback(Stepper *stepper, TIM_HandleTypeDef *htim) {
 
   // Update stepper position from pulse
   if (stepper->direction) {
-    stepper->position++;
-  } else {
     stepper->position--;
+  } else {
+    stepper->position++;
   }
 
   if (stepper_at_setpoint(stepper)) {
@@ -128,16 +128,15 @@ float g_profile = 0.0;
 void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick_time, uint8_t id) {
   //int32_t state = osKernelLock();
   if (stepper->config.enable_encoder_correction) {
-    if(HAL_GetTick() - encoder_tick_time > STEPPER_ENCODER_TIME_TOLERANCE){
-      // We have not received encoder value, disable stepper.
-      stepper_disable(stepper);
-      stepper->has_fault = true;
-      return;
+    if (HAL_GetTick() - encoder_tick_time <= STEPPER_ENCODER_TIME_TOLERANCE) {
+      // Encoder is fresh: closed-loop, trust the encoder reading.
+      stepper->position = mechanisim_angle_to_steps(stepper->config.gear_reduction,
+                                                    stepper->config.degs_per_step, encoder_value);
     }
-
-    stepper->position = mechanisim_angle_to_steps(stepper->config.gear_reduction, stepper->config.degs_per_step, encoder_value);
+    // Encoder stale: keep the pulse-counted position (open-loop fallback) and do
+    // NOT fault/disable, so an encoder dropout never bricks the motor. The motor
+    // keeps working open-loop; closed-loop resumes as soon as the encoder returns.
   }
-  stepper->position = mechanisim_angle_to_steps(stepper->config.gear_reduction, stepper->config.degs_per_step, encoder_value);
   GPIO_PinState fault_status = HAL_GPIO_ReadPin(stepper->config.fault_port, stepper->config.fault_pin);
   stepper->has_fault = fault_status == GPIO_PIN_SET;
 
@@ -212,7 +211,11 @@ void stepper_update(Stepper *stepper, float encoder_value, uint32_t encoder_tick
   g_profile = past_profile;
 
   if (stepper_at_setpoint(stepper)) {
-    // Stepper is already at setpoint, nothing to do here.
+    // Stepper is already at setpoint, stop the timer to hold position.
+    // In closed-loop this is what actually halts the motor, since the
+    // IRQ pulse count gets overwritten by the encoder every cycle.
+    HAL_TIM_PWM_Stop_IT(stepper->config.step_timer,
+                        stepper->config.step_timer_channel);
     return;
   }
 

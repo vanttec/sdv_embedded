@@ -150,14 +150,6 @@ int main(void)
   MX_TIM16_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-  int filters[] = {0x01A0, 0x0410, 0x0013};
-  int filters_size = sizeof(filters) / sizeof(filters[0]);
-  init_canlib(hcan1, VANTTEC_CAN_ID_STEPPER_TX);
-  init_canlib_tx();
-  init_canlib_rx();
-  encoder_setup_can(&hcan1);
-  canlib_init_generic_tasks();
-  init_requirements_task();
 
   create_default_stepper_config(&steering_stepper.config);
   steering_stepper.config.step_timer = &htim2;
@@ -167,10 +159,10 @@ int main(void)
   steering_stepper.config.direction_pin = STP1_DIR_Pin;
   steering_stepper.config.direction_port = STP1_DIR_GPIO_Port;
   steering_stepper.config.invert = false;
-  steering_stepper.config.enable_encoder_correction = false;
+  steering_stepper.config.enable_encoder_correction = true;
   steering_stepper.config.gear_reduction = 44.0f/16.0f;
   steering_stepper.config.degs_per_step = 1.8f;
-  steering_stepper.config.step_deadband = 30;
+  steering_stepper.config.step_deadband = 20;
   steering_stepper.config.pulse_length = 100;
   steering_stepper.config.enable_soft_limit = false; //TODO softlimit broken
   steering_stepper.config.max_angle = (M_PI * 2) * 1.52;
@@ -219,6 +211,31 @@ int main(void)
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
+
+  /* Initialize CANLib after kernel is ready */
+  init_canlib(hcan1, VANTTEC_CAN_ID_STEPPER_TX);
+  init_canlib_tx();
+  init_canlib_rx();
+  encoder_setup_can(&hcan1);
+
+  // Restrict FIFO0 to only accept 0x410 (stepper control).
+  // Prevents encoder messages (0x1A0, 0x013) from flooding the canlib queue.
+  {
+    CAN_FilterTypeDef f = {0};
+    f.FilterBank = 3;
+    f.FilterMode = CAN_FILTERMODE_IDMASK;
+    f.FilterScale = CAN_FILTERSCALE_32BIT;
+    f.FilterIdHigh   = (0x410 << 5) & 0xFFFF;
+    f.FilterIdLow    = 0x0000;
+    f.FilterMaskIdHigh = (0x7FF << 5) & 0xFFFF;
+    f.FilterMaskIdLow  = 0x0000;
+    f.FilterFIFOAssignment = CAN_RX_FIFO0;
+    f.FilterActivation = CAN_FILTER_ENABLE;
+    f.SlaveStartFilterBank = 14;
+    HAL_CAN_ConfigFilter(&hcan1, &f);
+  }
+  canlib_init_generic_tasks();
+  init_requirements_task();
 
   /* Create the thread(s) */
   /* creation of defaultTask */
